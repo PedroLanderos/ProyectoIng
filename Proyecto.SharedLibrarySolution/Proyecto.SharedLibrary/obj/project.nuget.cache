@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "k1SYG9iUIS0=",
+  "dgSpecHash": "03/Uz1S0vBk=",
   "success": true,
-  "projectFilePath": "D:\\Code\\ingProyecto\\back\\LLaveremos.SharedLibrarySolution\\Llaveremos.SharedLibrary\\Proyecto.SharedLibrary.csproj",
+  "projectFilePath": "D:\\Code\\ingProyecto\\back\\Proyecto.SharedLibrarySolution\\Proyecto.SharedLibrary\\Proyecto.SharedLibrary.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lande\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\lande\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

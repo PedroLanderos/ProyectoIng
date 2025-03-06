@@ -3183,11 +3183,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Code\\ingProyecto\\back\\LLaveremos.SharedLibrarySolution\\Llaveremos.SharedLibrary\\Proyecto.SharedLibrary.csproj",
+      "projectUniqueName": "D:\\Code\\ingProyecto\\back\\Proyecto.SharedLibrarySolution\\Proyecto.SharedLibrary\\Proyecto.SharedLibrary.csproj",
       "projectName": "Proyecto.SharedLibrary",
-      "projectPath": "D:\\Code\\ingProyecto\\back\\LLaveremos.SharedLibrarySolution\\Llaveremos.SharedLibrary\\Proyecto.SharedLibrary.csproj",
+      "projectPath": "D:\\Code\\ingProyecto\\back\\Proyecto.SharedLibrarySolution\\Proyecto.SharedLibrary\\Proyecto.SharedLibrary.csproj",
       "packagesPath": "C:\\Users\\lande\\.nuget\\packages\\",
-      "outputPath": "D:\\Code\\ingProyecto\\back\\LLaveremos.SharedLibrarySolution\\Llaveremos.SharedLibrary\\obj\\",
+      "outputPath": "D:\\Code\\ingProyecto\\back\\Proyecto.SharedLibrarySolution\\Proyecto.SharedLibrary\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
