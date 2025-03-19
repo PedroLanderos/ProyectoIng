@@ -10,11 +10,11 @@ export const AuthProvider = ({ children }) => {
     user: null,
   });
 
-  // Función para verificar si hay sesión activa
+  // 🔹 Función para verificar si hay sesión activa
   const checkSession = () => {
-    const token = localStorage.getItem("token");
-    const user = JSON.parse(localStorage.getItem("user"));
-    
+    const token = sessionStorage.getItem("token");
+    const user = JSON.parse(sessionStorage.getItem("user"));
+
     if (token && user) {
       setAuth({
         isAuthenticated: true,
@@ -48,11 +48,10 @@ export const AuthProvider = ({ children }) => {
         role: decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || "Normal",
       };
 
-      // Guardar datos en localStorage
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
+      // 🔹 Guardar datos en sessionStorage (NO en localStorage)
+      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("user", JSON.stringify(user));
 
-      // 🔹 Actualizar estado de autenticación
       setAuth({
         isAuthenticated: true,
         token,
@@ -67,8 +66,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
     setAuth({ isAuthenticated: false, token: null, user: null });
   };
 

@@ -3,9 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LoginSignup from "./Pages/LoginSignup";
 import PanelDeAdministrador from "./Pages/PanelDeAdministrador";
 import AddUser from "./Pages/AddUser";
-import MainPage from "./Pages/MainPage"; // 🔹 Importa la nueva página
+import MainPage from "./Pages/MainPage"; 
 import { AuthContext } from "./Context/AuthContext";
-import Navbar from './Components/Navbar/Navbar'
+import Navbar from './Components/Navbar/Navbar';
 
 function App() {
   const { auth } = useContext(AuthContext);
@@ -16,8 +16,8 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        {/* ✅ Permite acceder a LoginSignup solo si NO está autenticado */}
-        <Route path="/" element={<LoginSignup/>} />
+        {/* ✅ Redirigir a MainPage si el usuario está autenticado, sino mostrar LoginSignup */}
+        <Route path="/" element={isAuthenticated ? <Navigate to="/MainPage" /> : <LoginSignup />} />
 
         {/* ✅ Si intenta ir a Login manualmente estando autenticado, lo mandamos a MainPage */}
         <Route path="/login" element={!isAuthenticated ? <LoginSignup /> : <Navigate to="/MainPage" />} />
