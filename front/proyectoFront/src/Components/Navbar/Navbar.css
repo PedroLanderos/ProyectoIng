@@ -1,0 +1,76 @@
+/* Reset de estilos */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Barra de navegación */
+.navbar {
+    width: 100%;
+    background-color: #222;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedor interno */
+.nav-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Título de la Navbar */
+.nav-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+/* Sección de acciones */
+.nav-actions {
+    display: flex;
+    align-items: center;
+}
+
+/* Ícono del usuario */
+.user-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #FF4141;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.user-icon:hover {
+    background-color: #cc3333;
+}
+
+/* Botón de inicio de sesión */
+.login-button {
+    text-decoration: none;
+    padding: 8px 16px;
+    background-color: #FF4141;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 20px;
+    transition: background 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #cc3333;
+}

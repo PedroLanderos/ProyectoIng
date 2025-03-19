@@ -1,0 +1,93 @@
+.manage-users {
+    padding: 20px;
+    font-family: "Arial", sans-serif;
+    background: #f9f9f9;
+    min-height: 100vh;
+  }
+  
+  .manage-users h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .user-table-container {
+    margin: 0 auto;
+    max-width: 1000px;
+    overflow-x: auto;
+  }
+  
+  .user-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-table th,
+  .user-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .user-table th {
+    background: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .user-table td button {
+    padding: 5px 10px;
+    background: #ff4141;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .user-table td button:hover {
+    background: #e33939;
+  }
+  
+  .edit-user-container {
+    margin: 20px auto;
+    max-width: 500px;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .edit-user-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .edit-user-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .edit-user-form input,
+  .edit-user-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .edit-user-form button {
+    padding: 10px 15px;
+    margin-right: 10px;
+    background: #ff4141;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .edit-user-form button:hover {
+    background: #e33939;
+  }
+  
