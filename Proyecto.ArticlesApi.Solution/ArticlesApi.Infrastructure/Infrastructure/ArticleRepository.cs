@@ -1,13 +1,9 @@
 ﻿using ArticlesApi.Application.Interfaces;
 using ArticlesApi.Domain.Entities;
 using Llaveremos.SharedLibrary.Logs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
+using ArticlesApi.Application.Responses;
 
 namespace ArticlesApi.Infrastructure.Infrastructure
 {
@@ -35,7 +31,8 @@ namespace ArticlesApi.Infrastructure.Infrastructure
                 response.EnsureSuccessStatusCode();
 
                 var json = await response.Content.ReadAsStringAsync();
-                var result = JsonConverter.DeserializeObject<CoreApiResponse>(json);
+                var result = JsonConvert.DeserializeObject<CoreApiResponse>(json);
+
 
                 return result.Results.Select(article => new Article
                 {

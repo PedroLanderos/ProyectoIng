@@ -12,14 +12,14 @@ namespace ArticlesApi.Domain.Entities
         [Key]
         public string? Id { get; set; }
         public string? Title { get; set; }
-        public List<string> Authors { get; set; } = new List<string>();
+        public List<Author> Authors { get; set; } = new List<Author>(); // ✅ Ahora es una lista de objetos Author
         public string? Abstract { get; set; }
         public string? PublishedDate { get; set; }
         public string? Journal { get; set; }
         public string? DownloadUrl { get; set; }
-        public string? ViewUrl { get; set; }
-        public string? FullText { get; set; } 
-        public List<string> Subjects { get; set; } = new List<string>(); 
+        public List<Links> Links { get; set; } = new List<Link>(); // ✅ Ahora incluye la lista de links
+        public string? FullText { get; set; }
+        public List<string> Subjects { get; set; } = new List<string>();
         public int YearPublished { get; set; }
     }
 }
