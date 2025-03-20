@@ -1,0 +1,12 @@
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\bin\Debug\net8.0\ArticlesApi.Infrastructure.deps.json
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\bin\Debug\net8.0\ArticlesApi.Infrastructure.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\bin\Debug\net8.0\ArticlesApi.Infrastructure.pdb
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\obj\Debug\net8.0\ArticlesApi.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\obj\Debug\net8.0\ArticlesApi.Infrastructure.AssemblyInfoInputs.cache
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\obj\Debug\net8.0\ArticlesApi.Infrastructure.AssemblyInfo.cs
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\obj\Debug\net8.0\ArticlesApi.Infrastructure.csproj.CoreCompileInputs.cache
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\obj\Debug\net8.0\ArticlesApi.Infrastructure.sourcelink.json
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\obj\Debug\net8.0\ArticlesApi.Infrastructure.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\obj\Debug\net8.0\refint\ArticlesApi.Infrastructure.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\obj\Debug\net8.0\ArticlesApi.Infrastructure.pdb
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\obj\Debug\net8.0\ref\ArticlesApi.Infrastructure.dll

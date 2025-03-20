@@ -1,0 +1,12 @@
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\bin\Debug\net8.0\ArticlesApi.Application.deps.json
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\bin\Debug\net8.0\ArticlesApi.Application.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\bin\Debug\net8.0\ArticlesApi.Application.pdb
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\obj\Debug\net8.0\ArticlesApi.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\obj\Debug\net8.0\ArticlesApi.Application.AssemblyInfoInputs.cache
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\obj\Debug\net8.0\ArticlesApi.Application.AssemblyInfo.cs
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\obj\Debug\net8.0\ArticlesApi.Application.csproj.CoreCompileInputs.cache
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\obj\Debug\net8.0\ArticlesApi.Application.sourcelink.json
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\obj\Debug\net8.0\ArticlesApi.Application.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\obj\Debug\net8.0\refint\ArticlesApi.Application.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\obj\Debug\net8.0\ArticlesApi.Application.pdb
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\obj\Debug\net8.0\ref\ArticlesApi.Application.dll

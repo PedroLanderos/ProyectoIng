@@ -1,0 +1,12 @@
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Domain\bin\Debug\net8.0\ArticlesApi.Domain.deps.json
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Domain\bin\Debug\net8.0\ArticlesApi.Domain.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Domain\bin\Debug\net8.0\ArticlesApi.Domain.pdb
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Domain\obj\Debug\net8.0\ArticlesApi.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Domain\obj\Debug\net8.0\ArticlesApi.Domain.AssemblyInfoInputs.cache
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Domain\obj\Debug\net8.0\ArticlesApi.Domain.AssemblyInfo.cs
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Domain\obj\Debug\net8.0\ArticlesApi.Domain.csproj.CoreCompileInputs.cache
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Domain\obj\Debug\net8.0\ArticlesApi.Domain.sourcelink.json
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Domain\obj\Debug\net8.0\ArticlesApi.Domain.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Domain\obj\Debug\net8.0\refint\ArticlesApi.Domain.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Domain\obj\Debug\net8.0\ArticlesApi.Domain.pdb
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Domain\obj\Debug\net8.0\ref\ArticlesApi.Domain.dll
