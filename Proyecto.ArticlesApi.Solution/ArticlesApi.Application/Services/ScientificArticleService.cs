@@ -33,7 +33,7 @@ namespace ArticlesApi.Application.Services
 
                 // Aplicar filtros
                 if (!string.IsNullOrEmpty(author))
-                    results = results.Where(a => a.Authors.Any(x => x.Name.Contains(author, StringComparison.OrdinalIgnoreCase)));
+                    results = results.Where(a => a.Authors.Any(x => x.Name!.Contains(author, StringComparison.OrdinalIgnoreCase)));
 
                 if (year.HasValue)
                     results = results.Where(a => a.YearPublished == year.Value);
