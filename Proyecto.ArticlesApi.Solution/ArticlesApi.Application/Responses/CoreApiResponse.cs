@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ArticlesApi.Application.Responses
 {
-    public class CoreApiResponse
+    public class CoreApiResponse<T>
     {
         public int TotalHits { get; set; }
         public int Limit { get; set; }
         public int Offset { get; set; }
-        public List<Article>? Results { get; set; }
+        public List<T>? Results { get; set; }
     }
 }

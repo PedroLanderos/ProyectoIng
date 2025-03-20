@@ -27,26 +27,13 @@ namespace ArticlesApi.Infrastructure.Infrastructure
             try
             {
                 int offset = (page - 1) * pageSize;
-                var response = await _httpClient.GetAsync($"https://api.core.ac.uk/v3/search/works?q={query}&offset={offset}&limit={pageSize}&api_key={_apiKey}");
+                var response = await _httpClient!.GetAsync($"https://api.core.ac.uk/v3/search/works?q={query}&offset={offset}&limit={pageSize}&api_key={_apiKey}");
                 response.EnsureSuccessStatusCode();
 
                 var json = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<CoreApiResponse>(json);
+                var result = JsonConvert.DeserializeObject<CoreApiResponse<Article>>(json);
 
-
-                return result.Results.Select(article => new Article
-                {
-                    Id = article.Id,
-                    Title = article.Title,
-                    Authors = article.Authors?.Select(a => a.Name).ToList() ?? new List<string>(),
-                    Abstract = article.Abstract,
-                    PublishedDate = article.PublishedDate,
-                    DownloadUrl = article.DownloadUrl,
-                    ViewUrl = article.Links?.FirstOrDefault(l => l.Type == "display")?.Url,
-                    FullText = article.FullText,
-                    Subjects = article.Subjects,
-                    YearPublished = article.YearPublished
-                }).ToList();
+                return result!.Results!;
             }
             catch (Exception ex)
             {
