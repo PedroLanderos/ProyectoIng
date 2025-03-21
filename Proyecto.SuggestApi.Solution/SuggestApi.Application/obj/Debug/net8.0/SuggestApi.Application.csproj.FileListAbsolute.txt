@@ -10,3 +10,9 @@ D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Application\obj
 D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Application\obj\Debug\net8.0\refint\SuggestApi.Application.dll
 D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Application\obj\Debug\net8.0\SuggestApi.Application.pdb
 D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Application\obj\Debug\net8.0\ref\SuggestApi.Application.dll
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Application\bin\Debug\net8.0\Proyecto.SharedLibrary.dll
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Application\bin\Debug\net8.0\SuggestApi.Domain.dll
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Application\bin\Debug\net8.0\SuggestApi.Domain.pdb
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Application\bin\Debug\net8.0\Proyecto.SharedLibrary.pdb
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Application\obj\Debug\net8.0\SuggestApi.Application.csproj.AssemblyReference.cache
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Application\obj\Debug\net8.0\SuggestA.788986A2.Up2Date

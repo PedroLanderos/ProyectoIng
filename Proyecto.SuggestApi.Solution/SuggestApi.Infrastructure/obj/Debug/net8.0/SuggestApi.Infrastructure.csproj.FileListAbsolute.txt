@@ -10,3 +10,11 @@ D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\
 D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\obj\Debug\net8.0\refint\SuggestApi.Infrastructure.dll
 D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\obj\Debug\net8.0\SuggestApi.Infrastructure.pdb
 D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\obj\Debug\net8.0\ref\SuggestApi.Infrastructure.dll
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\bin\Debug\net8.0\Proyecto.SharedLibrary.dll
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\bin\Debug\net8.0\SuggestApi.Application.dll
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\bin\Debug\net8.0\SuggestApi.Domain.dll
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\bin\Debug\net8.0\SuggestApi.Application.pdb
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\bin\Debug\net8.0\Proyecto.SharedLibrary.pdb
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\bin\Debug\net8.0\SuggestApi.Domain.pdb
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\obj\Debug\net8.0\SuggestApi.Infrastructure.csproj.AssemblyReference.cache
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\obj\Debug\net8.0\SuggestA.E684B852.Up2Date
