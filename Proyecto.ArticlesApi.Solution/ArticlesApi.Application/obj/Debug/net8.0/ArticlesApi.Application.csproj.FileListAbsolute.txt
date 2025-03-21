@@ -10,3 +10,9 @@ D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\o
 D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\obj\Debug\net8.0\refint\ArticlesApi.Application.dll
 D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\obj\Debug\net8.0\ArticlesApi.Application.pdb
 D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\obj\Debug\net8.0\ref\ArticlesApi.Application.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\bin\Debug\net8.0\ArticlesApi.Domain.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\bin\Debug\net8.0\Proyecto.SharedLibrary.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\bin\Debug\net8.0\Proyecto.SharedLibrary.pdb
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\bin\Debug\net8.0\ArticlesApi.Domain.pdb
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\obj\Debug\net8.0\ArticlesApi.Application.csproj.AssemblyReference.cache
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Application\obj\Debug\net8.0\Articles.7DC24EBD.Up2Date

@@ -1,4 +1,5 @@
 ﻿using ArticlesApi.Application.Interfaces;
+using ArticlesApi.Application.Services;
 using ArticlesApi.Infrastructure.Infrastructure;
 using Llaveremos.SharedLibrary.DependencyInjection;
 using Microsoft.Extensions.Configuration;
@@ -18,8 +19,9 @@ namespace ArticlesApi.Infrastructure.DependencyInjection
             //agregar la conexion a la database y el scheme de authentication
 
             //SharedServiceContainer.AddSharedServices<OrderDbContext>(services, config, config["MySerilog:FileName"]!);
+            services.AddScoped<IScientificArticleService, ScientificArticleService>();
+            services.AddHttpClient<IArticle, ArticleRepository>();
 
-            services.AddScoped<IArticle, ArticleRepository>();
 
             return services;
         }

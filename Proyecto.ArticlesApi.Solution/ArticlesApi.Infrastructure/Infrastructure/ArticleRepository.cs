@@ -27,7 +27,7 @@ namespace ArticlesApi.Infrastructure.Infrastructure
             try
             {
                 int offset = (page - 1) * pageSize;
-                var response = await _httpClient!.GetAsync($"https://api.core.ac.uk/v3/search/works?q={query}&offset={offset}&limit={pageSize}&api_key={_apiKey}");
+                var response = await _httpClient!.GetAsync($"https://api.core.ac.uk/v3/search/works?q={query}&offset={offset}&limit={pageSize}");
                 response.EnsureSuccessStatusCode();
 
                 var json = await response.Content.ReadAsStringAsync();

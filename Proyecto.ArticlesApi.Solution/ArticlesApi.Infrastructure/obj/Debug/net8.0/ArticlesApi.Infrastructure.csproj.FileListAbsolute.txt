@@ -10,3 +10,11 @@ D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructur
 D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\obj\Debug\net8.0\refint\ArticlesApi.Infrastructure.dll
 D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\obj\Debug\net8.0\ArticlesApi.Infrastructure.pdb
 D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\obj\Debug\net8.0\ref\ArticlesApi.Infrastructure.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\bin\Debug\net8.0\ArticlesApi.Application.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\bin\Debug\net8.0\ArticlesApi.Domain.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\bin\Debug\net8.0\Proyecto.SharedLibrary.dll
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\bin\Debug\net8.0\ArticlesApi.Application.pdb
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\bin\Debug\net8.0\ArticlesApi.Domain.pdb
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\bin\Debug\net8.0\Proyecto.SharedLibrary.pdb
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\obj\Debug\net8.0\ArticlesApi.Infrastructure.csproj.AssemblyReference.cache
+D:\Code\ingProyecto\back\Proyecto.ArticlesApi.Solution\ArticlesApi.Infrastructure\obj\Debug\net8.0\Articles.8040360C.Up2Date
