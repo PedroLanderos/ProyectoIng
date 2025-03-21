@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "sMKKAN8piZN+a1QXyohLH7kmkNl0Rqapd++hO7SdO5o=",
+  "Source": "SuggestApi.Presentation",
+  "BasePath": "_content/SuggestApi.Presentation",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

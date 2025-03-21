@@ -22,7 +22,7 @@ namespace ArticlesApi.Infrastructure.DependencyInjection
             services.AddScoped<IScientificArticleService, ScientificArticleService>();
             services.AddHttpClient<IArticle, ArticleRepository>();
 
-
+            
             return services;
         }
     }

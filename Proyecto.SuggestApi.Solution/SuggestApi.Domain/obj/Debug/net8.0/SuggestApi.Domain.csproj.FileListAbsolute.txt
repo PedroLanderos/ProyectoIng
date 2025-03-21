@@ -1,0 +1,12 @@
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Domain\bin\Debug\net8.0\SuggestApi.Domain.deps.json
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Domain\bin\Debug\net8.0\SuggestApi.Domain.dll
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Domain\bin\Debug\net8.0\SuggestApi.Domain.pdb
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Domain\obj\Debug\net8.0\SuggestApi.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Domain\obj\Debug\net8.0\SuggestApi.Domain.AssemblyInfoInputs.cache
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Domain\obj\Debug\net8.0\SuggestApi.Domain.AssemblyInfo.cs
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Domain\obj\Debug\net8.0\SuggestApi.Domain.csproj.CoreCompileInputs.cache
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Domain\obj\Debug\net8.0\SuggestApi.Domain.sourcelink.json
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Domain\obj\Debug\net8.0\SuggestApi.Domain.dll
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Domain\obj\Debug\net8.0\refint\SuggestApi.Domain.dll
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Domain\obj\Debug\net8.0\SuggestApi.Domain.pdb
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Domain\obj\Debug\net8.0\ref\SuggestApi.Domain.dll
