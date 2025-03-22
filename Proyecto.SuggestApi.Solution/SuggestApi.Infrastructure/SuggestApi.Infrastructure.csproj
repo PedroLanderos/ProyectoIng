@@ -10,4 +10,8 @@
     <ProjectReference Include="..\SuggestApi.Application\SuggestApi.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>

@@ -8,5 +8,9 @@ namespace SuggestApi.Application.DTOs
 {
     public class UserActivityDTO
     {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public string? ArticleId { get; set; }
+        public bool isFavorite { get; set; } = false;
     }
 }
