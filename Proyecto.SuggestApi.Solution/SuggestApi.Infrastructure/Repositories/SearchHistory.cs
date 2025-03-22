@@ -104,10 +104,5 @@ namespace SuggestApi.Infrastructure.Repositories
                 return new Response(false, "Error while saving historial");
             }
         }
-
-        public Task<List<ArticleDTO>> SetSuggestionAsync(int userId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

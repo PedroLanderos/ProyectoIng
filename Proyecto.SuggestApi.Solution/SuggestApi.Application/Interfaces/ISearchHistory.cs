@@ -17,6 +17,5 @@ namespace SuggestApi.Application.Interfaces
         Task<Response> DeleteAsync(UserActivity userActivityDTO);
         Task<UserActivity> FindByIdAsync(int id);
         Task<List<UserActivity>> GetByCriteriaAsync(Expression<Func<UserActivity, bool>> predicate);
-        Task<List<ArticleDTO>> SetSuggestionAsync(int userId);
     }
 }
