@@ -10,5 +10,6 @@ namespace SuggestApi.Application.Services
     public interface IArticles
     {
         Task<IEnumerable<ArticleDTO>> GetArticleAsync(string query);
+        Task<IEnumerable<ArticleDTO>> SearchArticlesByFields(IEnumerable<string> fieldsToSearch);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SuggestApi.Application.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace SuggestApi.Application.Services
 {
     public interface ISuggestion
     {
+        Task<IEnumerable<ArticleDTO>> GetRecommendations(int userId);
     }
 }
