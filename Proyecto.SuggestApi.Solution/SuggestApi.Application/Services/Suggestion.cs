@@ -1,5 +1,4 @@
-﻿using SuggestApi.Application.DTOs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace SuggestApi.Application.Services
 {
-    public interface IArticles
+    public class Suggestion
     {
-        Task<IEnumerable<ArticleDTO>> GetArticleAsync(string query);
     }
 }
