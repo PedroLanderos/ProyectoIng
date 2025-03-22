@@ -12,9 +12,10 @@ namespace SuggestApi.Application.Interfaces
 {
     public interface ISearchHistory
     {
-        Task<Response> SaveAsync(UserActivityDTO userActivity);
-        Task<Response> EditAsync(UserActivityDTO userActivityDTO);
-        Task<Response> DeleteAsync(UserActivityDTO userActivityDTO);
+        Task<Response> SaveAsync(UserActivity userActivity);
+        Task<Response> EditAsync(UserActivity userActivityDTO);
+        Task<Response> DeleteAsync(UserActivity userActivityDTO);
+        Task<UserActivity> FindByIdAsync(int id);
         Task<List<UserActivity>> GetByCriteriaAsync(Expression<Func<UserActivity, bool>> predicate);
         Task<List<ArticleDTO>> SetSuggestionAsync(int userId);
     }
