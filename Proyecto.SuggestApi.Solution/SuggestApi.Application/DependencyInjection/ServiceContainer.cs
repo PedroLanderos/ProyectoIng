@@ -40,7 +40,5 @@ namespace SuggestApi.Application.DependencyInjection
 
             return services;
         }
-
-
     }
 }

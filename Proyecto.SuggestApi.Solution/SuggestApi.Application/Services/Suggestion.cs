@@ -33,8 +33,8 @@ namespace SuggestApi.Application.Services
                 //get user historial 
                 var userActivities = await _searchHistoryRepository.GetByCriteriaAsync(x => x.UserId == userId);
                 //get the articles
-                var favoriteActivities = userActivities.Where(x => x.isFavorite).ToList();
-                var nonFavoriteActivities = userActivities.Where(x => !x.isFavorite).ToList();
+                var favoriteActivities = userActivities.Where(x => x.IsFavorite).ToList();
+                var nonFavoriteActivities = userActivities.Where(x => !x.IsFavorite).ToList();
 
                 List<ArticleDTO> recommendedArticles = new List<ArticleDTO>();
 
