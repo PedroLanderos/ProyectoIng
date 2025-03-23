@@ -14,7 +14,22 @@ services:
     networks:
       - my_network
     restart: on-failure
-
+    
+  suggestionapiservice:
+    build:
+      context: .
+      dockerfile: Proyecto.SuggestApi.Solution/SuggestApi.Presentation/Dockerfile
+    ports:
+      - "5001:5001" # Mapea el puerto 5000 del host al puerto 80 del contenedor
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:5001
+    networks:
+      - my_network
+    restart: on-failure
+  
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:

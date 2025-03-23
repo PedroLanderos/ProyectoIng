@@ -27,8 +27,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
 
-# Establecer la variable de entorno para usar el puerto 5000
-ENV ASPNETCORE_URLS=http://+:5000
 
 # Configurar el punto de entrada
 ENTRYPOINT ["dotnet", "SuggestApi.Presentation.dll"]
