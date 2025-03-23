@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SuggestiApi.Presentation")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4f265704af2cb2077c142dc1dd200d67a32cb5b4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ddd81af8f344b43d5d8e066a1c11db736177b14c")]
 [assembly: System.Reflection.AssemblyProductAttribute("SuggestiApi.Presentation")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SuggestiApi.Presentation")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

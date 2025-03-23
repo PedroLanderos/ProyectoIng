@@ -18,3 +18,5 @@ D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\
 D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\obj\Debug\net8.0\refint\SuggestApi.Infrastructure.dll
 D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\obj\Debug\net8.0\SuggestApi.Infrastructure.pdb
 D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\obj\Debug\net8.0\ref\SuggestApi.Infrastructure.dll
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\bin\Debug\net8.0\SuggestApi.Infrastructure.runtimeconfig.json
+D:\Code\ingProyecto\back\Proyecto.SuggestApi.Solution\SuggestApi.Infrastructure\obj\Debug\net8.0\SuggestApi.Infrastructure.genruntimeconfig.cache

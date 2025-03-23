@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\SuggestiApi.Presentation.props" />
+</Project>
