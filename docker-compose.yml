@@ -65,7 +65,9 @@ services:
     ports:
       - "3000:80"
     depends_on:
-      - authenticationapiservice  
+      - authenticationapiservice
+      - suggestionapiservice
+      - articlesapiservice  
     networks:
       - my_network
     restart: always
