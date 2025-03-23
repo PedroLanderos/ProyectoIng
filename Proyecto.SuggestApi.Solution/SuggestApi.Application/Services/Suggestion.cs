@@ -47,10 +47,6 @@ namespace SuggestApi.Application.Services
                     }
                 }
 
-
-                //get random fields of the current articles
-
-                //search new articles 
                 foreach (var activity in nonFavoriteActivities)
                 {
                     var articles = await _articlesService.GetArticleAsync(activity.ArticleId!); // Obtener artículo

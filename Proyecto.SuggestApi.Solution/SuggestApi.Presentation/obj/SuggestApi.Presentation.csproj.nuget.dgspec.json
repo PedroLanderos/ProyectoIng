@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestiApi.Presentation\\SuggestApi.Presentation.csproj": {}
+    "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestApi.Presentation\\SuggestApi.Presentation.csproj": {}
   },
   "projects": {
     "D:\\Code\\ingProyecto\\back\\Proyecto.SharedLibrarySolution\\Proyecto.SharedLibrary\\Proyecto.SharedLibrary.csproj": {
@@ -320,14 +320,14 @@
         }
       }
     },
-    "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestiApi.Presentation\\SuggestApi.Presentation.csproj": {
+    "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestApi.Presentation\\SuggestApi.Presentation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestiApi.Presentation\\SuggestApi.Presentation.csproj",
+        "projectUniqueName": "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestApi.Presentation\\SuggestApi.Presentation.csproj",
         "projectName": "SuggestApi.Presentation",
-        "projectPath": "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestiApi.Presentation\\SuggestApi.Presentation.csproj",
+        "projectPath": "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestApi.Presentation\\SuggestApi.Presentation.csproj",
         "packagesPath": "C:\\Users\\lande\\.nuget\\packages\\",
-        "outputPath": "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestiApi.Presentation\\obj\\",
+        "outputPath": "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestApi.Presentation\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
