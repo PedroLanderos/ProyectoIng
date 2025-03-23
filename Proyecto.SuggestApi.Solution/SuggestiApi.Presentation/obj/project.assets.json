@@ -5452,9 +5452,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestiApi.Presentation\\SuggestiApi.Presentation.csproj",
-      "projectName": "SuggestiApi.Presentation",
-      "projectPath": "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestiApi.Presentation\\SuggestiApi.Presentation.csproj",
+      "projectUniqueName": "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestiApi.Presentation\\SuggestApi.Presentation.csproj",
+      "projectName": "SuggestApi.Presentation",
+      "projectPath": "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestiApi.Presentation\\SuggestApi.Presentation.csproj",
       "packagesPath": "C:\\Users\\lande\\.nuget\\packages\\",
       "outputPath": "D:\\Code\\ingProyecto\\back\\Proyecto.SuggestApi.Solution\\SuggestiApi.Presentation\\obj\\",
       "projectStyle": "PackageReference",
