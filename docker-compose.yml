@@ -56,6 +56,24 @@ services:
       - sqlvolume:/var/opt/mssql 
     networks:
       - my_network
+
+  apigateway:
+    build:
+      context: .
+      dockerfile: Proyecto.ApiGateway.Solution/ApiGateway.Presentation/Dockerfile
+    ports:
+      -5003:5003
+    depends_on:
+      - authenticationapiservice
+      - articlesapiservice
+      - suggestionapiservice
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:5003
+    networks:
+      - my_network
+    restart: on-failure
   
   frontend:
     container_name: dockerwdb-frontend
@@ -68,6 +86,7 @@ services:
       - authenticationapiservice
       - suggestionapiservice
       - articlesapiservice  
+      - apigateway
     networks:
       - my_network
     restart: always

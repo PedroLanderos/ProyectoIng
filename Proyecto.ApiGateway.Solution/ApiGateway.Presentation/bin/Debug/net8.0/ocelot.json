@@ -1,0 +1,147 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/authentication/register",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authenticationapiservice",
+          "Port": 5000
+        }
+      ],
+      "UpstreamPathTemplate": "/api/authentication/register",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/authentication/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authenticationapiservice",
+          "Port": 5000
+        }
+      ],
+      "UpstreamPathTemplate": "/api/authentication/login",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/authentication/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authenticationapiservice",
+          "Port": 5000
+        }
+      ],
+      "UpstreamPathTemplate": "/api/authentication/{everything}",
+      "UpstreamHttpMethod": [ "GET", "PUT" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/articles/search",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articlesapiservice",
+          "Port": 5002
+        }
+      ],
+      "UpstreamPathTemplate": "/api/articles/search",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/articles/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articlesapiservice",
+          "Port": 5002
+        }
+      ],
+      "UpstreamPathTemplate": "/api/articles/{id}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/articles/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "articlesapiservice",
+          "Port": 5002
+        }
+      ],
+      "UpstreamPathTemplate": "/api/articles/{everything}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/suggestion/recommendations/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "suggestionapiservice",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/suggestion/recommendations/{userId}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/suggestion/history/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "suggestionapiservice",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/suggestion/history/{userId}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/suggestion/history/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "suggestionapiservice",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/suggestion/history/{id}",
+      "UpstreamHttpMethod": [ "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/suggestion/history",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "suggestionapiservice",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/suggestion/history",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/suggestion/history/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "suggestionapiservice",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/suggestion/history/{id}",
+      "UpstreamHttpMethod": [ "PUT" ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:5003"
+  }
+}
