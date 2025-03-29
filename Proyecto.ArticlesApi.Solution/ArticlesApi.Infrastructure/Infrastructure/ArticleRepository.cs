@@ -17,9 +17,23 @@ namespace ArticlesApi.Infrastructure.Infrastructure
             _httpClient = httpClient;
         }
 
-        public Task<Article> GetArticleByIdAsync(string id)
+        public async Task<Article> GetArticleByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var response = await _httpClient!.GetAsync($"https://api.core.ac.uk/v3/works/{id}");
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+                var article = JsonConvert.DeserializeObject<Article>(json);
+
+                return article!;
+            }
+            catch (Exception ex)
+            {
+                LogException.LogExceptions(ex); 
+                throw new Exception("Error while getting an article by id");
+            }
         }
 
         public async Task<IEnumerable<Article>> SearchArticlesAsync(string query, int page, int pageSize)
