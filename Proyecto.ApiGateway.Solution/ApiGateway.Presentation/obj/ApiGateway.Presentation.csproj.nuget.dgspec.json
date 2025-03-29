@@ -55,6 +55,14 @@
               "target": "Package",
               "version": "[8.0.14, )"
             },
+            "Ocelot": {
+              "target": "Package",
+              "version": "[23.4.3, )"
+            },
+            "Ocelot.Cache.CacheManager": {
+              "target": "Package",
+              "version": "[23.4.3, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"
