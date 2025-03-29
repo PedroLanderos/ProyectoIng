@@ -62,7 +62,7 @@ services:
       context: .
       dockerfile: Proyecto.ApiGateway.Solution/ApiGateway.Presentation/Dockerfile
     ports:
-      -5003:5003
+      - 5003:5003
     depends_on:
       - authenticationapiservice
       - articlesapiservice
