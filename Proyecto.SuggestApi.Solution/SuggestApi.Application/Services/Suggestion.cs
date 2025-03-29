@@ -1,22 +1,26 @@
 ﻿using Llaveremos.SharedLibrary.Logs;
+using Polly.Registry;
 using SuggestApi.Application.DTOs;
 using SuggestApi.Application.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SuggestApi.Application.Services
 {
-    public class Suggestion : ISuggestion
+    public class Suggestion(HttpClient client, ResiliencePipelineProvider<string> resiliencePipeline, ISearchHistory _searchHistoryRepository, IArticles _articlesService) : ISuggestion
     {
-        private readonly ISearchHistory _searchHistoryRepository;
-        private readonly IArticles _articlesService;
-        public Suggestion(ISearchHistory searchHistoryRepository, IArticles articlesService)
+        public async Task<UserDTO> Getuser(int userId)
         {
-            _searchHistoryRepository = searchHistoryRepository;
-            _articlesService = articlesService;
+            var getuser = await client.GetAsync($"/api/authentication/{userId}");
+            if (!getuser.IsSuccessStatusCode)
+                return null!;
+
+            var product = await getuser.Content.ReadFromJsonAsync<UserDTO>();
+            return product!;
         }
         public async Task<IEnumerable<ArticleDTO>> GetRecommendations(int userId)
         {
@@ -30,6 +34,9 @@ namespace SuggestApi.Application.Services
             */
             try
             {
+                var userExists = await Getuser(userId);
+                if(userExists is null ) return null!;
+
                 //get user historial 
                 var userActivities = await _searchHistoryRepository.GetByCriteriaAsync(x => x.UserId == userId);
                 //get the articles
