@@ -1,0 +1,21 @@
+.footer {
+    width: 100%;
+    padding: 2rem 0;
+    background-color: #f9f9f9;
+    border-top: 1px solid #ccc;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .content-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+  
+  .footer p {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  

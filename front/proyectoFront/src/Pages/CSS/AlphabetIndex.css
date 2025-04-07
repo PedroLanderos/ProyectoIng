@@ -1,0 +1,31 @@
+.alphabet-index {
+    width: 100%;
+    background-color: white;
+    padding: 2rem 0;
+    border-top: 1px solid #ddd;
+  }
+  
+  .content-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+  
+  .alphabet-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .alphabet-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  
+  .alphabet-letter {
+    color: #0071c2;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  

@@ -1,0 +1,54 @@
+.section-block {
+  width: 100%;
+  padding: 3rem 0;
+  background-color: #f5f5f5; /* gris claro para suavidad */
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
+
+.section-block h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    color: #870046; /* Guinda IPN */
+  }
+
+.section-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.section-column {
+  flex: 1;
+  min-width: 280px;
+}
+
+.section-column ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.section-column li {
+  margin-bottom: 0.8rem;
+}
+
+.section-column a {
+  color: #0071c2;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.section-column p {
+  margin: 0.2rem 0 1rem;
+  font-size: 0.9rem;
+  color: #333;
+}

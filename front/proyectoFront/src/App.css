@@ -2,6 +2,14 @@
   text-align: center;
 }
 
+.content-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

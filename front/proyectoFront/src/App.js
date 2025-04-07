@@ -6,6 +6,7 @@ import AddUser from "./Pages/AddUser";
 import MainPage from "./Pages/MainPage"; 
 import { AuthContext } from "./Context/AuthContext";
 import Navbar from './Components/Navbar/Navbar';
+import Footer from "./Components/Footer/Footer";
 
 function App() {
   const { auth } = useContext(AuthContext);
@@ -34,6 +35,7 @@ function App() {
         {/* ✅ Redirección de rutas no encontradas */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
+      <Footer/>
     </BrowserRouter>
   );
 }

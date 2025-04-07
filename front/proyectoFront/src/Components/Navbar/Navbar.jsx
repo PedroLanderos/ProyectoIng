@@ -18,7 +18,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="nav-container">
         <Link to="/" className="nav-title">
-          Mi Aplicación
+          Buscador de Articulos
         </Link>
 
         <div className="nav-actions">

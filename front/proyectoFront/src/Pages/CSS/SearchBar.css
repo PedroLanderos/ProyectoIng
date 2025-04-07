@@ -1,0 +1,76 @@
+.search-bar-container {
+  width: 100%;
+  padding: 2rem 0;
+  background-color: white;
+  border-bottom: 1px solid #ccc;
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
+
+.search-title {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.search-title a {
+  color: #0071c2;
+  text-decoration: none;
+}
+
+.search-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.search-group {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-group label {
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+.search-group input {
+  padding: 0.5rem;
+  border: 1px solid #333;
+  border-radius: 2px;
+  font-size: 1rem;
+}
+
+.search-button {
+  height: 40px;
+  background-color: #870046; /* Guinda IPN */
+  color: white;
+  border: none;
+  padding: 0 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #6d0039; /* un poco más oscuro */
+}
+
+.advanced-search-link {
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+  color: #333;
+  text-decoration: none;
+  position: relative;
+  top: 10px;
+  white-space: nowrap;
+}
