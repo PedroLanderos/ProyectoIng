@@ -21,7 +21,6 @@ function App() {
       <Navbar />
       <Routes>
         {/* ✅ Redirigir a MainPage si el usuario está autenticado, sino mostrar LoginSignup */}
-        <Route path="/" element={isAuthenticated ? <Navigate to="/MainPage" /> : <LoginSignup />} />
 
         {/* ✅ Si intenta ir a Login manualmente estando autenticado, lo mandamos a MainPage */}
         <Route path="/login" element={!isAuthenticated ? <LoginSignup /> : <Navigate to="/MainPage" />} />
@@ -40,6 +39,8 @@ function App() {
         <Route path="UserProfile" element={<UserProfile/>}/>
 
         <Route path="ArticleDetail" element={<ArticleDetails/>}/>
+
+        <Route path="/" element={<MainPage/>}/>
 
         {/* ✅ Redirección de rutas no encontradas */}
         <Route path="*" element={<Navigate to="/" />} />

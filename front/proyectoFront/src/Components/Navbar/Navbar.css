@@ -3,49 +3,85 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-}
-
-/* Barra de navegación */
-.navbar {
+  }
+  
+  .navbar {
     width: 100%;
-    background-color: #870046; /* Guinda IPN */
+    background-color: #870046;
     color: white;
-    padding: 15px 20px;
+    padding: 12px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-/* Contenedor interno */
-.nav-container {
+  }
+  
+  .nav-container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1300px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-}
-
-/* Título de la Navbar */
-.nav-title {
+    justify-content: space-between;
+  }
+  
+  /* Secciones distribuidas */
+  .nav-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  /* Título */
+  .nav-title {
     font-size: 1.5rem;
     font-weight: bold;
     color: white;
     text-decoration: none;
-}
-
-/* Sección de acciones */
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-/* Ícono del usuario */
-.user-icon {
+  }
+  
+  /* Enlaces */
+  .nav-link,
+  .admin-link {
+    color: #fce8d4;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  .nav-link:hover,
+  .admin-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* Botón */
+  .login-button {
+    text-decoration: none;
+    padding: 8px 16px;
+    background-color: #fce8d4;
+    color: #870046;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 20px;
+    transition: background 0.3s ease;
+  }
+  
+  .login-button:hover {
+    background-color: #ffd1dc;
+  }
+  
+  /* Ícono usuario */
+  .user-icon {
     width: 40px;
     height: 40px;
-    background-color: #FCE8D4; /* Rosa/beige claro */
-    color: #870046; /* Guinda */
+    background-color: #fce8d4;
+    color: #870046;
     font-size: 1.2rem;
     font-weight: bold;
     display: flex;
@@ -54,24 +90,9 @@
     border-radius: 50%;
     cursor: pointer;
     transition: background 0.3s ease;
-}
-
-.user-icon:hover {
-    background-color: #FFD1DC;
-}
-
-/* Botón de inicio de sesión */
-.login-button {
-    text-decoration: none;
-    padding: 8px 16px;
-    background-color: #FCE8D4; /* Igual que el icono */
-    color: #870046;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 20px;
-    transition: background 0.3s ease;
-}
-
-.login-button:hover {
-    background-color: #FFD1DC;
-}
+  }
+  
+  .user-icon:hover {
+    background-color: #ffd1dc;
+  }
+  
