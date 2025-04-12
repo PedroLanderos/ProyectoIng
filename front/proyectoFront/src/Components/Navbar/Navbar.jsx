@@ -17,7 +17,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="nav-container">
-        <Link to="/" className="nav-title">
+        <Link to="/MainPage" className="nav-title">
           Buscador de Articulos
         </Link>
 

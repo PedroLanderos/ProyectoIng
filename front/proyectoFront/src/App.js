@@ -3,10 +3,13 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LoginSignup from "./Pages/LoginSignup";
 import PanelDeAdministrador from "./Pages/PanelDeAdministrador";
 import AddUser from "./Pages/AddUser";
-import MainPage from "./Pages/MainPage"; 
+import MainPage from "./Pages/MainPage/MainPage"; 
 import { AuthContext } from "./Context/AuthContext";
 import Navbar from './Components/Navbar/Navbar';
 import Footer from "./Components/Footer/Footer";
+import ArticleSearchPage from "./Pages/ArticleSearchPage";
+import UserProfile from "./Pages/UserProfile";
+import ArticleDetails from "./Pages/ArticleDetails";
 
 function App() {
   const { auth } = useContext(AuthContext);
@@ -31,6 +34,12 @@ function App() {
 
         {/* ✅ Página Principal */}
         <Route path="/MainPage" element={<MainPage />} />
+
+        <Route path="SearchArticle" element={<ArticleSearchPage/>}/>
+
+        <Route path="UserProfile" element={<UserProfile/>}/>
+
+        <Route path="ArticleDetail" element={<ArticleDetails/>}/>
 
         {/* ✅ Redirección de rutas no encontradas */}
         <Route path="*" element={<Navigate to="/" />} />

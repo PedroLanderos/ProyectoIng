@@ -1,0 +1,47 @@
+.resource-links {
+    background-color: #f8f8f8;
+    padding: 3rem 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 3px solid #f25400; /* Línea naranja tipo Elsevier */
+  }
+  
+  .content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  
+  .resource-column {
+    flex: 1;
+    min-width: 220px;
+  }
+  
+  .resource-column h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #111;
+  }
+  
+  .resource-column ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .resource-column li {
+    margin-bottom: 0.6rem;
+  }
+  
+  .resource-column a {
+    color: #0071c2;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .resource-column a:hover {
+    text-decoration: underline;
+  }
+  

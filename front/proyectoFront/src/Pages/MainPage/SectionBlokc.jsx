@@ -1,5 +1,5 @@
 import React from 'react';
-import './CSS/SectionBlock.css';
+import '../CSS/MainPage/SectionBlock.css';
 
 const SectionBlock = ({ title, categories, description, popularArticles, recentPublications }) => {
   return (

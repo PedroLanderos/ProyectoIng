@@ -1,0 +1,46 @@
+.open-access {
+    background-color: #f2f2f2; /* Gris claro tipo fondo ScienceDirect */
+    padding: 3rem 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+  
+  .open-access-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+  }
+  
+  .open-access-desc {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  
+  .open-access-links {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .open-access-links li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .open-access-links a {
+    color: #0071c2;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .open-access-links a:hover {
+    text-decoration: underline;
+  }
+  

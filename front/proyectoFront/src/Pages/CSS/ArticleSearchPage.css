@@ -1,0 +1,62 @@
+.article-search-page {
+    background-color: #fff;
+    color: #222;
+  }
+  
+  .article-results-wrapper {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 3rem;
+  }
+  
+  .article-results-wrapper h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .article-search-input {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #999;
+    border-radius: 4px;
+  }
+  
+  .article-hints {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 2rem;
+  }
+  
+  .article-hints a {
+    color: #0071c2;
+    text-decoration: none;
+  }
+  
+  .letter-section h3 {
+    color: #d84a05;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+  }
+  
+  .result-item {
+    margin-bottom: 1.5rem;
+  }
+  
+  .result-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #0071c2;
+    text-decoration: none;
+  }
+  
+  .result-subtitle {
+    color: #555;
+  }
+  
+  .result-meta {
+    font-size: 0.85rem;
+    color: #444;
+  }
+  

@@ -1,5 +1,6 @@
 import React from 'react';
-import './CSS/AlphabetIndex.css';
+import '../CSS/MainPage/AlphabetIndex.css';
+
 
 const AlphabetIndex = () => {
   const letters = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '0-9'];
