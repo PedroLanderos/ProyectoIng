@@ -651,6 +651,7 @@
       "ArticlesApi.Application/1.0.0": {
         "dependencies": {
           "ArticlesApi.Domain": "1.0.0",
+          "Newtonsoft.Json": "13.0.3",
           "Proyecto.SharedLibrary": "1.0.0"
         },
         "runtime": {

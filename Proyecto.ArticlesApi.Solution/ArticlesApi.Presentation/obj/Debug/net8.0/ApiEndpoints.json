@@ -66,7 +66,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[ArticlesApi.Domain.Entities.Article, ArticlesApi.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "ArticlesApi.Application.Responses.CoreApiResponse\u00601[[ArticlesApi.Domain.Entities.Article, ArticlesApi.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

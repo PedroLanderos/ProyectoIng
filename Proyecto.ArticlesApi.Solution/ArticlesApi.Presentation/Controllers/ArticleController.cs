@@ -1,6 +1,7 @@
 ﻿using ArticlesApi.Application.Services;
 using ArticlesApi.Domain.Entities;
-using Microsoft.AspNetCore.Http;
+using ArticlesApi.Application.Interfaces;
+using ArticlesApi.Application.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArticlesApi.Presentation.Controllers
@@ -10,22 +11,23 @@ namespace ArticlesApi.Presentation.Controllers
     public class ArticleController : ControllerBase
     {
         private readonly IScientificArticleService _articleService;
+
         public ArticleController(IScientificArticleService articleService)
         {
             _articleService = articleService;
         }
 
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<Article>>> SearchArticles(
-            [FromQuery] string query,
+        public async Task<ActionResult<CoreApiResponse<Article>>> SearchArticles(
+            [FromQuery] string? query = "",
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 15,
-            [FromQuery] string author = null!,
+            [FromQuery] string? author = "",
             [FromQuery] int? year = null,
-            [FromQuery] string subject = null!)
+            [FromQuery] string? subject = "")
         {
-            var articles = await _articleService.SearchArticlesAsync(query, page, pageSize, author, year, subject);
-            return Ok(articles);
+            var response = await _articleService.SearchArticlesAsync(query!, page, pageSize, author!, year, subject!);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]

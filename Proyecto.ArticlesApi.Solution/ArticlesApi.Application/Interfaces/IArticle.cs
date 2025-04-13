@@ -1,4 +1,5 @@
-﻿using ArticlesApi.Domain.Entities;
+﻿using ArticlesApi.Application.Responses;
+using ArticlesApi.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace ArticlesApi.Application.Interfaces
 {
     public interface IArticle
     {
-        Task<IEnumerable<Article>> SearchArticlesAsync(string query, int page, int pageSize);
         Task<Article> GetArticleByIdAsync(string id);
+        Task<CoreApiResponse<Article>> SearchArticlesAsync(string query, int page, int pageSize);
     }
 }

@@ -1,28 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import './CSS/ArticleDetails.css';
-
-const mockArticle = {
-  id: 'abc123',
-  title: 'Machine Learning in Modern Healthcare',
-  authors: [
-    { name: 'Alice Johnson' },
-    { name: 'Bob Smith' },
-  ],
-  abstract: 'This article explores the applications of machine learning in diagnosing diseases and predicting outcomes...',
-  publishedDate: '2023-08-15',
-  journal: 'Journal of AI in Medicine',
-  downloadUrl: 'https://example.com/download.pdf',
-  fullText: 'Machine learning is transforming healthcare by enabling faster diagnoses...',
-  subjects: ['Artificial Intelligence', 'Healthcare', 'Predictive Models'],
-  yearPublished: 2023,
-  links: [
-    { url: 'https://example.com/more-info' },
-    { url: 'https://example.com/source' },
-  ],
-};
+import { ARTICLES_API } from '../config/apiConfig';
 
 const ArticleDetails = () => {
-  const article = mockArticle;
+  const { id } = useParams();
+  const [article, setArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        const response = await axios.get(`${ARTICLES_API}/article/${id}`);
+        setArticle(response.data);
+      } catch (error) {
+        console.error("❌ Error fetching article:", error);
+        alert("❌ No se pudo cargar el artículo.");
+      }
+      setLoading(false);
+    };
+
+    fetchArticle();
+  }, [id]);
+
+  if (loading) return <p>🔄 Cargando artículo...</p>;
+  if (!article) return <p>❌ Artículo no encontrado.</p>;
 
   return (
     <div className="article-details">
@@ -58,7 +61,7 @@ const ArticleDetails = () => {
                 </a>
               </li>
             )}
-            {article.links.map((link, index) => (
+            {article.links?.map((link, index) => (
               <li key={index}>
                 <a href={link.url} target="_blank" rel="noopener noreferrer">
                   Fuente adicional {index + 1}

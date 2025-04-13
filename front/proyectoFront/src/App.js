@@ -20,32 +20,17 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        {/* ✅ Redirigir a MainPage si el usuario está autenticado, sino mostrar LoginSignup */}
-
-        {/* ✅ Si intenta ir a Login manualmente estando autenticado, lo mandamos a MainPage */}
         <Route path="/login" element={!isAuthenticated ? <LoginSignup /> : <Navigate to="/MainPage" />} />
-
-        {/* ✅ Redirigir a MainPage si no es Admin */}
         <Route path="/panelAdministrador" element={isAdmin ? <PanelDeAdministrador /> : <Navigate to="/MainPage" />} />
-
-        {/* ✅ Ruta para agregar usuarios (accesible solo si es Admin) */}
         <Route path="/AddUser" element={isAdmin ? <AddUser /> : <Navigate to="/MainPage" />} />
-
-        {/* ✅ Página Principal */}
         <Route path="/MainPage" element={<MainPage />} />
-
-        <Route path="SearchArticle" element={<ArticleSearchPage/>}/>
-
-        <Route path="UserProfile" element={<UserProfile/>}/>
-
-        <Route path="ArticleDetail" element={<ArticleDetails/>}/>
-
-        <Route path="/" element={<MainPage/>}/>
-
-        {/* ✅ Redirección de rutas no encontradas */}
+        <Route path="/SearchArticle" element={<ArticleSearchPage />} />
+        <Route path="/UserProfile" element={<UserProfile />} />
+        <Route path="/ArticleDetail/:id" element={<ArticleDetails />} />
+        <Route path="/" element={<MainPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-      <Footer/>
+      <Footer />
     </BrowserRouter>
   );
 }

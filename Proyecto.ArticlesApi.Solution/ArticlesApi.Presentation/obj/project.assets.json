@@ -1316,6 +1316,7 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "ArticlesApi.Domain": "1.0.0",
+          "Newtonsoft.Json": "13.0.3",
           "Proyecto.SharedLibrary": "1.0.0"
         },
         "compile": {
@@ -3805,7 +3806,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
