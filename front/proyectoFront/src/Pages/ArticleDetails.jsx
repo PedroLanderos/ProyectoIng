@@ -8,6 +8,12 @@ const ArticleDetails = () => {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const toggleFavorite = () => {
+    setIsFavorite(prev => !prev);
+    // 🔜 En el futuro aquí llamarías a una API para guardar el favorito
+  };
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -16,7 +22,13 @@ const ArticleDetails = () => {
         setArticle(response.data);
       } catch (error) {
         console.error("❌ Error fetching article:", error);
-        alert("❌ No se pudo cargar el artículo.");
+        if (error.response?.status === 404) {
+          setArticle(null);
+        } else if (error.response?.status === 429) {
+          alert("⚠️ Has alcanzado el límite de peticiones. Intenta más tarde.");
+        } else {
+          alert("❌ No se pudo cargar el artículo.");
+        }
       }
       setLoading(false);
     };
@@ -30,7 +42,17 @@ const ArticleDetails = () => {
   return (
     <div className="article-details">
       <div className="content-wrapper">
-        <h1>{article.title}</h1>
+        <div className="header-with-favorite">
+          <h1>{article.title}</h1>
+          <span
+            className={`favorite-icon ${isFavorite ? 'active' : ''}`}
+            title={isFavorite ? "Quitar de favoritos" : "Agregar a favoritos"}
+            onClick={toggleFavorite}
+          >
+            ★
+          </span>
+        </div>
+
         <p className="subtitle">{article.journal} — {article.yearPublished}</p>
 
         <div className="meta-info">

@@ -26,15 +26,22 @@ namespace ArticlesApi.Infrastructure.Infrastructure
                 var response = await _httpClient.GetAsync($"https://api.core.ac.uk/v3/works/{id}");
 
                 if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
-                {
                     throw new InvalidOperationException("Rate limit exceeded");
-                }
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    return null!;
 
                 response.EnsureSuccessStatusCode();
 
                 var json = await response.Content.ReadAsStringAsync();
                 var article = JsonConvert.DeserializeObject<Article>(json);
                 return article!;
+            }
+            catch (JsonException ex)
+            {
+                LogException.LogExceptions(ex);
+                Console.WriteLine("❌ No se pudo deserializar la respuesta de CORE.");
+                return null!;
             }
             catch (Exception ex)
             {
@@ -52,9 +59,7 @@ namespace ArticlesApi.Infrastructure.Infrastructure
                 var response = await _httpClient.GetAsync(url);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
-                {
                     throw new InvalidOperationException("Rate limit exceeded");
-                }
 
                 response.EnsureSuccessStatusCode();
 

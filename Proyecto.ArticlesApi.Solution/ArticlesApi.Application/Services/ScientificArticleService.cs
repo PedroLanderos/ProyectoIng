@@ -1,6 +1,6 @@
 ﻿using ArticlesApi.Application.Interfaces;
-using ArticlesApi.Domain.Entities;
 using ArticlesApi.Application.Responses;
+using ArticlesApi.Domain.Entities;
 using Llaveremos.SharedLibrary.Logs;
 
 namespace ArticlesApi.Application.Services
@@ -20,10 +20,20 @@ namespace ArticlesApi.Application.Services
             {
                 return await _coreApiClient.GetArticleByIdAsync(id);
             }
+            catch (InvalidOperationException ex) when (ex.Message.Contains("Rate limit"))
+            {
+                Console.WriteLine("⚠️ CORE API rate limit reached.");
+                throw new InvalidOperationException("Rate limit exceeded");
+            }
+            catch (HttpRequestException)
+            {
+                Console.WriteLine("❌ Problema de red o servidor CORE no disponible.");
+                throw new Exception("CORE API error");
+            }
             catch (Exception ex)
             {
                 LogException.LogExceptions(ex);
-                throw new Exception("Error while getting an article by id");
+                return null!;
             }
         }
 

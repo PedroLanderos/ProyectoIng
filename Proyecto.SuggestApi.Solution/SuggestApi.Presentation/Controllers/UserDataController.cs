@@ -167,5 +167,46 @@ namespace SuggestiApi.Presentation.Controllers
         }
 
         #endregion
+
+        [HttpGet("favorites/{userId}")]
+        public async Task<ActionResult<IEnumerable<UserActivityDTO>>> GetFavorites(int userId)
+        {
+            try
+            {
+                var favorites = await _searchHistoryService.GetByCriteriaAsync(x => x.UserId == userId && x.IsFavorite);
+
+                if (favorites == null || !favorites.Any())
+                {
+                    return NotFound("No favorite articles found for this user.");
+                }
+
+                var dtoList = UserActivityMapper.ToDTO(favorites);
+                return Ok(dtoList);
+            }
+            catch (Exception ex)
+            {
+                LogException.LogExceptions(ex);
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("favorites/{userId}/check/{articleId}")]
+        public async Task<ActionResult<bool>> IsArticleFavorite(int userId, string articleId)
+        {
+            try
+            {
+                var match = await _searchHistoryService.GetByCriteriaAsync(
+                    x => x.UserId == userId && x.ArticleId == articleId && x.IsFavorite
+                );
+
+                return Ok(match.Any());
+            }
+            catch (Exception ex)
+            {
+                LogException.LogExceptions(ex);
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
     }
 }

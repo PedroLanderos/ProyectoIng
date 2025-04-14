@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
-import "./CSS/LoginSignup.css"; // 🔹 Se mantiene el CSS
+import "./CSS/LoginSignup.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
-import API_BASE_URL from "../config/apiConfig"; // 🔹 Se mantiene la URL base
+import API_BASE_URL from "../config/apiConfig";
 
 const LoginSignup = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -14,7 +14,7 @@ const LoginSignup = () => {
     Address: "",
     email: "",
     password: "",
-    role: "Normal",
+    role: "Normal", // 🔹 Predeterminado y fijo
   });
 
   const [message, setMessage] = useState("");
@@ -40,15 +40,13 @@ const LoginSignup = () => {
 
       if (response.status === 200) {
         if (isRegister) {
-          setMessage("Usuario registrado exitosamente.");
+          setMessage("✅ Usuario registrado exitosamente.");
           setIsRegister(false);
         } else {
-          const token = response.data.message; // 🛠️ Obtiene el token correctamente
+          const token = response.data.message;
           if (!token || typeof token !== "string") throw new Error("Token inválido o ausente.");
-          
-          console.log("Token recibido:", token); // 🛠️ Depuración
 
-          setMessage("Login exitoso!");
+          setMessage("✅ Login exitoso!");
           login(token);
           navigate("/panelAdministrador");
         }
@@ -56,7 +54,7 @@ const LoginSignup = () => {
     } catch (error) {
       console.error("❌ Error en handleSubmit:", error.response ? error.response.data : error);
       setMessage(
-        isRegister ? "Error al registrar usuario. Verifica los datos." : "Error al iniciar sesión. Verifica los datos."
+        isRegister ? "❌ Error al registrar usuario. Verifica los datos." : "❌ Error al iniciar sesión. Verifica los datos."
       );
     }
   };
@@ -66,24 +64,55 @@ const LoginSignup = () => {
       <div className="loginSignup-container">
         <h1>{isRegister ? "Registro" : "Iniciar Sesión"}</h1>
         {message && <p className={message.includes("Error") ? "error-message" : "success-message"}>{message}</p>}
+
         <form onSubmit={handleSubmit} className="loginSignup-fields">
           {isRegister && (
             <>
-              <input type="text" name="name" placeholder="Nombre Completo" value={formData.name} onChange={handleChange} required />
-              <input type="tel" name="TelephoneNumber" placeholder="Número de Teléfono" value={formData.TelephoneNumber} onChange={handleChange} required />
-              <input type="text" name="Address" placeholder="Dirección" value={formData.Address} onChange={handleChange} required />
+              <input
+                type="text"
+                name="name"
+                placeholder="Nombre Completo"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="tel"
+                name="TelephoneNumber"
+                placeholder="Número de Teléfono"
+                value={formData.TelephoneNumber}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="text"
+                name="Address"
+                placeholder="Dirección"
+                value={formData.Address}
+                onChange={handleChange}
+                required
+              />
             </>
           )}
-          <input type="email" name="email" placeholder="Correo Electrónico" value={formData.email} onChange={handleChange} required />
-          <input type="password" name="password" placeholder="Contraseña" value={formData.password} onChange={handleChange} required />
-          {isRegister && (
-            <select name="role" value={formData.role} onChange={handleChange} required>
-              <option value="Normal">Normal</option>
-              <option value="Admin">Admin</option>
-            </select>
-          )}
+          <input
+            type="email"
+            name="email"
+            placeholder="Correo Electrónico"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Contraseña"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
           <button type="submit">{isRegister ? "Registrar" : "Iniciar Sesión"}</button>
         </form>
+
         <div className="loginSignup-toggle">
           {isRegister ? (
             <>

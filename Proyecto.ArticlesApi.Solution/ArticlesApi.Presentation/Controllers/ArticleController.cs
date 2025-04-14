@@ -26,16 +26,39 @@ namespace ArticlesApi.Presentation.Controllers
             [FromQuery] int? year = null,
             [FromQuery] string? subject = "")
         {
-            var response = await _articleService.SearchArticlesAsync(query!, page, pageSize, author!, year, subject!);
-            return Ok(response);
+            try
+            {
+                var response = await _articleService.SearchArticlesAsync(query!, page, pageSize, author!, year, subject!);
+                return Ok(response);
+            }
+            catch (InvalidOperationException ex) when (ex.Message.Contains("Rate limit"))
+            {
+                return StatusCode(429, "Has alcanzado el límite de peticiones. Intenta más tarde.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Article>> GetArticleById(string id)
         {
-            var article = await _articleService.GetArticleByIdAsync(id);
-            if (article == null) return NotFound();
-            return Ok(article);
+            try
+            {
+                var article = await _articleService.GetArticleByIdAsync(id);
+                if (article == null)
+                    return NotFound("Artículo no encontrado.");
+                return Ok(article);
+            }
+            catch (InvalidOperationException ex) when (ex.Message.Contains("Rate limit"))
+            {
+                return StatusCode(429, "Has alcanzado el límite de peticiones. Intenta más tarde.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al obtener artículo: {ex.Message}");
+            }
         }
     }
 }

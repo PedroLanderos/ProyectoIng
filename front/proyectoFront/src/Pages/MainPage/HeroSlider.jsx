@@ -1,5 +1,6 @@
 import React from 'react';
 import '../CSS/MainPage/HeroSlider.css';
+import coreImage from '../../Images/imagencoreapi.png'; // Imagen local
 
 const HeroSlider = () => {
   return (
@@ -7,8 +8,8 @@ const HeroSlider = () => {
       <div className="hero-slide">
         <div className="hero-image">
           <img
-            src="https://images.unsplash.com/photo-1533049022229-62a9f2e1e1b8?auto=format&fit=crop&w=1600&q=80"
-            alt="Hero background"
+            src={coreImage}
+            alt="CORE API background"
           />
         </div>
         <div className="hero-content">
@@ -17,26 +18,21 @@ const HeroSlider = () => {
           </div>
           <div className="hero-right">
             <p>
-              Instantly surface, cite, compare and explore trusted evidence from deep within
-              peer-reviewed literature with ScienceDirect AI.
+              Accede y explora millones de artículos científicos proporcionados por <strong>CORE API</strong>, una de las fuentes de conocimiento abierto más grandes del mundo.
             </p>
-            <a href="#" className="hero-button">Explore ScienceDirect AI ↗</a>
+            <a
+              href="https://core.ac.uk/services/api"
+              className="hero-button"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ir a CORE API ↗
+            </a>
           </div>
         </div>
       </div>
 
-      <div className="hero-navigation">
-        <div className="dots">
-          <span className="dot active"></span>
-          <span className="dot"></span>
-          <span className="dot"></span>
-        </div>
-        <div className="nav-labels">
-          <p>ScienceDirect AI</p>
-          <p>Confidence in research</p>
-          <p>Climate change</p>
-        </div>
-      </div>
+      {/* Navegación eliminada como solicitaste */}
     </section>
   );
 };

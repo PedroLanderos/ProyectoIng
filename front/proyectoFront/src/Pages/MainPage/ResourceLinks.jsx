@@ -6,30 +6,35 @@ const ResourceLinks = () => {
     <section className="resource-links">
       <div className="content-wrapper">
         <div className="resource-column">
-          <h3>Acerca de esta plataforma</h3>
+          <h3>Sobre la API</h3>
           <ul>
-            <li><a href="#">Ayuda ↗</a></li>
-            <li><a href="#">Tutoriales en video ↗</a></li>
-            <li><a href="#">Principios de privacidad ↗</a></li>
-            <li><a href="#">Accesibilidad ↗</a></li>
+            <li>
+              <a href="https://core.ac.uk/services/api" target="_blank" rel="noopener noreferrer">
+                CORE API ↗
+              </a>
+            </li>
           </ul>
         </div>
+
         <div className="resource-column">
-          <h3>Explorar la plataforma</h3>
+          <h3>Nuestra Escuela</h3>
           <ul>
-            <li><a href="#">Sindicaciones de contenido</a></li>
-            <li><a href="#">Crear y gestionar alertas</a></li>
-            <li><a href="#">Recomendaciones personalizadas</a></li>
-            <li><a href="#">Explorar por tema</a></li>
+            <li>
+              <a href="https://www.escom.ipn.mx/" target="_blank" rel="noopener noreferrer">
+                ESCOM ↗
+              </a>
+            </li>
           </ul>
         </div>
+
         <div className="resource-column">
-          <h3>Explorar el IPN</h3>
+          <h3>Institución</h3>
           <ul>
-            <li><a href="#">Conecta IPN ↗</a></li>
-            <li><a href="#">Publica con el IPN ↗</a></li>
-            <li><a href="#">Repositorio IPN ↗</a></li>
-            <li><a href="#">Mendeley ↗</a></li>
+            <li>
+              <a href="https://www.ipn.mx/" target="_blank" rel="noopener noreferrer">
+                IPN ↗
+              </a>
+            </li>
           </ul>
         </div>
       </div>

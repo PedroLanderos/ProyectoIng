@@ -1,66 +1,50 @@
 import React from 'react';
 import SectionBlock from './SectionBlokc.jsx';
-
-const sectionsData = [
-  {
-    title: 'Life Sciences',
-    categories: ['Agricultural and Biological Sciences', 'Biochemistry, Genetics and Molecular Biology', 'Environmental Science', 'Immunology and Microbiology', 'Neuroscience'],
-    description: 'Explore our wide selection of Life Sciences journal articles and book chapters...',
-    popularArticles: [
-      { title: 'Sleep during development: Sex and gender differences', detail: 'Sleep Medicine Reviews, Volume 51' },
-      { title: 'Female Penis, Male Vagina...', detail: 'Current Biology, Volume 24, Issue 9' }
-    ],
-    recentPublications: [
-      { title: 'Neurobiology of Aging', detail: 'Volume 150' },
-      { title: 'Vaccine', detail: 'Volume 52' }
-    ]
-  },
-  {
-    title: 'Life Sciences',
-    categories: ['Agricultural and Biological Sciences', 'Biochemistry, Genetics and Molecular Biology', 'Environmental Science', 'Immunology and Microbiology', 'Neuroscience'],
-    description: 'Explore our wide selection of Life Sciences journal articles and book chapters...',
-    popularArticles: [
-      { title: 'Sleep during development: Sex and gender differences', detail: 'Sleep Medicine Reviews, Volume 51' },
-      { title: 'Female Penis, Male Vagina...', detail: 'Current Biology, Volume 24, Issue 9' }
-    ],
-    recentPublications: [
-      { title: 'Neurobiology of Aging', detail: 'Volume 150' },
-      { title: 'Vaccine', detail: 'Volume 52' }
-    ]
-  },
-  {
-    title: 'Life Sciences',
-    categories: ['Agricultural and Biological Sciences', 'Biochemistry, Genetics and Molecular Biology', 'Environmental Science', 'Immunology and Microbiology', 'Neuroscience'],
-    description: 'Explore our wide selection of Life Sciences journal articles and book chapters...',
-    popularArticles: [
-      { title: 'Sleep during development: Sex and gender differences', detail: 'Sleep Medicine Reviews, Volume 51' },
-      { title: 'Female Penis, Male Vagina...', detail: 'Current Biology, Volume 24, Issue 9' }
-    ],
-    recentPublications: [
-      { title: 'Neurobiology of Aging', detail: 'Volume 150' },
-      { title: 'Vaccine', detail: 'Volume 52' }
-    ]
-  },
-  {
-    title: 'Life Sciences',
-    categories: ['Agricultural and Biological Sciences', 'Biochemistry, Genetics and Molecular Biology', 'Environmental Science', 'Immunology and Microbiology', 'Neuroscience'],
-    description: 'Explore our wide selection of Life Sciences journal articles and book chapters...',
-    popularArticles: [
-      { title: 'Sleep during development: Sex and gender differences', detail: 'Sleep Medicine Reviews, Volume 51' },
-      { title: 'Female Penis, Male Vagina...', detail: 'Current Biology, Volume 24, Issue 9' }
-    ],
-    recentPublications: [
-      { title: 'Neurobiology of Aging', detail: 'Volume 150' },
-      { title: 'Vaccine', detail: 'Volume 52' }
-    ]
-  },
-];
+import { useNavigate } from 'react-router-dom';
 
 const Sections = () => {
+  const navigate = useNavigate();
+
+  const sectionsData = [
+    {
+      title: 'Artificial Intelligence in Video Games',
+      categories: ['Game AI', 'Behavior Trees', 'Machine Learning', 'Pathfinding', 'Agent-Based Systems'],
+      description: 'Discover key research exploring how AI is implemented in modern video games, from rule-based systems to emergent learning models.',
+      popularArticles: [
+        {
+          id: '200716567',
+          title: 'Artificial Intelligence in Video Games: Towards a Unified Framework',
+          detail: 'Carvalho et al., 2021 – CORE.ac.uk',
+        },
+        {
+          id: '200147144',
+          title: 'Artificial Intelligence for Games',
+          detail: 'Millington & Funge, 2019 – CORE.ac.uk',
+        },
+        {
+          id: '4365308',
+          title: 'Playing Smart - Artificial Intelligence in Computer Games',
+          detail: 'Anderson, 2003 – CORE.ac.uk',
+        },
+      ]
+    }
+  ];
+
+  const handleCategoryClick = (cat) => {
+    const params = new URLSearchParams();
+    params.append("query", cat);
+    navigate(`/SearchArticle?${params.toString()}`);
+  };
+
   return (
     <div>
       {sectionsData.map((section, idx) => (
-        <SectionBlock key={idx} {...section} />
+        <SectionBlock
+          key={idx}
+          {...section}
+          onCategoryClick={handleCategoryClick}
+          onArticleClick={(id) => navigate(`/ArticleDetail/${id}`)}
+        />
       ))}
     </div>
   );

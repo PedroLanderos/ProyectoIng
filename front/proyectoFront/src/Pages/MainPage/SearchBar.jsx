@@ -69,7 +69,6 @@ const SearchBar = () => {
           >
             🔍 Search
           </button>
-          <a className="advanced-search-link" href="#">Advanced search</a>
         </form>
       </div>
     </div>

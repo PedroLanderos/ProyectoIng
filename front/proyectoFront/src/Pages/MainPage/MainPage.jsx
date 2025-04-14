@@ -6,6 +6,7 @@ import AlphabetIndex from "./AlphabetIndex";
 import OpenAccessInfo from "./OpenAccessInfo";
 import ResourceLinks from "./ResourceLinks";
 import HeroSlider from "./HeroSlider";
+import RecommendedSection from "./RecommendedSection";
 
 const MainPage = () => {
   return (
@@ -13,8 +14,7 @@ const MainPage = () => {
       <SearchBar/>
       <HeroSlider/>
       <Sections/>
-      <AlphabetIndex/>
-      <OpenAccessInfo/>
+      <RecommendedSection/>
       <ResourceLinks/>
     </div>
   );
