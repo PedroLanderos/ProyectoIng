@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import { AuthContext } from "../../Context/AuthContext";
@@ -6,6 +6,8 @@ import { AuthContext } from "../../Context/AuthContext";
 const Navbar = () => {
   const { auth, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleLogout = () => {
     if (window.confirm("¿Quieres cerrar sesión?")) {
@@ -13,6 +15,22 @@ const Navbar = () => {
       navigate("/login");
     }
   };
+
+  const handleProfile = () => {
+    navigate("/UserProfile");
+    setDropdownOpen(false);
+  };
+
+  // Cerrar el menú si haces clic fuera
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <nav className="navbar">
@@ -29,20 +47,21 @@ const Navbar = () => {
           </Link>
 
           {auth.isAuthenticated ? (
-            <>
-              {auth.user.role === "Admin" && (
-                <Link to="/panelAdministrador" className="admin-link">
-                  Panel Admin
-                </Link>
-              )}
+            <div className="user-dropdown-wrapper" ref={dropdownRef}>
               <div
                 className="user-icon"
-                onClick={handleLogout}
-                title={`Cerrar sesión (${auth.user.name})`}
+                onClick={() => setDropdownOpen((prev) => !prev)}
+                title={`Opciones de ${auth.user.name}`}
               >
                 {auth.user?.name?.charAt(0).toUpperCase() || "U"}
               </div>
-            </>
+              {dropdownOpen && (
+                <div className="user-dropdown">
+                  <button onClick={handleProfile}>⚙️ Configuración</button>
+                  <button onClick={handleLogout}>🚪 Cerrar sesión</button>
+                </div>
+              )}
+            </div>
           ) : (
             <Link to="/login" className="login-button">
               Iniciar sesión

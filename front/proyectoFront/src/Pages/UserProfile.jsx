@@ -1,35 +1,72 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './CSS/UserProfile.css';
-
-const mockUser = {
-  id: 1,
-  name: 'Juan Pérez',
-  telephoneNumber: '5512345678',
-  adress: 'Av. Instituto Politécnico Nacional 123',
-  email: 'juan.perez@correo.com',
-  password: '',
-  role: 'User',
-  dateRegistered: '2024-03-12T14:33:00Z',
-};
+import { AuthContext } from '../Context/AuthContext';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../config/apiConfig';
 
 const UserProfile = () => {
-  const [user, setUser] = useState({ ...mockUser });
+  const { auth, checkSession } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState(null);
+  const [message, setMessage] = useState('');
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/authentication/${auth.user.id}`, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
+      setUser(response.data);
+    } catch (error) {
+      console.error("❌ Error al obtener datos del perfil:", error);
+    }
+  };
+
+  useEffect(() => {
+    checkSession();
+    if (auth?.user?.id) {
+      fetchUserData();
+    }
+  }, [auth]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Datos actualizados:', user);
-    // Aquí puedes hacer una petición PUT/PATCH a tu backend
+    try {
+      const response = await axios.put(`${API_BASE_URL}/authentication`, user, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        setMessage("✅ Datos actualizados correctamente.");
+      }
+    } catch (error) {
+      console.error("❌ Error al actualizar el perfil:", error);
+      setMessage("❌ Error al guardar cambios.");
+    }
   };
+
+  const handleViewHistory = () => {
+    navigate(`/UserHistory/${auth.user.id}`);
+  };
+
+  if (!user) return <div className="user-profile">Cargando perfil...</div>;
 
   return (
     <div className="user-profile">
       <div className="content-wrapper">
         <h2>Mi Perfil</h2>
+        {message && <p style={{ textAlign: 'center', color: message.includes("✅") ? "green" : "red" }}>{message}</p>}
         <form className="profile-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Nombre:</label>
@@ -38,6 +75,7 @@ const UserProfile = () => {
               name="name"
               value={user.name}
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -48,6 +86,7 @@ const UserProfile = () => {
               name="telephoneNumber"
               value={user.telephoneNumber}
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -55,9 +94,10 @@ const UserProfile = () => {
             <label>Dirección:</label>
             <input
               type="text"
-              name="adress"
-              value={user.adress}
+              name="address"
+              value={user.address}
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -81,7 +121,24 @@ const UserProfile = () => {
           </div>
 
           <button type="submit" className="save-button">
-            Guardar cambios
+            💾 Guardar cambios
+          </button>
+
+          <button
+            type="button"
+            className="history-button"
+            onClick={handleViewHistory}
+            style={{
+              marginLeft: '1rem',
+              backgroundColor: '#0071c2',
+              color: 'white',
+              border: 'none',
+              padding: '0.5rem 1rem',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}
+          >
+            📜 Ver historial
           </button>
         </form>
       </div>

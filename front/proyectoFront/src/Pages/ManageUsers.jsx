@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../Context/AuthContext";
-import API_BASE_URL from "../config/apiConfig"; // ✅ URL Base
-import "./CSS/ManageUsers.css"; // ✅ Se mantiene el CSS
+import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../config/apiConfig";
+import "./CSS/ManageUsers.css";
 
 const ManageUsers = () => {
   const { auth } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
   const [message, setMessage] = useState("");
@@ -15,7 +18,6 @@ const ManageUsers = () => {
       const response = await axios.get(`${API_BASE_URL}/authentication`, {
         headers: { Authorization: `Bearer ${auth.token}` },
       });
-      console.log("🔹 Usuarios obtenidos:", response.data); // 🛠️ Depuración
       setUsers(response.data);
     } catch (error) {
       console.error("❌ Error al obtener los usuarios:", error);
@@ -30,8 +32,12 @@ const ManageUsers = () => {
   const handleEditClick = (user) => {
     setEditingUser({
       ...user,
-      password: "", // ✅ Permitir edición de la contraseña
+      password: "", // Editable
     });
+  };
+
+  const handleHistoryClick = (userId) => {
+    navigate(`/UserHistory/${userId}`);
   };
 
   const handleInputChange = (e) => {
@@ -54,7 +60,7 @@ const ManageUsers = () => {
       if (response.status === 200 || response.status === 201) {
         setMessage("✅ Usuario actualizado exitosamente.");
         setEditingUser(null);
-        fetchUsers(); // ✅ Recargar la lista
+        fetchUsers();
       }
     } catch (error) {
       console.error("❌ Error al actualizar el usuario:", error);
@@ -102,6 +108,13 @@ const ManageUsers = () => {
                   <td>
                     <button className="edit-btn" onClick={() => handleEditClick(user)}>
                       ✏️ Editar
+                    </button>
+                    <button
+                      className="history-btn"
+                      onClick={() => handleHistoryClick(user.id)}
+                      style={{ marginLeft: "10px", backgroundColor: "#0077cc" }}
+                    >
+                      📜 Historial
                     </button>
                   </td>
                 </tr>
@@ -175,7 +188,11 @@ const ManageUsers = () => {
               </select>
             </label>
             <button type="submit">💾 Guardar Cambios</button>
-            <button type="button" className="cancel-btn" onClick={() => setEditingUser(null)}>
+            <button
+              type="button"
+              className="cancel-btn"
+              onClick={() => setEditingUser(null)}
+            >
               ❌ Cancelar
             </button>
           </form>

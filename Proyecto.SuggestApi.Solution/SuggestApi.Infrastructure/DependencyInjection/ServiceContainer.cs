@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SuggestApi.Application.Interfaces;
+using SuggestApi.Application.Services;
 using SuggestApi.Infrastructure.Data;
 using SuggestApi.Infrastructure.Repositories;
 using System;
@@ -20,6 +21,8 @@ namespace SuggestApi.Infrastructure.DependencyInjection
             SharedServiceContainer.AddSharedServices<SuggestionDbContext>(services, config, config["MySerilog:FileName"]!);
 
             services.AddScoped<ISearchHistory, SearchHistory>();
+            services.AddScoped<ISuggestion, Suggestion>();
+            services.AddHttpClient<IArticles, Article>();
 
             return services;
         }

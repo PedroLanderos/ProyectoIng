@@ -1,0 +1,55 @@
+.user-history-page {
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  .history-wrapper {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .history-wrapper h1 {
+    text-align: center;
+    color: #870046;
+    margin-bottom: 20px;
+  }
+  
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .history-table th,
+  .history-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .history-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .history-table td {
+    font-size: 14px;
+  }
+  
+  .delete-btn {
+    background: #ff4141;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .delete-btn:hover {
+    background: #e03131;
+  }
+  

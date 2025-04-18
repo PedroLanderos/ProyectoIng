@@ -10,6 +10,7 @@ import Footer from "./Components/Footer/Footer";
 import ArticleSearchPage from "./Pages/ArticleSearchPage";
 import UserProfile from "./Pages/UserProfile";
 import ArticleDetails from "./Pages/ArticleDetails";
+import UserHistory from "./Pages/UserHistory";
 
 function App() {
   const { auth } = useContext(AuthContext);
@@ -29,6 +30,7 @@ function App() {
         <Route path="/ArticleDetail/:id" element={<ArticleDetails />} />
         <Route path="/" element={<MainPage />} />
         <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/UserHistory/:id" element={<UserHistory />} />
       </Routes>
       <Footer />
     </BrowserRouter>

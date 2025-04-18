@@ -1,18 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './CSS/ArticleDetails.css';
-import { ARTICLES_API } from '../config/apiConfig';
+import { ARTICLES_API, SUGGEST_API } from '../config/apiConfig';
+import { AuthContext } from '../Context/AuthContext';
 
 const ArticleDetails = () => {
   const { id } = useParams();
+  const { auth } = useContext(AuthContext);
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
 
   const toggleFavorite = () => {
     setIsFavorite(prev => !prev);
-    // 🔜 En el futuro aquí llamarías a una API para guardar el favorito
+    // 🔜 Aquí podrías enviar una petición para actualizar favorito en el backend
+  };
+
+  const saveVisitToHistory = async () => {
+    if (!auth.isAuthenticated) return;
+
+    try {
+      const payload = {
+        userId: auth.user.id,
+        articleId: id,
+        isFavorite: false, // Por defecto, solo lo estamos registrando como visita
+      };
+
+      await axios.post(`${SUGGEST_API}/UserData/history`, payload, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      console.log("📝 Artículo registrado en historial.");
+    } catch (error) {
+      console.error("❌ Error al guardar historial:", error);
+    }
   };
 
   useEffect(() => {
@@ -20,6 +42,11 @@ const ArticleDetails = () => {
       try {
         const response = await axios.get(`${ARTICLES_API}/article/${id}`);
         setArticle(response.data);
+
+        // Guardar en historial solo si la carga fue exitosa
+        if (auth.isAuthenticated) {
+          saveVisitToHistory();
+        }
       } catch (error) {
         console.error("❌ Error fetching article:", error);
         if (error.response?.status === 404) {
@@ -34,7 +61,7 @@ const ArticleDetails = () => {
     };
 
     fetchArticle();
-  }, [id]);
+  }, [id, auth.isAuthenticated]); // Se ejecuta cuando cambia el id o la sesión
 
   if (loading) return <p>🔄 Cargando artículo...</p>;
   if (!article) return <p>❌ Artículo no encontrado.</p>;
