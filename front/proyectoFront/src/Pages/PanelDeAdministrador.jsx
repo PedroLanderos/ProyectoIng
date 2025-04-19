@@ -13,26 +13,21 @@ const PanelDeAdministrador = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    checkSession(); // Verificar sesión al cargar el componente
+    checkSession();
   }, []);
 
   useEffect(() => {
-    if (auth.user) {
-      if (auth.user.role !== 'Admin') {
-        alert('No tienes permiso para acceder a este panel.');
-        navigate('/MainPage'); // Redirigir a MainPage si no es admin
-      }
+    if (!auth.isAuthenticated) return;
+
+    if (auth.user?.role === "Admin") {
       setLoading(false);
+    } else {
+      alert("No tienes permiso para acceder a este panel.");
+      navigate("/MainPage");
     }
-  }, [auth.user, navigate]);
+  }, [auth, navigate]);
 
-  if (loading) {
-    return <div className="loading">Cargando...</div>;
-  }
-
-  if (!auth.user || auth.user.role !== 'Admin') {
-    return null;
-  }
+  if (loading) return <div className="loading">Cargando...</div>;
 
   const toggleSubmenu = (menu) => {
     setActiveSubmenu((prev) => (prev === menu ? '' : menu));

@@ -12,25 +12,30 @@ const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState('');
 
-  const fetchUserData = async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/authentication/${auth.user.id}`, {
-        headers: {
-          Authorization: `Bearer ${auth.token}`
-        }
-      });
-      setUser(response.data);
-    } catch (error) {
-      console.error("❌ Error al obtener datos del perfil:", error);
-    }
-  };
-
+  // Verificar sesión solo una vez
   useEffect(() => {
     checkSession();
+  }, []);
+
+  // Obtener datos del usuario solo cuando haya sesión
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/authentication/${auth.user.id}`, {
+          headers: {
+            Authorization: `Bearer ${auth.token}`
+          }
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.error("❌ Error al obtener datos del perfil:", error);
+      }
+    };
+
     if (auth?.user?.id) {
       fetchUserData();
     }
-  }, [auth]);
+  }, [auth.user?.id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -66,7 +71,11 @@ const UserProfile = () => {
     <div className="user-profile">
       <div className="content-wrapper">
         <h2>Mi Perfil</h2>
-        {message && <p style={{ textAlign: 'center', color: message.includes("✅") ? "green" : "red" }}>{message}</p>}
+        {message && (
+          <p style={{ textAlign: 'center', color: message.includes("✅") ? "green" : "red" }}>
+            {message}
+          </p>
+        )}
         <form className="profile-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Nombre:</label>
@@ -120,26 +129,27 @@ const UserProfile = () => {
             />
           </div>
 
-          <button type="submit" className="save-button">
-            💾 Guardar cambios
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '1rem' }}>
+            <button type="submit" className="save-button">
+              💾 Guardar cambios
+            </button>
 
-          <button
-            type="button"
-            className="history-button"
-            onClick={handleViewHistory}
-            style={{
-              marginLeft: '1rem',
-              backgroundColor: '#0071c2',
-              color: 'white',
-              border: 'none',
-              padding: '0.5rem 1rem',
-              borderRadius: '5px',
-              cursor: 'pointer'
-            }}
-          >
-            📜 Ver historial
-          </button>
+            <button
+              type="button"
+              className="history-button"
+              onClick={handleViewHistory}
+              style={{
+                backgroundColor: '#0071c2',
+                color: 'white',
+                border: 'none',
+                padding: '0.5rem 1rem',
+                borderRadius: '5px',
+                cursor: 'pointer'
+              }}
+            >
+              📜 Ver historial
+            </button>
+          </div>
         </form>
       </div>
     </div>

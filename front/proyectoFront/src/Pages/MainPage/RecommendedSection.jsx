@@ -1,6 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthContext';
+import axios from 'axios';
+import { SUGGEST_API } from '../../config/apiConfig';
 import '../CSS/MainPage/RecommendedSection.css';
 
 const RecommendedSection = () => {
@@ -8,19 +10,28 @@ const RecommendedSection = () => {
   const isAuthenticated = auth?.isAuthenticated;
   const navigate = useNavigate();
 
-  const hasRecommendations = true; // Simulación
-  const recommendedArticles = [
-    {
-      id: '123456',
-      title: 'How AI is Transforming Game Design',
-      detail: 'Gaming Tech Journal, 2022',
-    },
-    {
-      id: '654321',
-      title: 'Procedural Storytelling with Machine Learning',
-      detail: 'Interactive Media Review, 2021',
-    },
-  ];
+  const [loading, setLoading] = useState(true);
+  const [recommendedArticles, setRecommendedArticles] = useState([]);
+  const [hasRecommendations, setHasRecommendations] = useState(true);
+
+  const fetchRecommendations = async () => {
+    try {
+      const response = await axios.get(`${SUGGEST_API}/UserData/recommendations/${auth.user.id}`);
+      setRecommendedArticles(response.data);
+      setHasRecommendations(response.data && response.data.length > 0);
+    } catch (error) {
+      console.warn("⚠️ No se pudieron obtener recomendaciones:", error);
+      setHasRecommendations(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchRecommendations();
+    }
+  }, [isAuthenticated]);
 
   const handleLoginRedirect = () => {
     navigate('/login');
@@ -46,6 +57,8 @@ const RecommendedSection = () => {
               Iniciar sesión
             </button>
           </>
+        ) : loading ? (
+          <p>Cargando recomendaciones...</p>
         ) : !hasRecommendations ? (
           <>
             <p>
@@ -65,9 +78,9 @@ const RecommendedSection = () => {
                 onClick={() => handleArticleClick(art.id)}
               >
                 <a href="#" onClick={(e) => e.preventDefault()}>
-                  {art.title}
+                  {art.title || 'Artículo sin título'}
                 </a>
-                <p>{art.detail}</p>
+                <p>{art.journal || 'Fuente desconocida'} – {art.yearPublished || 'Año desconocido'}</p>
               </div>
             ))}
           </div>

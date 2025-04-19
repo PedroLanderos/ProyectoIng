@@ -14,7 +14,7 @@ const LoginSignup = () => {
     Address: "",
     email: "",
     password: "",
-    role: "Normal", // 🔹 Predeterminado y fijo
+    role: "Normal",
   });
 
   const [message, setMessage] = useState("");
@@ -48,7 +48,7 @@ const LoginSignup = () => {
 
           setMessage("✅ Login exitoso!");
           login(token);
-          navigate("/panelAdministrador");
+          navigate("/MainPage"); // 🔄 Redirigir al home
         }
       }
     } catch (error) {

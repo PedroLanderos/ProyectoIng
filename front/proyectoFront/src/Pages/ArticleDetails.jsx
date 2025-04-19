@@ -12,9 +12,30 @@ const ArticleDetails = () => {
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
 
-  const toggleFavorite = () => {
-    setIsFavorite(prev => !prev);
-    // 🔜 Aquí podrías enviar una petición para actualizar favorito en el backend
+  const toggleFavorite = async () => {
+    if (!auth.isAuthenticated) return;
+
+    try {
+      const response = await axios.get(`${SUGGEST_API}/UserData/history/${auth.user.id}`);
+      const existing = response.data.find(a => a.articleId === id);
+
+      if (existing) {
+        await axios.put(`${SUGGEST_API}/UserData/history/${existing.id}`, {
+          ...existing,
+          isFavorite: !isFavorite
+        });
+      } else {
+        await axios.post(`${SUGGEST_API}/UserData/history`, {
+          userId: auth.user.id,
+          articleId: id,
+          isFavorite: true
+        });
+      }
+
+      setIsFavorite(prev => !prev);
+    } catch (error) {
+      console.error("❌ Error al actualizar favorito:", error);
+    }
   };
 
   const saveVisitToHistory = async () => {
@@ -24,7 +45,7 @@ const ArticleDetails = () => {
       const payload = {
         userId: auth.user.id,
         articleId: id,
-        isFavorite: false, // Por defecto, solo lo estamos registrando como visita
+        isFavorite: false,
       };
 
       await axios.post(`${SUGGEST_API}/UserData/history`, payload, {
@@ -43,12 +64,11 @@ const ArticleDetails = () => {
         const response = await axios.get(`${ARTICLES_API}/article/${id}`);
         setArticle(response.data);
 
-        // Guardar en historial solo si la carga fue exitosa
         if (auth.isAuthenticated) {
           saveVisitToHistory();
         }
       } catch (error) {
-        console.error("❌ Error fetching article:", error);
+        console.error("❌ Error al cargar artículo:", error);
         if (error.response?.status === 404) {
           setArticle(null);
         } else if (error.response?.status === 429) {
@@ -61,7 +81,22 @@ const ArticleDetails = () => {
     };
 
     fetchArticle();
-  }, [id, auth.isAuthenticated]); // Se ejecuta cuando cambia el id o la sesión
+  }, [id, auth.isAuthenticated]);
+
+  useEffect(() => {
+    const checkIfFavorite = async () => {
+      if (!auth.isAuthenticated) return;
+
+      try {
+        const res = await axios.get(`${SUGGEST_API}/UserData/favorites/${auth.user.id}/check/${id}`);
+        setIsFavorite(res.data === true);
+      } catch (error) {
+        console.error("❌ Error al verificar favorito:", error);
+      }
+    };
+
+    checkIfFavorite();
+  }, [id, auth.isAuthenticated]);
 
   if (loading) return <p>🔄 Cargando artículo...</p>;
   if (!article) return <p>❌ Artículo no encontrado.</p>;
@@ -71,13 +106,15 @@ const ArticleDetails = () => {
       <div className="content-wrapper">
         <div className="header-with-favorite">
           <h1>{article.title}</h1>
-          <span
-            className={`favorite-icon ${isFavorite ? 'active' : ''}`}
-            title={isFavorite ? "Quitar de favoritos" : "Agregar a favoritos"}
-            onClick={toggleFavorite}
-          >
-            ★
-          </span>
+          {auth.isAuthenticated && (
+            <span
+              className={`favorite-icon ${isFavorite ? 'active' : ''}`}
+              title={isFavorite ? "Quitar de favoritos" : "Agregar a favoritos"}
+              onClick={toggleFavorite}
+            >
+              ★
+            </span>
+          )}
         </div>
 
         <p className="subtitle">{article.journal} — {article.yearPublished}</p>

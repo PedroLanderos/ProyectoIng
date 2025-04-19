@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
     user: null,
   });
 
-  // 🔹 Función para verificar si hay sesión activa
+  // 🔁 Verifica la sesión guardada en sessionStorage
   const checkSession = () => {
     const token = sessionStorage.getItem("token");
     const user = JSON.parse(sessionStorage.getItem("user"));
@@ -28,8 +28,9 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkSession();
-  }, []); // Se ejecuta solo una vez al montar el componente
+  }, []);
 
+  // 🔐 Login y decodificación del token
   const login = (token) => {
     if (!token || typeof token !== "string") {
       console.error("Token inválido al intentar decodificar:", token);
@@ -38,17 +39,26 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const decodedToken = jwtDecode(token);
-
       console.log("🔍 Token decodificado:", decodedToken);
 
+      // 🧠 Decodifica el usuario
       const user = {
         id: decodedToken.UserId ? parseInt(decodedToken.UserId, 10) : null,
-        name: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] || "Usuario",
-        email: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"] || "Sin correo",
-        role: decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || "Normal",
+        name:
+          decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] ||
+          decodedToken.name ||
+          "Usuario",
+        email:
+          decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"] ||
+          decodedToken.email ||
+          "Sin correo",
+        role:
+          decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ||
+          decodedToken.role ||
+          "Normal",
       };
 
-      // 🔹 Guardar datos en sessionStorage (NO en localStorage)
+      // 💾 Guardar en sesión
       sessionStorage.setItem("token", token);
       sessionStorage.setItem("user", JSON.stringify(user));
 
@@ -65,6 +75,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // 🔓 Logout
   const logout = () => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("user");

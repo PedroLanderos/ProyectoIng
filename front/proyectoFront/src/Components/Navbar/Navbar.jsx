@@ -21,7 +21,6 @@ const Navbar = () => {
     setDropdownOpen(false);
   };
 
-  // Cerrar el menú si haces clic fuera
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -47,21 +46,29 @@ const Navbar = () => {
           </Link>
 
           {auth.isAuthenticated ? (
-            <div className="user-dropdown-wrapper" ref={dropdownRef}>
-              <div
-                className="user-icon"
-                onClick={() => setDropdownOpen((prev) => !prev)}
-                title={`Opciones de ${auth.user.name}`}
-              >
-                {auth.user?.name?.charAt(0).toUpperCase() || "U"}
-              </div>
-              {dropdownOpen && (
-                <div className="user-dropdown">
-                  <button onClick={handleProfile}>⚙️ Configuración</button>
-                  <button onClick={handleLogout}>🚪 Cerrar sesión</button>
-                </div>
+            <>
+              {auth.user && auth.user.role === "Admin" && (
+                <Link to="/panelAdministrador" className="admin-link">
+                  Panel Admin
+                </Link>
               )}
-            </div>
+
+              <div className="user-dropdown-wrapper" ref={dropdownRef}>
+                <div
+                  className="user-icon"
+                  onClick={() => setDropdownOpen((prev) => !prev)}
+                  title={`Opciones de ${auth.user.name}`}
+                >
+                  {auth.user?.name?.charAt(0).toUpperCase() || "U"}
+                </div>
+                {dropdownOpen && (
+                  <div className="user-dropdown">
+                    <button onClick={handleProfile}>⚙️ Configuración</button>
+                    <button onClick={handleLogout}>🚪 Cerrar sesión</button>
+                  </div>
+                )}
+              </div>
+            </>
           ) : (
             <Link to="/login" className="login-button">
               Iniciar sesión
