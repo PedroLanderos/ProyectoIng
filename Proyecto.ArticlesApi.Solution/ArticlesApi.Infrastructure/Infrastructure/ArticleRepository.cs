@@ -4,29 +4,46 @@ using ArticlesApi.Application.Responses;
 using Llaveremos.SharedLibrary.Logs;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
+using System.Net.Http.Headers;
 
 namespace ArticlesApi.Infrastructure.Infrastructure
 {
     public class ArticleRepository : IArticle
     {
         private readonly HttpClient _httpClient;
-        private readonly string? _apiKey;
+        private readonly List<string> _apiKeys;
+        private int _currentApiKeyIndex = 0;
+        private readonly object _lock = new();
 
         public ArticleRepository(HttpClient httpClient, IConfiguration config)
         {
             _httpClient = httpClient;
-            _apiKey = config["CoreApi:ApiKey"];
-            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _apiKey);
+            _apiKeys = config.GetSection("CoreApi:ApiKeys").Get<List<string>>() ?? new List<string>();
+
+            if (!_apiKeys.Any())
+                throw new InvalidOperationException("No API keys configured for Core API");
+        }
+
+        private void RotateApiKey()
+        {
+            lock (_lock)
+            {
+                _currentApiKeyIndex = (_currentApiKeyIndex + 1) % _apiKeys.Count;
+                var currentKey = _apiKeys[_currentApiKeyIndex];
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", currentKey);
+
+                // ✅ Opcional: Log para ver cuál key se está usando
+                Console.WriteLine($"🔄 Usando API key index: {_currentApiKeyIndex}");
+            }
         }
 
         public async Task<Article> GetArticleByIdAsync(string id)
         {
             try
             {
-                var response = await _httpClient.GetAsync($"https://api.core.ac.uk/v3/works/{id}");
+                RotateApiKey(); // 🔁 Rota siempre antes de cada request
 
-                if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
-                    throw new InvalidOperationException("Rate limit exceeded");
+                var response = await _httpClient.GetAsync($"https://api.core.ac.uk/v3/works/{id}");
 
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                     return null!;
@@ -54,13 +71,12 @@ namespace ArticlesApi.Infrastructure.Infrastructure
         {
             try
             {
+                RotateApiKey(); // 🔁 Rota siempre antes de cada request
+
                 int offset = (page - 1) * pageSize;
                 var url = $"https://api.core.ac.uk/v3/search/works?q={Uri.EscapeDataString(query)}&offset={offset}&limit={pageSize}";
+
                 var response = await _httpClient.GetAsync(url);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
-                    throw new InvalidOperationException("Rate limit exceeded");
-
                 response.EnsureSuccessStatusCode();
 
                 var json = await response.Content.ReadAsStringAsync();

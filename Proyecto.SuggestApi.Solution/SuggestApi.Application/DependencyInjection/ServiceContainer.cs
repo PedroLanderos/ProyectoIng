@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SuggestApi.Application.Interfaces;
 using SuggestApi.Application.Services;
 using Polly;
 using Polly.Retry;
@@ -11,31 +12,16 @@ namespace SuggestApi.Application.DependencyInjection
     {
         public static IServiceCollection AddApplicationService(this IServiceCollection services, IConfiguration config)
         {
-            services.AddHttpClient<IArticles, Article>(options =>
+            // 🔹 HttpClient para IArticles (ruta directa al microservicio de artículos)
+            services.AddHttpClient<IArticles, Article>(client =>
             {
-                options.BaseAddress = new Uri(config["ApiGateway:BaseAddress"]!);
-                options.Timeout = TimeSpan.FromSeconds(1);
+                client.BaseAddress = new Uri("http://articlesapiservice:5002"); 
             });
 
-            var retryStrategy = new RetryStrategyOptions()
+            // 🔹 HttpClient para ISuggestion (ruta directa al microservicio de autenticación)
+            services.AddHttpClient<ISuggestion, Suggestion>(client =>
             {
-                ShouldHandle = new PredicateBuilder().Handle<TaskCanceledException>(),
-                BackoffType = DelayBackoffType.Constant,
-                UseJitter = true,
-                MaxRetryAttempts = 3,
-                Delay = TimeSpan.FromMilliseconds(500),
-                OnRetry = args => {
-                    string message = $"OnRetry, attempt: {args.AttemptNumber} outcome {args.Outcome}";
-                    LogException.LogToConsole(message);
-                    LogException.LogToDebugger(message);
-                    return ValueTask.CompletedTask;
-                }
-            };
-
-
-            services.AddResiliencePipeline("retry-pipeline", builder =>
-            {
-                builder.AddRetry(retryStrategy);
+                client.BaseAddress = new Uri("http://authenticationapiservice:5000"); 
             });
 
             return services;

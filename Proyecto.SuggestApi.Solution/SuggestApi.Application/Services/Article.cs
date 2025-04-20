@@ -1,67 +1,31 @@
 ﻿using Llaveremos.SharedLibrary.Logs;
-using SuggestApi.Application.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SuggestApi.Application.DTOs;
+using SuggestApi.Application.Interfaces;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SuggestApi.Application.Services
 {
     public class Article : IArticles
     {
         private readonly HttpClient _httpClient;
+
         public Article(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
+
         public async Task<IEnumerable<ArticleDTO>> GetArticleAsync(string query)
-        {
-			try
-			{
-                // Hacer la solicitud al microservicio ArticlesApi
-                var response = await _httpClient.GetAsync($"http://articles-api-url/api/article/search?query={query}&page=1&pageSize=5");
-
-                // Si la respuesta no es exitosa, manejar el error
-                response.EnsureSuccessStatusCode();
-
-                // Leer la respuesta JSON
-                var json = await response.Content.ReadAsStringAsync();
-
-                // Deserializar la respuesta en un listado de ArticleDTO
-                var result = JsonConvert.DeserializeObject<List<ArticleDTO>>(json);
-
-                return result!;
-            }
-			catch (Exception ex)
-			{
-				LogException.LogExceptions(ex);
-				throw new Exception("error in the articles service");
-			}
-        }
-
-        public async Task<IEnumerable<ArticleDTO>> SearchArticlesByFields(IEnumerable<string> fieldsToSearch)
         {
             try
             {
-                // Crear el query de búsqueda basado en los campos seleccionados
-                var query = string.Join(" ", fieldsToSearch);  // Combina los campos para formar un query de búsqueda
-
-                // Hacer la solicitud al microservicio ArticlesApi
-                var response = await _httpClient.GetAsync($"http://articles-api-url/api/article/search?query={query}&page=1&pageSize=5");
-
-                // Si la respuesta no es exitosa, manejar el error
+                var response = await _httpClient.GetAsync($"/api/article/search?query={query}&page=1&pageSize=5");
                 response.EnsureSuccessStatusCode();
 
-                // Leer la respuesta JSON
                 var json = await response.Content.ReadAsStringAsync();
-
-                // Deserializar la respuesta en un listado de ArticleDTO
-                var result = JsonConvert.DeserializeObject<List<ArticleDTO>>(json);
-
-                return result!;
+                var wrapper = JsonConvert.DeserializeObject<ArticleSearchResponseDTO>(json);
+                return wrapper?.Results ?? new List<ArticleDTO>();
             }
             catch (Exception ex)
             {
@@ -70,5 +34,29 @@ namespace SuggestApi.Application.Services
             }
         }
 
+        public async Task<IEnumerable<ArticleDTO>> SearchArticlesByFields(IEnumerable<string> fieldsToSearch)
+        {
+            try
+            {
+                var query = string.Join(" ", fieldsToSearch);
+                var response = await _httpClient.GetAsync($"/api/article/search?query={query}&page=1&pageSize=5");
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+                var wrapper = JsonConvert.DeserializeObject<ArticleSearchResponseDTO>(json);
+                return wrapper?.Results ?? new List<ArticleDTO>();
+            }
+            catch (Exception ex)
+            {
+                LogException.LogExceptions(ex);
+                throw new Exception("error in the articles service");
+            }
+        }
+    }
+
+    public class ArticleSearchResponseDTO
+    {
+        [JsonProperty("results")]
+        public List<ArticleDTO> Results { get; set; } = new();
     }
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthContext';
 import axios from 'axios';
@@ -10,11 +10,14 @@ const RecommendedSection = () => {
   const isAuthenticated = auth?.isAuthenticated;
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [recommendedArticles, setRecommendedArticles] = useState([]);
   const [hasRecommendations, setHasRecommendations] = useState(true);
+  const [clicked, setClicked] = useState(false); // 👈 controla si se hizo clic
 
   const fetchRecommendations = async () => {
+    setLoading(true);
+    setClicked(true);
     try {
       const response = await axios.get(`${SUGGEST_API}/UserData/recommendations/${auth.user.id}`);
       setRecommendedArticles(response.data);
@@ -26,12 +29,6 @@ const RecommendedSection = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchRecommendations();
-    }
-  }, [isAuthenticated]);
 
   const handleLoginRedirect = () => {
     navigate('/login');
@@ -57,6 +54,10 @@ const RecommendedSection = () => {
               Iniciar sesión
             </button>
           </>
+        ) : !clicked ? (
+          <button className="search-button" onClick={fetchRecommendations}>
+            Obtener recomendaciones
+          </button>
         ) : loading ? (
           <p>Cargando recomendaciones...</p>
         ) : !hasRecommendations ? (
@@ -80,7 +81,9 @@ const RecommendedSection = () => {
                 <a href="#" onClick={(e) => e.preventDefault()}>
                   {art.title || 'Artículo sin título'}
                 </a>
-                <p>{art.journal || 'Fuente desconocida'} – {art.yearPublished || 'Año desconocido'}</p>
+                <p>
+                  {art.journal || 'Fuente desconocida'} – {art.yearPublished || 'Año desconocido'}
+                </p>
               </div>
             ))}
           </div>
