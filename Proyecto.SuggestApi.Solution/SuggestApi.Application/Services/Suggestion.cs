@@ -22,22 +22,20 @@ namespace SuggestApi.Application.Services
             try
             {
                 var userExists = await Getuser(userId);
-                if (userExists is null) return new List<ArticleDTO>(); // 👈 Devuelve vacío si no existe el user
+                if (userExists is null) return new List<ArticleDTO>();
 
                 var userActivities = await _searchHistoryRepository.GetByCriteriaAsync(x => x.UserId == userId);
+                if (!userActivities.Any()) return new List<ArticleDTO>();
 
                 var favoriteActivities = userActivities.Where(x => x.IsFavorite).ToList();
                 var nonFavoriteActivities = userActivities.Where(x => !x.IsFavorite).ToList();
 
                 List<ArticleDTO> recommendedArticles = new();
 
-                if (favoriteActivities.Any())
+                foreach (var activity in favoriteActivities)
                 {
-                    foreach (var activity in favoriteActivities)
-                    {
-                        var articles = await _articlesService.GetArticleAsync(activity.ArticleId!);
-                        recommendedArticles.AddRange(articles);
-                    }
+                    var articles = await _articlesService.GetArticleAsync(activity.ArticleId!);
+                    recommendedArticles.AddRange(articles);
                 }
 
                 foreach (var activity in nonFavoriteActivities)
@@ -45,19 +43,41 @@ namespace SuggestApi.Application.Services
                     var articles = await _articlesService.GetArticleAsync(activity.ArticleId!);
                     if (articles.Any())
                     {
-                        var fieldsToSearch = GetRandomFields(articles.First());
-                        var similarArticles = await _articlesService.SearchArticlesByFields(fieldsToSearch);
-                        recommendedArticles.AddRange(similarArticles);
+                        try
+                        {
+                            var fieldsToSearch = GetRelevantFields(articles.First());
+                            var similarArticles = await _articlesService.SearchArticlesByFields(fieldsToSearch);
+                            recommendedArticles.AddRange(similarArticles);
+                        }
+                        catch (Exception ex)
+                        {
+                            LogException.LogToConsole($"⚠️ No se pudo buscar similares para artículo {activity.ArticleId}: {ex.Message}");
+                        }
                     }
                 }
 
-                var result = recommendedArticles.Distinct().Take(5).ToList();
+                var result = recommendedArticles
+                    .DistinctBy(a => a.Id)
+                    .Take(3) // 🔥 Solo 3 recomendaciones
+                    .Select(a => new ArticleDTO
+                    {
+                        Id = a.Id,
+                        Title = a.Title,
+                        Authors = a.Authors,
+                        Abstract = a.Abstract,
+                        PublishedDate = a.PublishedDate,
+                        DownloadUrl = a.DownloadUrl,
+                        ViewUrl = a.ViewUrl,
+                        Subjects = a.Subjects,
+                        Links = a.Links
+                        // ❌ No se incluye FullText
+                    })
+                    .ToList();
 
                 if (!result.Any())
                 {
                     LogException.LogToConsole($"⚠️ No recommendations found for user {userId}");
-                    LogException.LogToDebugger($"⚠️ No recommendations found for user {userId}");
-                    return new List<ArticleDTO>(); // 👈 Devuelve lista vacía si no hay resultados
+                    return new List<ArticleDTO>();
                 }
 
                 return result;
@@ -65,25 +85,27 @@ namespace SuggestApi.Application.Services
             catch (Exception ex)
             {
                 LogException.LogExceptions(ex);
-                throw new Exception("error while setting the recommendation");
+                throw new Exception("Error while setting the recommendation");
             }
         }
 
-        private List<string> GetRandomFields(ArticleDTO article)
+        private List<string> GetRelevantFields(ArticleDTO article)
         {
-            var random = new Random();
-            var possibleFields = new List<string>();
+            List<string> fields = new();
+
+            if (!string.IsNullOrWhiteSpace(article.Title))
+                fields.Add(article.Title);
 
             if (article.Authors != null && article.Authors.Any())
-                possibleFields.Add("authors");
+                fields.AddRange(article.Authors.Select(a => a.Name).Where(name => !string.IsNullOrWhiteSpace(name)));
 
-            if (!string.IsNullOrEmpty(article.Title))
-                possibleFields.Add("title");
+            if (!string.IsNullOrWhiteSpace(article.Abstract))
+                fields.Add(article.Abstract);
 
-            if (!string.IsNullOrEmpty(article.PublishedDate))
-                possibleFields.Add("publishedDate");
+            if (article.Subjects != null && article.Subjects.Any())
+                fields.AddRange(article.Subjects.Where(s => !string.IsNullOrWhiteSpace(s)));
 
-            return possibleFields.OrderBy(_ => random.Next()).Take(2).ToList();
+            return fields.Take(3).ToList();
         }
     }
 }

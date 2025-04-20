@@ -13,7 +13,7 @@ const RecommendedSection = () => {
   const [loading, setLoading] = useState(false);
   const [recommendedArticles, setRecommendedArticles] = useState([]);
   const [hasRecommendations, setHasRecommendations] = useState(true);
-  const [clicked, setClicked] = useState(false); // 👈 controla si se hizo clic
+  const [clicked, setClicked] = useState(false);
 
   const fetchRecommendations = async () => {
     setLoading(true);
@@ -59,7 +59,7 @@ const RecommendedSection = () => {
             Obtener recomendaciones
           </button>
         ) : loading ? (
-          <p>Cargando recomendaciones...</p>
+          <p>🔄 Cargando recomendaciones...</p>
         ) : !hasRecommendations ? (
           <>
             <p>
@@ -82,7 +82,9 @@ const RecommendedSection = () => {
                   {art.title || 'Artículo sin título'}
                 </a>
                 <p>
-                  {art.journal || 'Fuente desconocida'} – {art.yearPublished || 'Año desconocido'}
+                  {art.publishedDate
+                    ? new Date(art.publishedDate).toLocaleDateString()
+                    : 'Fecha desconocida'}
                 </p>
               </div>
             ))}
