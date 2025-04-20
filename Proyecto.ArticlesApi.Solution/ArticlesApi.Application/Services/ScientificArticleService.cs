@@ -43,26 +43,29 @@ namespace ArticlesApi.Application.Services
 
             try
             {
-                var queryFilters = new List<string>();
+                List<string> queryFilters = new();
 
                 if (!string.IsNullOrWhiteSpace(query))
                 {
-                    if (query.Contains(":"))
-                        queryFilters.Add(query);
-                    else
-                        queryFilters.Add($"fullText:\"{query}\"");
+                    queryFilters.Add($"(title:\"{query}\" OR fullText:\"{query}\")");
                 }
 
                 if (!string.IsNullOrWhiteSpace(author))
+                {
                     queryFilters.Add($"authors:\"{author}\"");
+                }
 
                 if (year.HasValue)
+                {
                     queryFilters.Add($"yearPublished:{year.Value}");
+                }
 
                 if (!string.IsNullOrWhiteSpace(subject))
+                {
                     queryFilters.Add($"subjects:\"{subject}\"");
+                }
 
-                var coreQuery = string.Join(" AND ", queryFilters);
+                string coreQuery = queryFilters.Any() ? string.Join(" AND ", queryFilters) : "fullText:science";
 
                 var result = await _coreApiClient.SearchArticlesAsync(coreQuery, page, pageSize);
 

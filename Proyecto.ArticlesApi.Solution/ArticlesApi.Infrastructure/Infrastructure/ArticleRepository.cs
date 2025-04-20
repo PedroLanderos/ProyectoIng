@@ -24,16 +24,15 @@ namespace ArticlesApi.Infrastructure.Infrastructure
                 throw new InvalidOperationException("No API keys configured for Core API");
         }
 
-        private void RotateApiKey()
+        private string GetNextApiKey()
         {
             lock (_lock)
             {
                 _currentApiKeyIndex = (_currentApiKeyIndex + 1) % _apiKeys.Count;
-                var currentKey = _apiKeys[_currentApiKeyIndex];
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", currentKey);
-
-                // ✅ Opcional: Log para ver cuál key se está usando
-                Console.WriteLine($"🔄 Usando API key index: {_currentApiKeyIndex}");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($"🔄 Usando API key index: {_currentApiKeyIndex} ({_apiKeys[_currentApiKeyIndex][..6]}...)");
+                Console.ResetColor();
+                return _apiKeys[_currentApiKeyIndex];
             }
         }
 
@@ -41,24 +40,19 @@ namespace ArticlesApi.Infrastructure.Infrastructure
         {
             try
             {
-                RotateApiKey(); // 🔁 Rota siempre antes de cada request
+                var request = new HttpRequestMessage(HttpMethod.Get, $"https://api.core.ac.uk/v3/works/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", GetNextApiKey());
 
-                var response = await _httpClient.GetAsync($"https://api.core.ac.uk/v3/works/{id}");
-
+                var response = await _httpClient.SendAsync(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                     return null!;
 
                 response.EnsureSuccessStatusCode();
 
                 var json = await response.Content.ReadAsStringAsync();
-                var article = JsonConvert.DeserializeObject<Article>(json);
-                return article!;
-            }
-            catch (JsonException ex)
-            {
-                LogException.LogExceptions(ex);
-                Console.WriteLine("❌ No se pudo deserializar la respuesta de CORE.");
-                return null!;
+                var dto = JsonConvert.DeserializeObject<ArticleDto>(json);
+
+                return ConvertToDomain(dto!);
             }
             catch (Exception ex)
             {
@@ -71,17 +65,25 @@ namespace ArticlesApi.Infrastructure.Infrastructure
         {
             try
             {
-                RotateApiKey(); // 🔁 Rota siempre antes de cada request
-
                 int offset = (page - 1) * pageSize;
                 var url = $"https://api.core.ac.uk/v3/search/works?q={Uri.EscapeDataString(query)}&offset={offset}&limit={pageSize}";
 
-                var response = await _httpClient.GetAsync(url);
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", GetNextApiKey());
+
+                var response = await _httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
 
                 var json = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<CoreApiResponse<Article>>(json);
-                return result!;
+                var dtoResponse = JsonConvert.DeserializeObject<CoreApiResponse<ArticleDto>>(json);
+
+                var domainResponse = new CoreApiResponse<Article>
+                {
+                    TotalHits = dtoResponse!.TotalHits,
+                    Results = dtoResponse.Results.Select(ConvertToDomain).ToList()
+                };
+
+                return domainResponse;
             }
             catch (Exception ex)
             {
@@ -89,5 +91,42 @@ namespace ArticlesApi.Infrastructure.Infrastructure
                 throw;
             }
         }
+
+        private Article ConvertToDomain(ArticleDto dto)
+        {
+            return new Article
+            {
+                Id = dto.id,
+                Title = dto.title,
+                Abstract = dto.@abstract,
+                PublishedDate = dto.publishedDate,
+                DownloadUrl = dto.downloadUrl,
+                FullText = dto.fullText,
+                YearPublished = dto.yearPublished ?? 0,
+                Authors = dto.authors?.Select(a => new Author { Name = a.name }).ToList() ?? new(),
+                Subjects = dto.subjects ?? new(),
+                Links = dto.links ?? new()
+            };
+        }
+    }
+
+    // DTOs actualizados según la respuesta real de CORE
+    public class ArticleDto
+    {
+        public string? id { get; set; }
+        public string? title { get; set; }
+        public List<AuthorDto>? authors { get; set; }
+        public string? @abstract { get; set; }
+        public string? publishedDate { get; set; }
+        public string? downloadUrl { get; set; }
+        public List<Links>? links { get; set; }
+        public string? fullText { get; set; }
+        public List<string>? subjects { get; set; }
+        public int? yearPublished { get; set; }
+    }
+
+    public class AuthorDto
+    {
+        public string? name { get; set; }
     }
 }

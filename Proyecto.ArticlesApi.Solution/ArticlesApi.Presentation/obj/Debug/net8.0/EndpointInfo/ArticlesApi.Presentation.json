@@ -154,10 +154,6 @@
             "type": "string",
             "nullable": true
           },
-          "journal": {
-            "type": "string",
-            "nullable": true
-          },
           "downloadUrl": {
             "type": "string",
             "nullable": true

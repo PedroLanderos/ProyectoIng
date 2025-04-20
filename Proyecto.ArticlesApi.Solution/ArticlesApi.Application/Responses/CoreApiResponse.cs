@@ -22,6 +22,6 @@ namespace ArticlesApi.Application.Responses
         [JsonProperty("offset")]
         public int Offset { get; set; }
 
-        public int CurrentPage => (Offset / Limit) + 1;
+        public int CurrentPage => Limit > 0 ? (Offset / Limit) + 1 : 1;
     }
 }

@@ -7,6 +7,7 @@ import API_BASE_URL from "../config/apiConfig";
 
 const LoginSignup = () => {
   const [isRegister, setIsRegister] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // 🆕 Estado de carga
   const [formData, setFormData] = useState({
     Id: 0,
     name: "",
@@ -28,6 +29,8 @@ const LoginSignup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // 🔄 Comienza carga
+
     const endpoint = isRegister
       ? `${API_BASE_URL}/Authentication/Register`
       : `${API_BASE_URL}/Authentication/Login`;
@@ -48,7 +51,7 @@ const LoginSignup = () => {
 
           setMessage("✅ Login exitoso!");
           login(token);
-          navigate("/MainPage"); // 🔄 Redirigir al home
+          navigate("/MainPage");
         }
       }
     } catch (error) {
@@ -56,6 +59,8 @@ const LoginSignup = () => {
       setMessage(
         isRegister ? "❌ Error al registrar usuario. Verifica los datos." : "❌ Error al iniciar sesión. Verifica los datos."
       );
+    } finally {
+      setIsLoading(false); // 🛑 Finaliza carga
     }
   };
 
@@ -63,7 +68,9 @@ const LoginSignup = () => {
     <div className="loginSignup">
       <div className="loginSignup-container">
         <h1>{isRegister ? "Registro" : "Iniciar Sesión"}</h1>
+
         {message && <p className={message.includes("Error") ? "error-message" : "success-message"}>{message}</p>}
+        {isLoading && <p className="loading-message">🔄 Iniciando sesión, por favor espera...</p>}
 
         <form onSubmit={handleSubmit} className="loginSignup-fields">
           {isRegister && (
@@ -110,7 +117,10 @@ const LoginSignup = () => {
             onChange={handleChange}
             required
           />
-          <button type="submit">{isRegister ? "Registrar" : "Iniciar Sesión"}</button>
+
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Procesando..." : isRegister ? "Registrar" : "Iniciar Sesión"}
+          </button>
         </form>
 
         <div className="loginSignup-toggle">
