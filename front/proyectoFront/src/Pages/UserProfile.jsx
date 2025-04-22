@@ -12,12 +12,10 @@ const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState('');
 
-  // Verificar sesión solo una vez
   useEffect(() => {
     checkSession();
   }, []);
 
-  // Obtener datos del usuario solo cuando haya sesión
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -44,8 +42,19 @@ const UserProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.put(`${API_BASE_URL}/authentication`, user, {
+      // Construir solo los datos necesarios para la actualización
+      const payload = {
+        id: user.id,
+        name: user.name,
+        telephoneNumber: user.telephoneNumber,
+        address: user.address,
+        email: user.email,
+        role: user.role, // aún requerido por DTO en backend, aunque no editable
+      };
+
+      const response = await axios.put(`${API_BASE_URL}/authentication`, payload, {
         headers: {
           Authorization: `Bearer ${auth.token}`,
           'Content-Type': 'application/json'
@@ -113,20 +122,6 @@ const UserProfile = () => {
           <div className="form-group">
             <label>Correo electrónico:</label>
             <input type="email" value={user.email} disabled />
-          </div>
-
-          <div className="form-group">
-            <label>Rol:</label>
-            <input type="text" value={user.role} disabled />
-          </div>
-
-          <div className="form-group">
-            <label>Fecha de registro:</label>
-            <input
-              type="text"
-              value={new Date(user.dateRegistered).toLocaleDateString()}
-              disabled
-            />
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '1rem' }}>

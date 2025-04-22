@@ -100,20 +100,21 @@ namespace AuthenticationApi.Infrastructure.Repositories
                 ));
         }
 
-        public async Task<Response> EditUserById(AppUserDTO appUserDTO)
+        public async Task<Response> EditUserById(EditUserDTO dto)
         {
-            var user = await context.Users.FindAsync(appUserDTO.Id);
+            var user = await context.Users.FindAsync(dto.Id);
             if (user is null)
                 return new Response(false, "User not found");
 
-            user.Name = appUserDTO.Name;
-            user.TelephoneNumber = appUserDTO.TelephoneNumber;
-            user.Adress = appUserDTO.Address;
-            user.Email = appUserDTO.Email;
-            user.Role = appUserDTO.Role;
-            if (!string.IsNullOrEmpty(appUserDTO.Password))
+            user.Name = dto.Name;
+            user.TelephoneNumber = dto.TelephoneNumber;
+            user.Adress = dto.Address;
+            user.Email = dto.Email;
+            user.Role = dto.Role;
+
+            if (!string.IsNullOrWhiteSpace(dto.Password))
             {
-                user.Password = BCrypt.Net.BCrypt.HashPassword(appUserDTO.Password);
+                user.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
             }
 
             context.Users.Update(user);

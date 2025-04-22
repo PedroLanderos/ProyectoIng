@@ -51,12 +51,20 @@ const ManageUsers = () => {
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`${API_BASE_URL}/authentication`, editingUser, {
+      const payload = { ...editingUser };
+
+      // ⚠️ Eliminar la contraseña si está vacía
+      if (!payload.password || payload.password.trim() === "") {
+        delete payload.password;
+      }
+
+      const response = await axios.put(`${API_BASE_URL}/authentication`, payload, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.token}`,
         },
       });
+
       if (response.status === 200 || response.status === 201) {
         setMessage("✅ Usuario actualizado exitosamente.");
         setEditingUser(null);

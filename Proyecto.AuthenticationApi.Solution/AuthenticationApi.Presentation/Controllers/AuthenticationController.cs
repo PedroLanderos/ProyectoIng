@@ -55,15 +55,15 @@ namespace AuthenticationApi.Presentation.Controllers
 
         [HttpPut]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Response>> EditUser(AppUserDTO appUserDTO)
+        public async Task<ActionResult<Response>> EditUser(EditUserDTO dto)
         {
-            if (appUserDTO.Id <= 0)
+            if (dto.Id <= 0)
                 return BadRequest("Invalid user ID");
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await userInterface.EditUserById(appUserDTO);
+            var result = await userInterface.EditUserById(dto);
             return result.Flag ? Ok(result) : BadRequest(result);
         }
     }
