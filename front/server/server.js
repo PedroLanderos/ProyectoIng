@@ -5,47 +5,66 @@ const fs = require("fs");
 const sharp = require("sharp");
 
 const app = express();
-const PORT = 50005; // Servidor para imágenes
+const PORT = 50005;
 
-// 📁 Carpeta donde se guardarán las imágenes
-const uploadDir = path.join(__dirname, "../proyectoFront/public/user_profiles");
+// 📁 Ruta donde se guardarán las imágenes procesadas
+const uploadFolder = path.join(__dirname, "../proyectoFront/public/user_profiles");
 
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+// Asegurarse que la carpeta exista
+if (!fs.existsSync(uploadFolder)) {
+  fs.mkdirSync(uploadFolder, { recursive: true });
 }
 
-// 🎯 Configuración de Multer para subir archivos
+// ⚙️ Configuración de Multer para archivos temporales
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadDir);
+    const tempPath = path.join(__dirname, "temp");
+    if (!fs.existsSync(tempPath)) {
+      fs.mkdirSync(tempPath, { recursive: true });
+    }
+    cb(null, tempPath);
   },
   filename: (req, file, cb) => {
-    const userId = req.params.userId;
-    cb(null, `user_${userId}.png`); // Nombre fijo por usuario
+    const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, `${unique}${path.extname(file.originalname)}`);
   },
 });
 
 const upload = multer({ storage });
 
-// 📤 Ruta para subir imagen de perfil de usuario
-app.post("/upload-profile/:userId", upload.single("image"), async (req, res) => {
+// 📤 Ruta para subir imagen del usuario
+app.post("/upload/:userId", upload.single("image"), async (req, res) => {
   const userId = req.params.userId;
-  const outputFilePath = path.join(uploadDir, `user_${userId}.png`);
 
   if (!req.file) {
     return res.status(400).json({ message: "No se subió ninguna imagen." });
   }
 
+  const tempFilePath = req.file.path;
+  const outputFilePath = path.join(uploadFolder, `user_${userId}.png`);
+
   try {
-    // Validar tipo
     const mimeType = req.file.mimetype;
     if (!["image/jpeg", "image/png", "image/webp"].includes(mimeType)) {
-      fs.unlinkSync(req.file.path);
+      fs.unlinkSync(tempFilePath);
       return res.status(400).json({ message: "Formato de imagen no soportado." });
     }
 
-    // Convertir y guardar como PNG
-    await sharp(req.file.path).resize(300, 300).png().toFile(outputFilePath);
+    // 🔧 Procesar y guardar imagen
+    await sharp(tempFilePath)
+      .resize(300, 300) // opcional: tamaño estándar
+      .png({ quality: 80 })
+      .toFile(outputFilePath);
+
+    // 🧹 Borrar temporal
+    setTimeout(() => {
+      try {
+        fs.unlinkSync(tempFilePath);
+        console.log("🧹 Temporal eliminado:", tempFilePath);
+      } catch (err) {
+        console.error("⚠️ Error al eliminar temp:", err.message);
+      }
+    }, 100);
 
     res.json({ filePath: `/user_profiles/user_${userId}.png` });
   } catch (error) {
@@ -54,10 +73,9 @@ app.post("/upload-profile/:userId", upload.single("image"), async (req, res) => 
   }
 });
 
-// 📥 Servir imágenes públicamente
-app.use("/user_profiles", express.static(uploadDir));
+// 🌐 Servir imágenes procesadas
+app.use("/user_profiles", express.static(path.join(__dirname, "../proyectoFront/public/user_profiles")));
 
-// 🚀 Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`🖼️ Servidor de imágenes corriendo en http://localhost:${PORT}`);
 });
