@@ -10,10 +10,10 @@ export const AuthProvider = ({ children }) => {
     user: null,
   });
 
-  // 🔁 Verifica la sesión guardada en sessionStorage
+  // ✅ Verifica si hay sesión persistida
   const checkSession = () => {
-    const token = sessionStorage.getItem("token");
-    const user = JSON.parse(sessionStorage.getItem("user"));
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
 
     if (token && user) {
       setAuth({
@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }) => {
     checkSession();
   }, []);
 
-  // 🔐 Login y decodificación del token
   const login = (token) => {
     if (!token || typeof token !== "string") {
       console.error("Token inválido al intentar decodificar:", token);
@@ -41,7 +40,6 @@ export const AuthProvider = ({ children }) => {
       const decodedToken = jwtDecode(token);
       console.log("🔍 Token decodificado:", decodedToken);
 
-      // 🧠 Decodifica el usuario
       const user = {
         id: decodedToken.UserId ? parseInt(decodedToken.UserId, 10) : null,
         name:
@@ -58,9 +56,9 @@ export const AuthProvider = ({ children }) => {
           "Normal",
       };
 
-      // 💾 Guardar en sesión
-      sessionStorage.setItem("token", token);
-      sessionStorage.setItem("user", JSON.stringify(user));
+      // 💾 Guardar en localStorage para persistencia entre pestañas
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
       setAuth({
         isAuthenticated: true,
@@ -75,10 +73,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 🔓 Logout
   const logout = () => {
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setAuth({ isAuthenticated: false, token: null, user: null });
   };
 

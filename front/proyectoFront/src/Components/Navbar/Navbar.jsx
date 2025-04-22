@@ -8,6 +8,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [imageError, setImageError] = useState(false);
 
   const handleLogout = () => {
     if (window.confirm("¿Quieres cerrar sesión?")) {
@@ -20,6 +21,15 @@ const Navbar = () => {
     navigate("/UserProfile");
     setDropdownOpen(false);
   };
+
+  const handleViewHistory = () => {
+    navigate(`/UserHistory/${auth.user.id}`);
+    setDropdownOpen(false);
+  };
+
+  const imageUrl = auth?.user?.id
+    ? `http://localhost:5006/user_profiles/user_${auth.user.id}.png`
+    : null;
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -59,11 +69,21 @@ const Navbar = () => {
                   onClick={() => setDropdownOpen((prev) => !prev)}
                   title={`Opciones de ${auth.user.name}`}
                 >
-                  {auth.user?.name?.charAt(0).toUpperCase() || "U"}
+                  {imageUrl && !imageError ? (
+                    <img
+                      src={imageUrl}
+                      alt="Perfil"
+                      onError={() => setImageError(true)}
+                    />
+                  ) : (
+                    auth.user?.name?.charAt(0).toUpperCase() || "U"
+                  )}
                 </div>
+
                 {dropdownOpen && (
                   <div className="user-dropdown">
                     <button onClick={handleProfile}>⚙️ Configuración</button>
+                    <button onClick={handleViewHistory}>📜 Ver historial</button>
                     <button onClick={handleLogout}>🚪 Cerrar sesión</button>
                   </div>
                 )}

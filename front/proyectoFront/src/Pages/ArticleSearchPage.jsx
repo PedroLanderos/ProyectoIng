@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './CSS/ArticleSearchPage.css';
 import { ARTICLES_API } from '../config/apiConfig';
@@ -16,31 +16,36 @@ const ArticleSearchPage = () => {
   const [searchCooldown, setSearchCooldown] = useState(false);
 
   const location = useLocation();
+  const navigate = useNavigate();
+
   const queryParams = new URLSearchParams(location.search);
   const initialQuery = queryParams.get("query") || "";
   const initialAuthor = queryParams.get("author") || "";
 
   const pageSize = 10;
 
+  // 🔁 Detectar navegación con nuevos parámetros
   useEffect(() => {
-    const saved = sessionStorage.getItem("articleSearchState");
-    if (saved) {
-      const { articles, total, query, author, page } = JSON.parse(saved);
-      setArticles(articles || []);
-      setTotal(total || 0);
-      setQuery(query || "");
-      setAuthor(author || "");
-      setPage(page || 1);
-      setHasMore(true);
-    } else {
-      setQuery(initialQuery);
-      setAuthor(initialAuthor);
-      setPage(1);
-      setHasMore(true);
-      setArticles([]);
-    }
-  }, [initialQuery, initialAuthor]);
+    sessionStorage.removeItem("articleSearchState");
 
+    setQuery(initialQuery);
+    setAuthor(initialAuthor);
+    setPage(1);
+    setArticles([]);
+    setHasMore(true);
+  }, [location.key]);
+
+  // 🔁 Actualizar URL cuando cambian los inputs
+  useEffect(() => {
+    const newParams = new URLSearchParams();
+    if (query) newParams.set("query", query);
+    if (author) newParams.set("author", author);
+
+    const newUrl = `/SearchArticle?${newParams.toString()}`;
+    window.history.replaceState(null, "", newUrl);
+  }, [query, author]);
+
+  // 🔍 Buscar artículos
   const fetchResults = useCallback(async (isNewSearch = false) => {
     if (loading || rateLimited || (!hasMore && !isNewSearch)) return;
     setLoading(true);
@@ -68,7 +73,7 @@ const ArticleSearchPage = () => {
       setArticles(combined);
       setTotal(response.data.totalHits || 0);
       setPage(nextPage + 1);
-      setHasMore((nextPage) * pageSize < (response.data.totalHits || 0));
+      setHasMore(nextPage * pageSize < (response.data.totalHits || 0));
     } catch (error) {
       console.error("❌ Error fetching articles:", error);
       if (error.response?.status === 429) {
@@ -83,6 +88,13 @@ const ArticleSearchPage = () => {
 
     setLoading(false);
   }, [query, author, page, articles, hasMore, rateLimited, loading]);
+
+  // 🚀 Ejecutar automáticamente cuando hay query/author
+  useEffect(() => {
+    if (query || author) {
+      fetchResults(true);
+    }
+  }, [query, author, fetchResults]);
 
   const handleSearch = () => {
     if (searchCooldown) {

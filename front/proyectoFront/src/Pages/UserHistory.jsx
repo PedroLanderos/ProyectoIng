@@ -27,7 +27,7 @@ const UserHistory = () => {
     if (!confirm) return;
 
     try {
-      const response = await axios.delete(`${SUGGEST_API}/UserData/history/${activityId}`);
+      await axios.delete(`${SUGGEST_API}/UserData/history/${activityId}`);
       setMessage("✅ Actividad eliminada correctamente.");
       fetchHistory(); // recargar historial
     } catch (err) {
@@ -63,7 +63,16 @@ const UserHistory = () => {
               {history.map((item) => (
                 <tr key={item.id}>
                   <td>{item.id}</td>
-                  <td>{item.articleId}</td>
+                  <td>
+                    <a
+                      href={`/ArticleDetail/${item.articleId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: '#0077cc', textDecoration: 'underline' }}
+                    >
+                      {item.articleId}
+                    </a>
+                  </td>
                   <td>{item.isFavorite ? "⭐ Sí" : "No"}</td>
                   <td>
                     <button

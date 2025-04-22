@@ -94,10 +94,19 @@
   border-radius: 50%;
   cursor: pointer;
   transition: background 0.3s ease;
+  overflow: hidden; /* Asegura que la imagen no se salga del círculo */
 }
 
 .user-icon:hover {
   background-color: #ffd1dc;
+}
+
+/* Imagen dentro del ícono */
+.user-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 /* Dropdown del usuario */
