@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   authenticationapiservice:
     build:
@@ -14,7 +15,7 @@ services:
     networks:
       - my_network
     restart: on-failure
-    
+
   articlesapiservice:
     build:
       context: .
@@ -29,7 +30,7 @@ services:
     networks:
       - my_network
     restart: on-failure
-  
+
   suggestionapiservice:
     build:
       context: .
@@ -44,7 +45,7 @@ services:
     networks:
       - my_network
     restart: on-failure
-  
+
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
@@ -53,7 +54,7 @@ services:
     ports:
       - "1433:1433"
     volumes:
-      - sqlvolume:/var/opt/mssql 
+      - sqlvolume:/var/opt/mssql
     networks:
       - my_network
 
@@ -62,7 +63,7 @@ services:
       context: .
       dockerfile: Proyecto.ApiGateway.Solution/ApiGateway.Presentation/Dockerfile
     ports:
-      - 5003:5003
+      - "5003:5003"
     depends_on:
       - authenticationapiservice
       - articlesapiservice
@@ -74,7 +75,7 @@ services:
     networks:
       - my_network
     restart: on-failure
-  
+
   frontend:
     container_name: dockerwdb-frontend
     build:
@@ -85,8 +86,20 @@ services:
     depends_on:
       - authenticationapiservice
       - suggestionapiservice
-      - articlesapiservice  
+      - articlesapiservice
       - apigateway
+    networks:
+      - my_network
+    restart: always
+
+  profileimageservice:
+    build:
+      context: ./front/server
+      dockerfile: Dockerfile
+    ports:
+      - "5006:5006"  
+    volumes:
+      - ./front/proyectoFront/public/user_profiles:/app/../proyectoFront/public/user_profiles
     networks:
       - my_network
     restart: always
