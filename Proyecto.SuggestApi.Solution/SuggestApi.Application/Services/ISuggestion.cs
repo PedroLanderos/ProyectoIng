@@ -10,5 +10,7 @@ namespace SuggestApi.Application.Services
     public interface ISuggestion
     {
         Task<IEnumerable<ArticleDTO>> GetRecommendations(int userId);
+        Task<string> PingAuthentication();   
+        Task<string> PingArticles();
     }
 }

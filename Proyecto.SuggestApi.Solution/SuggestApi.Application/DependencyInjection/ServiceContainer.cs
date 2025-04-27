@@ -12,16 +12,16 @@ namespace SuggestApi.Application.DependencyInjection
     {
         public static IServiceCollection AddApplicationService(this IServiceCollection services, IConfiguration config)
         {
-            // 🔹 HttpClient para IArticles (ruta directa al microservicio de artículos)
+            // HttpClient para IArticles apuntando al API Gateway
             services.AddHttpClient<IArticles, Article>(client =>
             {
-                client.BaseAddress = new Uri("http://articlesapiservice:5002"); 
+                client.BaseAddress = new Uri("http://apigateway:5003/api/article/");
             });
 
-            // 🔹 HttpClient para ISuggestion (ruta directa al microservicio de autenticación)
+            // HttpClient para ISuggestion apuntando al API Gateway
             services.AddHttpClient<ISuggestion, Suggestion>(client =>
             {
-                client.BaseAddress = new Uri("http://authenticationapiservice:5000"); 
+                client.BaseAddress = new Uri("http://apigateway:5003/api/authentication/");
             });
 
             return services;

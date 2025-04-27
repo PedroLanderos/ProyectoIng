@@ -151,6 +151,18 @@
       ],
       "UpstreamPathTemplate": "/api/userdata/favorites/{userId}/check/{articleId}",
       "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/userdata/ping",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "suggestionapiservice",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/userdata/ping",
+      "UpstreamHttpMethod": [ "GET" ]
     }
   ],
   "GlobalConfiguration": {

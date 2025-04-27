@@ -19,7 +19,7 @@ namespace SuggestApi.Application.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync($"/api/article/{id}");
+                var response = await _httpClient.GetAsync($"{id}");
                 if (!response.IsSuccessStatusCode) return new List<ArticleDTO>();
 
                 var json = await response.Content.ReadAsStringAsync();
@@ -39,13 +39,12 @@ namespace SuggestApi.Application.Services
             {
                 var query = string.Join(" ", fieldsToSearch.Where(f => !string.IsNullOrWhiteSpace(f)));
 
-                // 🛡️ Limitar longitud y codificar
                 if (query.Length > 300)
                     query = query[..300];
 
                 var encodedQuery = Uri.EscapeDataString(query);
 
-                var response = await _httpClient.GetAsync($"/api/article/search?query={encodedQuery}&page=1&pageSize=5");
+                var response = await _httpClient.GetAsync($"search?query={encodedQuery}&page=1&pageSize=5");
                 response.EnsureSuccessStatusCode();
 
                 var json = await response.Content.ReadAsStringAsync();
@@ -55,7 +54,7 @@ namespace SuggestApi.Application.Services
             catch (Exception ex)
             {
                 LogException.LogExceptions(ex);
-                return new List<ArticleDTO>(); 
+                return new List<ArticleDTO>();
             }
         }
     }

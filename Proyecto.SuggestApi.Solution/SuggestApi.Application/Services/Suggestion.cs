@@ -5,11 +5,22 @@ using System.Net.Http.Json;
 
 namespace SuggestApi.Application.Services
 {
-    public class Suggestion(HttpClient client, ISearchHistory _searchHistoryRepository, IArticles _articlesService) : ISuggestion
+    public class Suggestion : ISuggestion
     {
+        private readonly HttpClient _client;
+        private readonly ISearchHistory _searchHistoryRepository;
+        private readonly IArticles _articlesService;
+
+        public Suggestion(HttpClient client, ISearchHistory searchHistoryRepository, IArticles articlesService)
+        {
+            _client = client;
+            _searchHistoryRepository = searchHistoryRepository;
+            _articlesService = articlesService;
+        }
+
         public async Task<UserDTO> Getuser(int userId)
         {
-            var getuser = await client.GetAsync($"/api/authentication/{userId}");
+            var getuser = await _client.GetAsync($"{userId}");
             if (!getuser.IsSuccessStatusCode)
                 return null!;
 
@@ -58,7 +69,7 @@ namespace SuggestApi.Application.Services
 
                 var result = recommendedArticles
                     .DistinctBy(a => a.Id)
-                    .Take(3) // 🔥 Solo 3 recomendaciones
+                    .Take(3)
                     .Select(a => new ArticleDTO
                     {
                         Id = a.Id,
@@ -70,7 +81,6 @@ namespace SuggestApi.Application.Services
                         ViewUrl = a.ViewUrl,
                         Subjects = a.Subjects,
                         Links = a.Links
-                        // ❌ No se incluye FullText
                     })
                     .ToList();
 
@@ -106,6 +116,52 @@ namespace SuggestApi.Application.Services
                 fields.AddRange(article.Subjects.Where(s => !string.IsNullOrWhiteSpace(s)));
 
             return fields.Take(3).ToList();
+        }
+
+        public async Task<string> PingAuthentication()
+        {
+            try
+            {
+                var response = await _client.GetAsync("");
+                if (response.IsSuccessStatusCode)
+                {
+                    LogException.LogToConsole("✅ AuthenticationApi reachable from SuggestionApi");
+                    return "AuthenticationApi reachable ✅";
+                }
+                else
+                {
+                    LogException.LogToConsole($"❌ AuthenticationApi unreachable. Status: {response.StatusCode}");
+                    return $"AuthenticationApi unreachable ❌ (Status: {response.StatusCode})";
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException.LogExceptions(ex);
+                return $"AuthenticationApi unreachable ❌ ({ex.Message})";
+            }
+        }
+
+        public async Task<string> PingArticles()
+        {
+            try
+            {
+                var response = await _articlesService.GetArticleAsync("test-id"); // Intenta pedir un artículo dummy
+                if (response.Any())
+                {
+                    LogException.LogToConsole("✅ ArticlesApi reachable from SuggestionApi");
+                    return "ArticlesApi reachable ✅";
+                }
+                else
+                {
+                    LogException.LogToConsole("⚠️ ArticlesApi responded but no articles found.");
+                    return "ArticlesApi responded ⚠️";
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException.LogExceptions(ex);
+                return $"ArticlesApi unreachable ❌ ({ex.Message})";
+            }
         }
     }
 }

@@ -208,5 +208,30 @@ namespace SuggestiApi.Presentation.Controllers
             }
         }
 
+        //prueba para ver si los servicios se pueden comunicar con el api gateway
+        [HttpGet("ping")]
+        public async Task<IActionResult> Ping()
+        {
+            try
+            {
+                // Probar comunicación con AuthenticationApi
+                var authResponse = await _suggestionService.PingAuthentication();
+
+                // Probar comunicación con ArticlesApi
+                var articlesResponse = await _suggestionService.PingArticles();
+
+                return Ok(new
+                {
+                    AuthenticationStatus = authResponse,
+                    ArticlesStatus = articlesResponse
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ping error: {ex.Message}");
+            }
+        }
+
+
     }
 }
