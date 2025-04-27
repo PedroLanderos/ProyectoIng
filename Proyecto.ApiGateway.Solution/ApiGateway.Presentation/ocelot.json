@@ -41,7 +41,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/Article/search",
+      "DownstreamPathTemplate": "/api/article/search",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -49,11 +49,11 @@
           "Port": 5002
         }
       ],
-      "UpstreamPathTemplate": "/api/articles/search",
+      "UpstreamPathTemplate": "/api/article/search",
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
-      "DownstreamPathTemplate": "/api/Article/{id}",
+      "DownstreamPathTemplate": "/api/article/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -61,11 +61,11 @@
           "Port": 5002
         }
       ],
-      "UpstreamPathTemplate": "/api/articles/{id}",
+      "UpstreamPathTemplate": "/api/article/{id}",
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
-      "DownstreamPathTemplate": "/api/Article/{everything}",
+      "DownstreamPathTemplate": "/api/article/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -73,7 +73,7 @@
           "Port": 5002
         }
       ],
-      "UpstreamPathTemplate": "/api/articles/{everything}",
+      "UpstreamPathTemplate": "/api/article/{everything}",
       "UpstreamHttpMethod": [ "POST", "PUT", "DELETE" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
@@ -81,7 +81,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/UserData/recommendations/{userId}",
+      "DownstreamPathTemplate": "/api/userdata/recommendations/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -89,11 +89,11 @@
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/api/suggestion/recommendations/{userId}",
+      "UpstreamPathTemplate": "/api/userdata/recommendations/{userId}",
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
-      "DownstreamPathTemplate": "/api/UserData/history/{userId}",
+      "DownstreamPathTemplate": "/api/userdata/history/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -101,11 +101,11 @@
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/api/suggestion/history/{userId}",
+      "UpstreamPathTemplate": "/api/userdata/history/{userId}",
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
-      "DownstreamPathTemplate": "/api/UserData/history/{id}",
+      "DownstreamPathTemplate": "/api/userdata/history/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -113,11 +113,11 @@
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/api/suggestion/history/{id}",
+      "UpstreamPathTemplate": "/api/userdata/history/{id}",
       "UpstreamHttpMethod": [ "DELETE", "PUT" ]
     },
     {
-      "DownstreamPathTemplate": "/api/UserData/history",
+      "DownstreamPathTemplate": "/api/userdata/history",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -125,11 +125,11 @@
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/api/suggestion/history",
+      "UpstreamPathTemplate": "/api/userdata/history",
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
-      "DownstreamPathTemplate": "/api/UserData/favorites/{userId}",
+      "DownstreamPathTemplate": "/api/userdata/favorites/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -137,11 +137,11 @@
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/api/suggestion/favorites/{userId}",
+      "UpstreamPathTemplate": "/api/userdata/favorites/{userId}",
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
-      "DownstreamPathTemplate": "/api/UserData/favorites/{userId}/check/{articleId}",
+      "DownstreamPathTemplate": "/api/userdata/favorites/{userId}/check/{articleId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -149,7 +149,7 @@
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/api/suggestion/favorites/{userId}/check/{articleId}",
+      "UpstreamPathTemplate": "/api/userdata/favorites/{userId}/check/{articleId}",
       "UpstreamHttpMethod": [ "GET" ]
     }
   ],

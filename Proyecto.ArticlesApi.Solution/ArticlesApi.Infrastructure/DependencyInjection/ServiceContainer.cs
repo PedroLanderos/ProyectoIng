@@ -2,6 +2,7 @@
 using ArticlesApi.Application.Services;
 using ArticlesApi.Infrastructure.Infrastructure;
 using Llaveremos.SharedLibrary.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -24,6 +25,12 @@ namespace ArticlesApi.Infrastructure.DependencyInjection
 
             
             return services;
+        }
+
+        public static IApplicationBuilder UseInfrastructurePolicy(this IApplicationBuilder app)
+        {
+            SharedServiceContainer.UseSharedPolicies(app);
+            return app;
         }
     }
 }
