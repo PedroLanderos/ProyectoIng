@@ -41,7 +41,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/articles/search",
+      "DownstreamPathTemplate": "/api/Article/search",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -53,7 +53,7 @@
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
-      "DownstreamPathTemplate": "/api/articles/{id}",
+      "DownstreamPathTemplate": "/api/Article/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -65,7 +65,7 @@
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
-      "DownstreamPathTemplate": "/api/articles/{everything}",
+      "DownstreamPathTemplate": "/api/Article/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -81,7 +81,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/suggestion/recommendations/{userId}",
+      "DownstreamPathTemplate": "/api/UserData/recommendations/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -93,7 +93,7 @@
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
-      "DownstreamPathTemplate": "/api/suggestion/history/{userId}",
+      "DownstreamPathTemplate": "/api/UserData/history/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -105,7 +105,7 @@
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
-      "DownstreamPathTemplate": "/api/suggestion/history/{id}",
+      "DownstreamPathTemplate": "/api/UserData/history/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -114,10 +114,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/suggestion/history/{id}",
-      "UpstreamHttpMethod": [ "DELETE" ]
+      "UpstreamHttpMethod": [ "DELETE", "PUT" ]
     },
     {
-      "DownstreamPathTemplate": "/api/suggestion/history",
+      "DownstreamPathTemplate": "/api/UserData/history",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -129,7 +129,7 @@
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
-      "DownstreamPathTemplate": "/api/suggestion/history/{id}",
+      "DownstreamPathTemplate": "/api/UserData/favorites/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -137,11 +137,23 @@
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/api/suggestion/history/{id}",
-      "UpstreamHttpMethod": [ "PUT" ]
+      "UpstreamPathTemplate": "/api/suggestion/favorites/{userId}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/UserData/favorites/{userId}/check/{articleId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "suggestionapiservice",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/suggestion/favorites/{userId}/check/{articleId}",
+      "UpstreamHttpMethod": [ "GET" ]
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:5003"
+    "BaseUrl": "http://localhost:5003"
   }
 }
