@@ -11,19 +11,21 @@ builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange
 builder.Services.AddOcelot().AddCacheManager(x => x.WithDictionaryHandle());
 JWTAuthenticationScheme.AddJWTSchemeCollection(builder.Services, builder.Configuration);
 
-builder.Services.AddCors(
-    options => {
-        options.AddDefaultPolicy(
-            builder =>
-            {
-                builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
-            });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") 
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); 
     });
+});
 
 var app = builder.Build();
 
 app.UseHttpsRedirection();
-app.UseCors();
+app.UseCors("AllowFrontend");
 app.UseMiddleware<AttachSignatureToRequest>();
 app.UseOcelot().Wait();
 app.Run();
