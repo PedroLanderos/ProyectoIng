@@ -37,7 +37,7 @@ const Sections = () => {
   };
 
   return (
-    <div>
+    <>
       {sectionsData.map((section, idx) => (
         <SectionBlock
           key={idx}
@@ -46,7 +46,7 @@ const Sections = () => {
           onArticleClick={(id) => navigate(`/ArticleDetail/${id}`)}
         />
       ))}
-    </div>
+    </>
   );
 };
 

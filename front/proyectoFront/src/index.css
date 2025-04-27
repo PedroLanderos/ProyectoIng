@@ -11,3 +11,62 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.footer,
+#root > :nth-child(2),
+#root > :nth-child(2) > *:not(.content-wrapper),
+.history-table th{
+  transition: all 0.3s ease;
+}
+
+body.dark,
+body.dark .footer,
+body.dark > #root > :nth-child(2){
+  /* background: #121212; */
+  background: #23272f;
+  color: white;
+}
+
+body.dark > #root > :nth-child(2) > *:not(.content-wrapper){
+  background-color: #16181d;
+  color: white;
+  border-bottom: 1px solid #3e3e3e;
+}
+
+body.dark .resource-links{
+  border-bottom: 3px solid #f25400;
+  border-top: 1px solid #3e3e3e;
+}
+
+body.dark .history-table th{
+  background-color: #16181d;
+}
+
+body.dark .section-column p,
+body.dark .recommended-section p{
+  color: #cccccc;
+}
+
+body.dark .loginSignup-container h1{
+  color: #d2d2d2;
+}
+
+body.dark .resource-column h3{
+  color: #eeeeee;
+}
+
+body.dark .result-meta{
+  color: #bbbbbb;
+}
+
+body.dark .result-subtitle{
+  color: #aaaaaa;
+}
+
+body.dark .loginSignup-toggle{
+  color : #939393;
+}
+
+body {
+  transition: all 0.3s ease;
+}

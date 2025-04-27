@@ -9,6 +9,10 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [imageError, setImageError] = useState(false);
+  const [ theme, setTheme] = useState(() => {
+    let t = localStorage.getItem("theme");
+    return (localStorage.getItem("theme") != undefined)?t:'light';
+  });
 
   const handleLogout = () => {
     if (window.confirm("¿Quieres cerrar sesión?")) {
@@ -32,6 +36,8 @@ const Navbar = () => {
     : null;
 
   useEffect(() => {
+    if(theme == 'dark') document.body.classList.add('dark');
+
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false);
@@ -51,6 +57,17 @@ const Navbar = () => {
         </div>
 
         <div className="nav-right">
+          <img src = {theme == 'light'?"/darkThemeIcon.svg":"/lightThemeIcon.svg"}
+               width="40" height="40"
+               alt = "Cambiar tema (light/dark)"
+               onClick = {() => {
+                let newTheme = theme == 'light'?'dark':'light';
+                localStorage.setItem("theme", newTheme);
+                document.body.classList.toggle("dark");
+                setTheme(newTheme);
+               }}
+          />
+
           <Link to="/SearchArticle" className="nav-link">
             Artículos
           </Link>
