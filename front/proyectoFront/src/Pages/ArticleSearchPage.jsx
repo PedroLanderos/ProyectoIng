@@ -101,6 +101,12 @@ const ArticleSearchPage = () => {
     fetchResults(true);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  }
+
   return (
     <div className="article-search-page">
       <div className="article-results-wrapper">
@@ -115,6 +121,7 @@ const ArticleSearchPage = () => {
             placeholder="Buscar por tema o título"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
           <input
             className="article-search-input"
@@ -122,6 +129,7 @@ const ArticleSearchPage = () => {
             placeholder="Buscar por autor"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
           <button className="search-button" onClick={handleSearch}>
             🔍 Buscar
