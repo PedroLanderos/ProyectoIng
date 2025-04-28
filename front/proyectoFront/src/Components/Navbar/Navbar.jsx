@@ -51,6 +51,10 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="nav-container">
         <div className="nav-left">
+          <img src = "/logoTrans.png"
+                width="32" height="32"
+                alt = "Logo"
+          />
           <Link to="/MainPage" className="nav-title">
             SciFind
           </Link>

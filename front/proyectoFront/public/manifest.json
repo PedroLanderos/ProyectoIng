@@ -29,6 +29,11 @@
       "src": "logo.png",
       "type": "image/png",
       "sizes": "365x381"
+    },
+    {
+      "src": "logoTrans.png",
+      "type": "image/png",
+      "sizes": "365x381"
     }
   ],
   "start_url": ".",

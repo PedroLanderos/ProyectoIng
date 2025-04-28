@@ -3,6 +3,7 @@
     font-family: "Arial", sans-serif;
     background: #f9f9f9;
     min-height: 100vh;
+    transition: all 0.3s ease;
   }
 
 body.dark .manage-users {
@@ -25,6 +26,7 @@ body.dark .manage-users {
     border-collapse: collapse;
     background: white;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
   }
   
   body.dark .user-table {
@@ -42,6 +44,7 @@ body.dark .manage-users {
   .user-table th {
     background: #f4f4f4;
     font-weight: bold;
+    transition: all 0.3s ease;
   }
 
   body.dark .user-table th{
@@ -68,6 +71,12 @@ body.dark .manage-users {
     background: white;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  body.dark .edit-user-container {
+    background: #23272f;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
   }
   
   .edit-user-container h2 {
