@@ -32,8 +32,8 @@ namespace SuggestApi.Application.Services
         {
             try
             {
-                var userExists = await Getuser(userId);
-                if (userExists is null) return new List<ArticleDTO>();
+                //var userExists = await Getuser(userId);
+                //if (userExists is null) return new List<ArticleDTO>();
 
                 var userActivities = await _searchHistoryRepository.GetByCriteriaAsync(x => x.UserId == userId);
                 if (!userActivities.Any()) return new List<ArticleDTO>();
@@ -145,7 +145,7 @@ namespace SuggestApi.Application.Services
         {
             try
             {
-                var response = await _articlesService.GetArticleAsync("test-id"); // Intenta pedir un artículo dummy
+                var response = await _articlesService.GetArticleAsync("test-id");
                 if (response.Any())
                 {
                     LogException.LogToConsole("✅ ArticlesApi reachable from SuggestionApi");

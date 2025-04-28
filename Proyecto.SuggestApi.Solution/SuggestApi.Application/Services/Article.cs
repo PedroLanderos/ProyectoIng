@@ -20,7 +20,15 @@ namespace SuggestApi.Application.Services
             try
             {
                 var response = await _httpClient.GetAsync($"{id}");
-                if (!response.IsSuccessStatusCode) return new List<ArticleDTO>();
+
+                Console.WriteLine($"🔍 Intentando obtener artículo {id} - StatusCode: {response.StatusCode}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"⚠️ Error al obtener artículo: {errorContent}");
+                    return new List<ArticleDTO>();
+                }
 
                 var json = await response.Content.ReadAsStringAsync();
                 var article = JsonConvert.DeserializeObject<ArticleDTO>(json);

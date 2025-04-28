@@ -5,10 +5,6 @@ using SuggestApi.Application.Interfaces;
 using SuggestApi.Application.Mappers;
 using SuggestApi.Application.Services;
 using SuggestApi.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SuggestiApi.Presentation.Controllers
 {
@@ -25,9 +21,6 @@ namespace SuggestiApi.Presentation.Controllers
             _searchHistoryService = searchHistoryService;
         }
 
-        #region **Recomendaciones**
-
-        // Endpoint para obtener recomendaciones basadas en el historial del usuario
         [HttpGet("recommendations/{userId}")]
         public async Task<ActionResult<IEnumerable<ArticleDTO>>> GetRecommendations(int userId)
         {
@@ -48,17 +41,11 @@ namespace SuggestiApi.Presentation.Controllers
             }
         }
 
-        #endregion
-
-        #region **Historial de Actividades**
-
-        // Endpoint para obtener el historial de actividades de un usuario
         [HttpGet("history/{userId}")]
         public async Task<ActionResult<IEnumerable<UserActivityDTO>>> GetUserHistory(int userId)
         {
             try
             {
-                // Obtener historial de búsquedas del usuario (artículos visitados)
                 var userHistory = await _searchHistoryService.GetByCriteriaAsync(x => x.UserId == userId);
 
                 if (userHistory == null || !userHistory.Any())
@@ -75,7 +62,6 @@ namespace SuggestiApi.Presentation.Controllers
             }
         }
 
-        // Endpoint para eliminar una actividad del historial de un usuario
         [HttpDelete("history/{id}")]
         public async Task<ActionResult> DeleteUserHistory(int id)
         {
@@ -103,20 +89,13 @@ namespace SuggestiApi.Presentation.Controllers
             }
         }
 
-        #endregion
-
-        #region **Guardar Actividad**
-
-        // Endpoint para guardar una nueva actividad del usuario (por ejemplo, un artículo marcado como favorito)
         [HttpPost("history")]
         public async Task<ActionResult> SaveUserHistory([FromBody] UserActivityDTO userActivityDTO)
         {
             try
             {
-                // Mapear el DTO a la entidad
                 var userActivity = UserActivityMapper.ToEntity(userActivityDTO);
 
-                // Guardar la actividad del usuario
                 var response = await _searchHistoryService.SaveAsync(userActivity);
 
                 if (!response.Flag)
@@ -132,25 +111,16 @@ namespace SuggestiApi.Presentation.Controllers
             }
         }
 
-        #endregion
-
-        #region **Editar Actividad**
-
-        // Endpoint para editar una actividad del historial del usuario
         [HttpPut("history/{id}")]
         public async Task<ActionResult> EditUserHistory(int id, [FromBody] UserActivityDTO userActivityDTO)
         {
             try
             {
                 if (id != userActivityDTO.Id)
-                {
                     return BadRequest("ID mismatch");
-                }
 
-                // Mapear el DTO a la entidad
                 var userActivity = UserActivityMapper.ToEntity(userActivityDTO);
 
-                // Editar la actividad del usuario
                 var response = await _searchHistoryService.EditAsync(userActivity);
 
                 if (!response.Flag)
@@ -165,8 +135,6 @@ namespace SuggestiApi.Presentation.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-
-        #endregion
 
         [HttpGet("favorites/{userId}")]
         public async Task<ActionResult<IEnumerable<UserActivityDTO>>> GetFavorites(int userId)
@@ -208,16 +176,12 @@ namespace SuggestiApi.Presentation.Controllers
             }
         }
 
-        //prueba para ver si los servicios se pueden comunicar con el api gateway
         [HttpGet("ping")]
         public async Task<IActionResult> Ping()
         {
             try
             {
-                // Probar comunicación con AuthenticationApi
                 var authResponse = await _suggestionService.PingAuthentication();
-
-                // Probar comunicación con ArticlesApi
                 var articlesResponse = await _suggestionService.PingArticles();
 
                 return Ok(new
@@ -231,7 +195,5 @@ namespace SuggestiApi.Presentation.Controllers
                 return StatusCode(500, $"Ping error: {ex.Message}");
             }
         }
-
-
     }
 }
