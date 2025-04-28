@@ -52,7 +52,7 @@ const Navbar = () => {
       <div className="nav-container">
         <div className="nav-left">
           <Link to="/MainPage" className="nav-title">
-            Buscador de Artículos
+            SciFind
           </Link>
         </div>
 
