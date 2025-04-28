@@ -9,9 +9,9 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [imageError, setImageError] = useState(false);
-  const [ theme, setTheme] = useState(() => {
-    let t = localStorage.getItem("theme");
-    return (localStorage.getItem("theme") != undefined)?t:'light';
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem("theme");
+    return savedTheme ? savedTheme : "light";
   });
 
   const handleLogout = () => {
@@ -36,7 +36,11 @@ const Navbar = () => {
     : null;
 
   useEffect(() => {
-    if(theme == 'dark') document.body.classList.add('dark');
+    if (theme === "dark") {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
 
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -45,15 +49,23 @@ const Navbar = () => {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [theme]); // 👈 Agregado theme como dependencia
+
+  const handleThemeToggle = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    localStorage.setItem("theme", newTheme);
+    setTheme(newTheme);
+  };
 
   return (
     <nav className="navbar">
       <div className="nav-container">
         <div className="nav-left">
-          <img src = "/logoTrans.png"
-                width="32" height="32"
-                alt = "Logo"
+          <img
+            src="/logoTrans.png"
+            width="32"
+            height="32"
+            alt="Logo"
           />
           <Link to="/MainPage" className="nav-title">
             SciFind
@@ -61,15 +73,17 @@ const Navbar = () => {
         </div>
 
         <div className="nav-right">
-          <img src = {theme == 'light'?"/darkThemeIcon.svg":"/lightThemeIcon.svg"}
-               width="40" height="40"
-               alt = "Cambiar tema (light/dark)"
-               onClick = {() => {
-                let newTheme = theme == 'light'?'dark':'light';
-                localStorage.setItem("theme", newTheme);
-                document.body.classList.toggle("dark");
-                setTheme(newTheme);
-               }}
+          <img
+            src={theme === "light" ? "/darkThemeIcon.svg" : "/lightThemeIcon.svg"}
+            width="40"
+            height="40"
+            alt="Cambiar tema (light/dark)"
+            style={{ cursor: "pointer" }}
+            onClick={handleThemeToggle}
+            onError={(e) => {
+              console.error("❌ Error cargando ícono de tema.");
+              e.target.src = "/darkThemeIcon.svg"; // fallback
+            }}
           />
 
           <Link to="/SearchArticle" className="nav-link">

@@ -18,101 +18,74 @@ const ArticleSearchPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const queryParams = new URLSearchParams(location.search);
-  const initialQuery = queryParams.get("query") || "";
-  const initialAuthor = queryParams.get("author") || "";
-
   const pageSize = 10;
 
+  // 🔁 Detectar parámetros de la URL una sola vez
   useEffect(() => {
-    sessionStorage.removeItem("articleSearchState");
+    const queryParams = new URLSearchParams(location.search);
+    const initialQuery = queryParams.get("query") || "";
+    const initialAuthor = queryParams.get("author") || "";
+
     setQuery(initialQuery);
     setAuthor(initialAuthor);
     setPage(1);
     setArticles([]);
     setHasMore(true);
     setSearchError(false);
-  }, [location.key]);
 
-  useEffect(() => {
-    const newParams = new URLSearchParams();
-    if (query) newParams.set("query", query);
-    if (author) newParams.set("author", author);
-    const newUrl = `/SearchArticle?${newParams.toString()}`;
-    window.history.replaceState(null, "", newUrl);
-  }, [query, author]);
+    if (initialQuery || initialAuthor) {
+      fetchResults(initialQuery, initialAuthor, 1, true);
+    }
+  }, [location.search]); // 👈 solo cambiar cuando cambia `search`, no `location.key`
 
-  const fetchResults = useCallback(async (isNewSearch = false) => {
-    if (loading || rateLimited || (!hasMore && !isNewSearch)) return;
+  // 🔍 Buscar artículos
+  const fetchResults = useCallback(async (queryToUse, authorToUse, pageToUse = 1, isNewSearch = false) => {
+    if (loading || rateLimited) return;
+
     setLoading(true);
     setSearchError(false);
 
     try {
-      const nextPage = isNewSearch ? 1 : page;
       const response = await axios.get(`${ARTICLES_API}/article/search`, {
-        params: { query, author, page: nextPage, pageSize },
+        params: { query: queryToUse, author: authorToUse, page: pageToUse, pageSize },
       });
 
       const newArticles = response.data.results || [];
       const combined = isNewSearch ? newArticles : [...articles, ...newArticles];
 
-      sessionStorage.setItem(
-        "articleSearchState",
-        JSON.stringify({
-          articles: combined,
-          total: response.data.totalHits || 0,
-          query,
-          author,
-          page: nextPage,
-        })
-      );
-
       setArticles(combined);
       setTotal(response.data.totalHits || 0);
-      setPage(nextPage + 1);
-      setHasMore(nextPage * pageSize < (response.data.totalHits || 0));
+      setPage(pageToUse + 1);
+      setHasMore(pageToUse * pageSize < (response.data.totalHits || 0));
     } catch (error) {
       console.error("❌ Error fetching articles:", error);
-      setSearchError(true); // 🚨 Marcar que hubo error
-      if (error.response?.status === 429) {
-        alert("⚠️ Límite alcanzado. Intenta en 1 minuto.");
-        setRateLimited(true);
-        setTimeout(() => setRateLimited(false), 60000);
-      } else {
-        alert("❌ Error inesperado al buscar artículos.");
-      }
+      setSearchError(true);
+      setHasMore(false); // evitar más peticiones
     }
 
     setLoading(false);
-  }, [query, author, page, articles, hasMore, rateLimited, loading]);
-
-  useEffect(() => {
-    if (initialQuery || initialAuthor) {
-      fetchResults(true);
-    }
-  }, [initialQuery, initialAuthor, fetchResults]);
+  }, [loading, rateLimited, articles]);
 
   const handleSearch = () => {
-    setArticles([]);
-    setPage(1);
-    setHasMore(true);
-    setSearchError(false);
-    sessionStorage.removeItem("articleSearchState");
-    fetchResults(true);
+    if (!query && !author) return;
+
+    const params = new URLSearchParams();
+    if (query) params.append("query", query);
+    if (author) params.append("author", author);
+
+    navigate(`/SearchArticle?${params.toString()}`);
   };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
-  }
+  };
 
   return (
     <div className="article-search-page">
       <div className="article-results-wrapper">
-        <h2>
-          Mostrando {total > 1000 ? "+1000" : total} publicaciones
-        </h2>
+        <h2>Mostrando {total > 1000 ? "+1000" : total} publicaciones</h2>
 
         <div className="filter-form">
           <input
@@ -170,7 +143,7 @@ const ArticleSearchPage = () => {
           )}
 
           {!loading && !rateLimited && !searchError && hasMore && articles.length > 0 && (
-            <button className="search-button" onClick={() => fetchResults(false)}>
+            <button className="search-button" onClick={() => fetchResults(query, author, page)}>
               🔽 Cargar más
             </button>
           )}

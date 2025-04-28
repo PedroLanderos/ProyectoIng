@@ -5,22 +5,19 @@
   border-bottom: 1px solid #ccc;
 }
 
-.content-wrapper {
+.search-bar-container .content-wrapper {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1300px; /* ⬅️ Igual que tus otras secciones */
   margin: 0 auto;
-  padding: 0 3rem;
+  padding: 0 2rem; /* ⬅️ Un padding más uniforme */
 }
 
 .search-title {
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
-  text-align: left;
-}
-
-.search-title a {
-  color: #0071c2;
-  text-decoration: none;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  text-align: center; /* Centrado para que combine */
+  font-weight: bold;
+  color: #870046;
 }
 
 .search-form {
@@ -28,49 +25,43 @@
   align-items: flex-end;
   gap: 1rem;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .search-group {
   flex: 1;
-  min-width: 200px;
+  min-width: 250px;
   display: flex;
   flex-direction: column;
 }
 
 .search-group label {
-  font-size: 0.85rem;
-  margin-bottom: 0.25rem;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
 .search-group input {
-  padding: 0.5rem;
+  padding: 0.6rem;
   border: 1px solid #333;
-  border-radius: 2px;
+  border-radius: 4px;
   font-size: 1rem;
 }
 
 .search-button {
-  height: 40px;
+  height: 45px;
   background-color: #870046; /* Guinda IPN */
   color: white;
   border: none;
-  padding: 0 1rem;
+  padding: 0 1.2rem;
   border-radius: 4px;
   cursor: pointer;
   white-space: nowrap;
+  font-weight: 600;
+  font-size: 1rem;
   transition: background-color 0.3s ease;
 }
 
 .search-button:hover {
   background-color: #6d0039; /* un poco más oscuro */
-}
-
-.advanced-search-link {
-  font-size: 0.9rem;
-  margin-left: 0.5rem;
-  color: #333;
-  text-decoration: none;
-  position: relative;
-  top: 10px;
-  white-space: nowrap;
 }

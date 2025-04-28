@@ -3,22 +3,75 @@
   padding: 2rem 0;
 }
 
-.content-wrapper {
-  max-width: 600px;
+.profile-grid {
+  display: flex;
+  max-width: 1200px;
   margin: 0 auto;
+  gap: 3rem;
   padding: 0 2rem;
+  flex-wrap: wrap;
 }
 
-h2 {
-  font-size: 1.8rem;
-  margin-bottom: 2rem;
-  color: #870046;
+.profile-left {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-right {
+  flex: 1;
+  min-width: 300px;
+}
+
+.image-preview {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.rounded-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 4px solid #870046;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.upload-wrapper {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.upload-wrapper input[type="file"] {
+  padding: 0.5rem;
+}
+
+.upload-btn {
+  background-color: #870046;
+  color: white;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.upload-btn:hover {
+  background-color: #a20c58;
 }
 
 .profile-form {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1rem;
 }
 
 .form-group {
@@ -43,6 +96,12 @@ h2 {
   color: #666;
 }
 
+.form-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
 .save-button {
   background-color: #870046;
   color: white;
@@ -50,7 +109,6 @@ h2 {
   font-weight: 500;
   border: none;
   border-radius: 4px;
-  margin-top: 1rem;
   cursor: pointer;
   transition: background 0.3s ease;
 }
@@ -66,52 +124,10 @@ h2 {
   font-weight: 500;
   border: none;
   border-radius: 4px;
-  margin-top: 1rem;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
 .history-button:hover {
   background-color: #005da3;
-}
-
-.image-preview {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
-.image-preview img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 3px solid #870046;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.upload-wrapper {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.upload-wrapper input[type="file"] {
-  flex: 1;
-}
-
-.upload-btn {
-  background-color: #870046;
-  color: white;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.upload-btn:hover {
-  background-color: #a20c58;
 }

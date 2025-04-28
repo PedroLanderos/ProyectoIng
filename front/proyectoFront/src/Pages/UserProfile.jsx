@@ -42,7 +42,13 @@ const UserProfile = () => {
   };
 
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      // Mostrar previsualización inmediata
+      const previewUrl = URL.createObjectURL(file);
+      setImageUrl(previewUrl);
+    }
   };
 
   const handleImageUpload = async () => {
@@ -55,6 +61,7 @@ const UserProfile = () => {
       await axios.post(`http://localhost:5006/upload/${auth.user.id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
+      // Volver a cargar imagen real del servidor
       setImageUrl(`http://localhost:5006/user_profiles/user_${auth.user.id}.png?${Date.now()}`);
       setMessage("✅ Imagen de perfil actualizada.");
     } catch (error) {
@@ -65,7 +72,6 @@ const UserProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const payload = {
         id: user.id,
@@ -98,58 +104,64 @@ const UserProfile = () => {
 
   return (
     <div className="user-profile">
-      <div className="content-wrapper">
-        <h2>Mi Perfil</h2>
-
-        {imageUrl && (
+      <div className="profile-grid">
+        {/* Columna izquierda: imagen */}
+        <div className="profile-left">
           <div className="image-preview">
-            <img src={imageUrl} alt="Foto de perfil" className="rounded-image" />
+            {imageUrl && (
+              <img src={imageUrl} alt="Foto de perfil" className="rounded-image" />
+            )}
           </div>
-        )}
 
-        <div className="upload-wrapper">
-          <input type="file" onChange={handleImageChange} accept="image/*" />
-          <button className="upload-btn" onClick={handleImageUpload}>📤 Subir foto</button>
+          <div className="upload-wrapper">
+            <input type="file" onChange={handleImageChange} accept="image/*" />
+            <button className="upload-btn" onClick={handleImageUpload}>📤 Subir foto</button>
+          </div>
         </div>
 
-        {message && (
-          <p style={{ textAlign: 'center', color: message.includes("✅") ? "green" : "red" }}>
-            {message}
-          </p>
-        )}
+        {/* Columna derecha: formulario */}
+        <div className="profile-right">
+          <h2>Mi Perfil</h2>
 
-        <form className="profile-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Nombre:</label>
-            <input type="text" name="name" value={user.name} onChange={handleChange} required />
-          </div>
+          {message && (
+            <p style={{ textAlign: 'center', color: message.includes("✅") ? "green" : "red" }}>
+              {message}
+            </p>
+          )}
 
-          <div className="form-group">
-            <label>Teléfono:</label>
-            <input type="text" name="telephoneNumber" value={user.telephoneNumber} onChange={handleChange} required />
-          </div>
+          <form className="profile-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Nombre:</label>
+              <input type="text" name="name" value={user.name} onChange={handleChange} required />
+            </div>
 
-          <div className="form-group">
-            <label>Dirección:</label>
-            <input type="text" name="address" value={user.address} onChange={handleChange} required />
-          </div>
+            <div className="form-group">
+              <label>Teléfono:</label>
+              <input type="text" name="telephoneNumber" value={user.telephoneNumber} onChange={handleChange} required />
+            </div>
 
-          <div className="form-group">
-            <label>Correo electrónico:</label>
-            <input type="email" value={user.email} disabled />
-          </div>
+            <div className="form-group">
+              <label>Dirección:</label>
+              <input type="text" name="address" value={user.address} onChange={handleChange} required />
+            </div>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '1rem' }}>
-            <button type="submit" className="save-button">💾 Guardar cambios</button>
-            <button
-              type="button"
-              className="history-button"
-              onClick={handleViewHistory}
-            >
-              📜 Ver historial
-            </button>
-          </div>
-        </form>
+            <div className="form-group">
+              <label>Correo electrónico:</label>
+              <input type="email" value={user.email} disabled />
+            </div>
+
+            <div className="form-buttons">
+              <button type="submit" className="save-button">💾 Guardar cambios</button>
+              <button
+                type="button"
+                className="history-button"
+                onClick={handleViewHistory}
+              >
+                📜 Ver historial
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
