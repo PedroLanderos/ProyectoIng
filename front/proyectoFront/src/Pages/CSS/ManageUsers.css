@@ -4,6 +4,10 @@
     background: #f9f9f9;
     min-height: 100vh;
   }
+
+body.dark .manage-users {
+    background: #16181d;
+  }
   
   .manage-users h1 {
     text-align: center;
@@ -23,6 +27,11 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
   
+  body.dark .user-table {
+    background: #16181d;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
   .user-table th,
   .user-table td {
     padding: 10px;
@@ -33,6 +42,10 @@
   .user-table th {
     background: #f4f4f4;
     font-weight: bold;
+  }
+
+  body.dark .user-table th{
+    background: #16181d;
   }
   
   .user-table td button {

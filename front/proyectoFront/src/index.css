@@ -21,13 +21,13 @@ code {
 
 body.dark,
 body.dark .footer,
-body.dark > #root > :nth-child(2){
+body.dark > #root > :nth-child(2):not(.admin-panel){
   /* background: #121212; */
   background: #23272f;
   color: white;
 }
 
-body.dark > #root > :nth-child(2) > *:not(.content-wrapper, .article-results-wrapper){
+body.dark > #root > :nth-child(2) > *:not(.content-wrapper, .article-results-wrapper, .content, .sidebar){
   background-color: #16181d;
   color: white;
   border-bottom: 1px solid #3e3e3e;

@@ -15,6 +15,11 @@
     align-items: center;
     font-family: 'Arial', sans-serif;
     padding: 1.25rem; /* 20px */
+    transition: all 0.3s ease;
+}
+
+body.dark .add-user {
+    background: linear-gradient(135deg, #3b1d3a, #2c1a2b);
 }
 
 /* Tarjeta del formulario */
@@ -26,6 +31,12 @@
     border-radius: 0.625rem; /* 10px */
     box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1); /* 4px 10px */
     text-align: center;
+    transition: all 0.3s ease;
+}
+
+body.dark .add-user-container {
+    background: #16181d;
+    box-shadow: 0 0.25rem 0.625rem rgba(255, 255, 255, 0.1); /* 4px 10px */
 }
 
 /* Título */
@@ -33,6 +44,12 @@
     margin-bottom: 1.25rem; /* 20px */
     font-size: 1.75rem; /* 28px */
     color: #171717;
+}
+
+body.dark .add-user-container h1 {
+    margin-bottom: 1.25rem; /* 20px */
+    font-size: 1.75rem; /* 28px */
+    color: #e8e8e8;
 }
 
 /* Campos del formulario */
