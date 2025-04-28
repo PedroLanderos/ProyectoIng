@@ -13,7 +13,6 @@ const ArticleSearchPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [rateLimited, setRateLimited] = useState(false);
-  const [searchCooldown, setSearchCooldown] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -24,7 +23,7 @@ const ArticleSearchPage = () => {
 
   const pageSize = 10;
 
-  // 🔁 Detectar navegación con nuevos parámetros
+  // 🔁 Detectar navegación nueva
   useEffect(() => {
     sessionStorage.removeItem("articleSearchState");
 
@@ -35,7 +34,7 @@ const ArticleSearchPage = () => {
     setHasMore(true);
   }, [location.key]);
 
-  // 🔁 Actualizar URL cuando cambian los inputs
+  // 🔁 Actualizar la URL cuando cambian inputs
   useEffect(() => {
     const newParams = new URLSearchParams();
     if (query) newParams.set("query", query);
@@ -89,22 +88,14 @@ const ArticleSearchPage = () => {
     setLoading(false);
   }, [query, author, page, articles, hasMore, rateLimited, loading]);
 
-  // 🚀 Ejecutar automáticamente cuando hay query/author
+  // 🚀 Buscar automáticamente si ya hay una búsqueda previa (opcional)
   useEffect(() => {
-    if (query || author) {
+    if (initialQuery || initialAuthor) {
       fetchResults(true);
     }
-  }, [query, author, fetchResults]);
+  }, [initialQuery, initialAuthor, fetchResults]);
 
   const handleSearch = () => {
-    if (searchCooldown) {
-      alert("⏳ Espera un momento antes de volver a buscar.");
-      return;
-    }
-
-    setSearchCooldown(true);
-    setTimeout(() => setSearchCooldown(false), 5000);
-
     setArticles([]);
     setPage(1);
     setHasMore(true);
@@ -136,13 +127,14 @@ const ArticleSearchPage = () => {
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
           />
-          <button className="search-button" onClick={handleSearch} disabled={searchCooldown}>
+          <button className="search-button" onClick={handleSearch}>
             🔍 Buscar
           </button>
         </div>
 
         <div className="letter-section">
-          <h3>Resultados</h3>
+          {articles.length > 0 && <h3>Resultados</h3>}
+
           {articles.map((item, index) => (
             <div
               key={index}
@@ -167,14 +159,20 @@ const ArticleSearchPage = () => {
             </div>
           ))}
 
-          {loading && <p>🔄 Cargando más artículos...</p>}
           {rateLimited && <p>⏳ Esperando por límite de peticiones...</p>}
-          {!hasMore && articles.length > 0 && <p>✅ Todos los artículos han sido cargados.</p>}
 
-          {hasMore && !loading && !rateLimited && (
+          {!hasMore && articles.length > 0 && (
+            <p>✅ Todos los artículos han sido cargados.</p>
+          )}
+
+          {hasMore && articles.length > 0 && !loading && !rateLimited && (
             <button className="search-button" onClick={() => fetchResults(false)}>
               🔽 Cargar más
             </button>
+          )}
+
+          {loading && articles.length > 0 && (
+            <p>🔄 Cargando más artículos...</p>
           )}
         </div>
       </div>
