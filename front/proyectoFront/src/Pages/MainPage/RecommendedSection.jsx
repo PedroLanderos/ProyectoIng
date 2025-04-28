@@ -13,6 +13,7 @@ const RecommendedSection = () => {
   const [loading, setLoading] = useState(false);
   const [recommendedArticles, setRecommendedArticles] = useState([]);
   const [hasRecommendations, setHasRecommendations] = useState(true);
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -20,6 +21,7 @@ const RecommendedSection = () => {
       if (saved) {
         const parsed = JSON.parse(saved);
         setRecommendedArticles(parsed);
+        setClicked(true);
         setHasRecommendations(parsed.length > 0);
       }
     }
@@ -30,16 +32,13 @@ const RecommendedSection = () => {
       sessionStorage.removeItem("recommendedArticles");
       setRecommendedArticles([]);
       setHasRecommendations(true);
+      setClicked(false);
     }
   }, [isAuthenticated]);
 
   const fetchRecommendations = async () => {
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
-    }
-
     setLoading(true);
+    setClicked(true);
     try {
       const response = await axios.get(`${SUGGEST_API}/UserData/recommendations/${auth.user.id}`);
       const articles = response.data || [];
@@ -78,11 +77,18 @@ const RecommendedSection = () => {
               Iniciar sesión
             </button>
           </>
+        ) : !clicked ? (
+          <button className="search-button" onClick={fetchRecommendations}>
+            Obtener recomendaciones
+          </button>
         ) : loading ? (
           <p>🔄 Cargando recomendaciones...</p>
-        ) : !recommendedArticles.length ? (
+        ) : !hasRecommendations ? (
           <>
-            <p>Aún no tenemos suficientes datos sobre tus intereses. Explora más artículos para obtener recomendaciones.</p>
+            <p>
+              Aún no tenemos suficientes datos sobre tus intereses.
+              Explora más artículos para obtener recomendaciones.
+            </p>
             <button className="search-button" onClick={handleExplore}>
               Explorar artículos
             </button>

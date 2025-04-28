@@ -13,6 +13,7 @@ const ArticleSearchPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [rateLimited, setRateLimited] = useState(false);
+  const [searchError, setSearchError] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -23,31 +24,28 @@ const ArticleSearchPage = () => {
 
   const pageSize = 10;
 
-  // 🔁 Detectar navegación nueva
   useEffect(() => {
     sessionStorage.removeItem("articleSearchState");
-
     setQuery(initialQuery);
     setAuthor(initialAuthor);
     setPage(1);
     setArticles([]);
     setHasMore(true);
+    setSearchError(false);
   }, [location.key]);
 
-  // 🔁 Actualizar la URL cuando cambian inputs
   useEffect(() => {
     const newParams = new URLSearchParams();
     if (query) newParams.set("query", query);
     if (author) newParams.set("author", author);
-
     const newUrl = `/SearchArticle?${newParams.toString()}`;
     window.history.replaceState(null, "", newUrl);
   }, [query, author]);
 
-  // 🔍 Buscar artículos
   const fetchResults = useCallback(async (isNewSearch = false) => {
     if (loading || rateLimited || (!hasMore && !isNewSearch)) return;
     setLoading(true);
+    setSearchError(false);
 
     try {
       const nextPage = isNewSearch ? 1 : page;
@@ -75,20 +73,19 @@ const ArticleSearchPage = () => {
       setHasMore(nextPage * pageSize < (response.data.totalHits || 0));
     } catch (error) {
       console.error("❌ Error fetching articles:", error);
+      setSearchError(true); // 🚨 Marcar que hubo error
       if (error.response?.status === 429) {
         alert("⚠️ Límite alcanzado. Intenta en 1 minuto.");
         setRateLimited(true);
         setTimeout(() => setRateLimited(false), 60000);
       } else {
         alert("❌ Error inesperado al buscar artículos.");
-        setHasMore(false);
       }
     }
 
     setLoading(false);
   }, [query, author, page, articles, hasMore, rateLimited, loading]);
 
-  // 🚀 Buscar automáticamente si ya hay una búsqueda previa (opcional)
   useEffect(() => {
     if (initialQuery || initialAuthor) {
       fetchResults(true);
@@ -99,9 +96,8 @@ const ArticleSearchPage = () => {
     setArticles([]);
     setPage(1);
     setHasMore(true);
-
+    setSearchError(false);
     sessionStorage.removeItem("articleSearchState");
-
     fetchResults(true);
   };
 
@@ -161,11 +157,11 @@ const ArticleSearchPage = () => {
 
           {rateLimited && <p>⏳ Esperando por límite de peticiones...</p>}
 
-          {!hasMore && articles.length > 0 && (
+          {!searchError && !hasMore && articles.length > 0 && (
             <p>✅ Todos los artículos han sido cargados.</p>
           )}
 
-          {hasMore && articles.length > 0 && !loading && !rateLimited && (
+          {!loading && !rateLimited && !searchError && hasMore && articles.length > 0 && (
             <button className="search-button" onClick={() => fetchResults(false)}>
               🔽 Cargar más
             </button>
