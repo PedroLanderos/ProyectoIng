@@ -37,6 +37,38 @@ const ResourceLinks = () => {
             </li>
           </ul>
         </div>
+
+        <div className="resource-column">
+          <h3>Contacto</h3>
+          <ul>
+            <li>
+              <a href="mailto:landeros.cortes.pedro.jonas@gmail.com" target="_blank" rel="noopener noreferrer">
+                landeros.cortes.pedro.jonas@gmail.com ↗
+              </a>
+            </li>
+            <li>
+              <a href="mailto:developerpjcl@gmail.com" target="_blank" rel="noopener noreferrer">
+                developerpjcl@gmail.com ↗
+              </a>
+            </li>
+            <li>
+              <a href="mailto:mendoza.bernal.marcojair@gmail.com" target="_blank" rel="noopener noreferrer">
+                mendoza.bernal.marcojair@gmail.com ↗
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div className="resource-column">
+          <h3>Acerca de Nosotros</h3>
+          <ul>
+            <li>
+              <a href="./" target="_blank" rel="noopener noreferrer">
+                Nosotros ↗
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </section>
   );
