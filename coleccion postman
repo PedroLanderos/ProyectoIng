@@ -260,126 +260,6 @@
 			]
 		},
 		{
-			"name": "smoke tests",
-			"item": [
-				{
-					"name": "login",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"juan@example.com\",\n  \"password\": \"password123\"\n}"
-						},
-						"url": {
-							"raw": "localhost:5003/api/Authentication/Login",
-							"host": [
-								"localhost"
-							],
-							"port": "5003",
-							"path": [
-								"api",
-								"Authentication",
-								"Login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Search Articles",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5003/api/Article/search?query=physics",
-							"host": [
-								"localhost"
-							],
-							"port": "5003",
-							"path": [
-								"api",
-								"Article",
-								"search"
-							],
-							"query": [
-								{
-									"key": "query",
-									"value": "physics"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "save user activity",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"userId\": 5,\r\n  \"articleId\": \"15186469\",\r\n  \"isFavorite\": true\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5001/api/UserData/history",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5001",
-							"path": [
-								"api",
-								"UserData",
-								"history"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get user history Copy",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				},
-				{
-					"name": "get recommendations",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5001/api/UserData/recommendations/5",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5001",
-							"path": [
-								"api",
-								"UserData",
-								"recommendations",
-								"5"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "api gateway",
 			"item": [
 				{
@@ -413,6 +293,35 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "create user Copy",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 0, \r\n  \"name\": \"test desde postman\",\r\n  \"telephoneNumber\": \"123456789\",\r\n  \"address\": \"Calle Falsa 123\",\r\n  \"email\": \"adminpostman@gmail.com\",\r\n  \"password\": \"1234\",\r\n  \"role\": \"Admin\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5003/api/Authentication/Register",
+									"host": [
+										"localhost"
+									],
+									"port": "5003",
+									"path": [
+										"api",
+										"Authentication",
+										"Register"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -425,7 +334,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:5003/api/Article/abc123",
+									"raw": "localhost:5003/api/Article/15186469",
 									"host": [
 										"localhost"
 									],
@@ -433,7 +342,7 @@
 									"path": [
 										"api",
 										"Article",
-										"abc123"
+										"15186469"
 									]
 								}
 							},
@@ -645,6 +554,126 @@
 							"response": []
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "smoke tests",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"juan@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5003/api/Authentication/Login",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"api",
+								"Authentication",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Articles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5003/api/Article/search?query=physics",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"api",
+								"Article",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "physics"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "save user activity",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": 5,\r\n  \"articleId\": \"15186469\",\r\n  \"isFavorite\": true\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5001/api/UserData/history",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"UserData",
+								"history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user history Copy",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "get recommendations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5001/api/UserData/recommendations/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"UserData",
+								"recommendations",
+								"5"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
