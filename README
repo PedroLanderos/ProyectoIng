@@ -1,3 +1,0 @@
-docker-compose up --build
-
-front: http://localhost:3000/
