@@ -4,7 +4,7 @@ import axios from 'axios';
 import './CSS/ArticleDetails.css';
 import { ARTICLES_API, SUGGEST_API } from '../config/apiConfig';
 import { AuthContext } from '../Context/AuthContext';
-import { encryptArticleId } from '../utils/cryptoUtils'; 
+import { encryptArticleId } from '../utils/cryptoUtils';
 
 const ArticleDetails = () => {
   const { id } = useParams();
@@ -18,6 +18,7 @@ const ArticleDetails = () => {
 
     try {
       const encryptedId = encryptArticleId(article.id, article.title);
+      const safeEncryptedId = encodeURIComponent(encryptedId);
 
       const response = await axios.get(`${SUGGEST_API}/UserData/history/${auth.user.id}`);
       const existing = response.data.find(a => a.articleId === encryptedId);
@@ -42,8 +43,6 @@ const ArticleDetails = () => {
   };
 
   const saveVisitToHistory = async () => {
-    if (!auth.isAuthenticated || !article) return;
-
     try {
       const encryptedId = encryptArticleId(article.id, article.title);
 
@@ -63,15 +62,24 @@ const ArticleDetails = () => {
     }
   };
 
+  const checkIfFavorite = async () => {
+    try {
+      const encryptedId = encryptArticleId(article.id, article.title);
+      const safeEncryptedId = encodeURIComponent(encryptedId);
+
+      const res = await axios.get(`${SUGGEST_API}/UserData/favorites/${auth.user.id}/check/${safeEncryptedId}`);
+      setIsFavorite(res.data === true);
+    } catch (error) {
+      console.error("❌ Error al verificar favorito:", error);
+    }
+  };
+
+  // Cargar artículo
   useEffect(() => {
     const fetchArticle = async () => {
       try {
         const response = await axios.get(`${ARTICLES_API}/article/${id}`);
         setArticle(response.data);
-
-        if (auth.isAuthenticated) {
-          saveVisitToHistory();
-        }
       } catch (error) {
         console.error("❌ Error al cargar artículo:", error);
         if (error.response?.status === 404) {
@@ -81,28 +89,21 @@ const ArticleDetails = () => {
         } else {
           alert("❌ No se pudo cargar el artículo.");
         }
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchArticle();
-  }, [id, auth.isAuthenticated]);
+  }, [id]);
 
+  // Guardar historial y verificar favorito solo si el artículo ya está cargado
   useEffect(() => {
-    const checkIfFavorite = async () => {
-      if (!auth.isAuthenticated || !article) return;
-
-      try {
-        const encryptedId = encryptArticleId(article.id, article.title);
-        const res = await axios.get(`${SUGGEST_API}/UserData/favorites/${auth.user.id}/check/${encryptedId}`);
-        setIsFavorite(res.data === true);
-      } catch (error) {
-        console.error("❌ Error al verificar favorito:", error);
-      }
-    };
-
-    checkIfFavorite();
-  }, [id, auth.isAuthenticated, article]);
+    if (auth.isAuthenticated && article) {
+      saveVisitToHistory();
+      checkIfFavorite();
+    }
+  }, [article, auth.isAuthenticated]);
 
   if (loading) return <p>🔄 Cargando artículo...</p>;
   if (!article) return <p>❌ Artículo no encontrado.</p>;

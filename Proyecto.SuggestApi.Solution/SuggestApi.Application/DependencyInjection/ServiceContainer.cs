@@ -24,6 +24,8 @@ namespace SuggestApi.Application.DependencyInjection
                 client.BaseAddress = new Uri("http://apigateway:5003/api/authentication/");
             });
 
+            services.AddScoped<IHeap, Heap>();
+
             return services;
         }
     }

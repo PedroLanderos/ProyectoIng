@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { SUGGEST_API } from '../config/apiConfig';
 import './CSS/UserHistory.css';
+import { decryptArticleId } from '../utils/cryptoUtils'; // 🔐 Importar descifrado
 
 const UserHistory = () => {
   const { id } = useParams();
@@ -14,7 +15,23 @@ const UserHistory = () => {
   const fetchHistory = async () => {
     try {
       const response = await axios.get(`${SUGGEST_API}/UserData/history/${id}`);
-      setHistory(response.data);
+      const mapped = response.data.map((item) => {
+        try {
+          const decrypted = decryptArticleId(item.articleId);
+          const [articleIdOriginal, ...titleParts] = decrypted.split("-");
+          const title = titleParts.join("-"); // por si el título tiene guiones
+          return {
+            ...item,
+            articleTitle: title,
+            originalId: articleIdOriginal
+          };
+        } catch (e) {
+          console.error("❌ No se pudo descifrar articleId:", item.articleId);
+          return { ...item, articleTitle: "(desconocido)", originalId: "error" };
+        }
+      });
+
+      setHistory(mapped);
     } catch (err) {
       console.error("❌ Error al obtener historial:", err);
       setError("No se pudo cargar el historial del usuario.");
@@ -54,7 +71,7 @@ const UserHistory = () => {
             <thead>
               <tr>
                 <th>ID Actividad</th>
-                <th>Artículo ID</th>
+                <th>Título del Artículo</th>
                 <th>¿Favorito?</th>
                 <th>Acciones</th>
               </tr>
@@ -65,12 +82,12 @@ const UserHistory = () => {
                   <td>{item.id}</td>
                   <td>
                     <a
-                      href={`/ArticleDetail/${item.articleId}`}
+                      href={`/ArticleDetail/${item.originalId}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ color: '#0077cc', textDecoration: 'underline' }}
                     >
-                      {item.articleId}
+                      {item.articleTitle}
                     </a>
                   </td>
                   <td>{item.isFavorite ? "⭐ Sí" : "No"}</td>

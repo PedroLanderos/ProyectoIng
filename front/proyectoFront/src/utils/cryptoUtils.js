@@ -17,3 +17,18 @@ export const encryptArticleId = (id, title) => {
 
   return encrypted.toString();
 };
+
+export const decryptArticleId = (encrypted) => {
+    const decrypted = CryptoJS.AES.decrypt(
+      encrypted,
+      CryptoJS.enc.Utf8.parse(SECRET_KEY),
+      {
+        iv: CryptoJS.enc.Utf8.parse(IV),
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7,
+      }
+    );
+  
+    const plainText = decrypted.toString(CryptoJS.enc.Utf8);
+    return plainText; // formato esperado: "{id}-{title}"
+  };
