@@ -10,107 +10,120 @@ namespace ArticlesApi.Infrastructure.Infrastructure
 {
     public class ArticleRepository : IArticle
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _http;
         private readonly List<string> _apiKeys;
-        private int _currentApiKeyIndex = 0;
         private readonly object _lock = new();
+        private int _idx;
 
-        public ArticleRepository(HttpClient httpClient, IConfiguration config)
+        public ArticleRepository(HttpClient http, IConfiguration cfg)
         {
-            _httpClient = httpClient;
-            _apiKeys = config.GetSection("CoreApi:ApiKeys").Get<List<string>>() ?? new List<string>();
-
+            _http = http;
+            _apiKeys = cfg.GetSection("CoreApi:ApiKeys").Get<List<string>>() ?? new();
             if (!_apiKeys.Any())
-                throw new InvalidOperationException("No API keys configured for Core API");
+                throw new InvalidOperationException("No API keys configured for CORE API");
         }
-
-        private string GetNextApiKey()
+        private string NextKey()
         {
             lock (_lock)
             {
-                _currentApiKeyIndex = (_currentApiKeyIndex + 1) % _apiKeys.Count;
+                _idx = (_idx + 1) % _apiKeys.Count;
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"🔄 Usando API key index: {_currentApiKeyIndex} ({_apiKeys[_currentApiKeyIndex][..6]}...)");
+                Console.WriteLine($"🔄 Usando API key index {_idx} ({_apiKeys[_idx][..6]}…)");
                 Console.ResetColor();
-                return _apiKeys[_currentApiKeyIndex];
+                return _apiKeys[_idx];
             }
         }
 
-        public async Task<Article> GetArticleByIdAsync(string id)
+        private static readonly JsonSerializerSettings _json = new()
         {
-            try
+            MissingMemberHandling = MissingMemberHandling.Ignore
+        };
+
+        private async Task<CoreApiResponse<ArticleDto>?> DoSearchAsync(string q, int offset, int limit)
+        {
+            // Excluimos documentType para evitar el fallo del servidor.
+            string url = $"https://api.core.ac.uk/v3/search/works?" +
+                         $"q={Uri.EscapeDataString(q)}&offset={offset}&limit={limit}&exclude=documentType";
+
+            var req = new HttpRequestMessage(HttpMethod.Get, url);
+            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", NextKey());
+
+            HttpResponseMessage rsp = await _http.SendAsync(req);
+            string json = await rsp.Content.ReadAsStringAsync();
+
+            if (!rsp.IsSuccessStatusCode)
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, $"https://api.core.ac.uk/v3/works/{id}");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", GetNextApiKey());
-
-                var response = await _httpClient.SendAsync(request);
-                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                    return null!;
-
-                response.EnsureSuccessStatusCode();
-
-                var json = await response.Content.ReadAsStringAsync();
-                var dto = JsonConvert.DeserializeObject<ArticleDto>(json);
-
-                return ConvertToDomain(dto!);
+                LogException.LogExceptions(new Exception($"CORE API {rsp.StatusCode}: {json}"));
+                return null;
             }
-            catch (Exception ex)
-            {
-                LogException.LogExceptions(ex);
-                throw new Exception("Error while getting an article by id");
-            }
+
+            return JsonConvert.DeserializeObject<CoreApiResponse<ArticleDto>>(json, _json);
         }
 
-        public async Task<CoreApiResponse<Article>> SearchArticlesAsync(string query, int page, int pageSize)
+        public async Task<Article?> GetArticleByIdAsync(string id)
         {
-            try
+            var req = new HttpRequestMessage(HttpMethod.Get, $"https://api.core.ac.uk/v3/works/{id}?exclude=documentType");
+            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", NextKey());
+
+            var rsp = await _http.SendAsync(req);
+            if (rsp.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
+
+            rsp.EnsureSuccessStatusCode();
+
+            string json = await rsp.Content.ReadAsStringAsync();
+            var dto = JsonConvert.DeserializeObject<ArticleDto>(json, _json);
+
+            return Convert(dto!);
+        }
+        public async Task<CoreApiResponse<Article>> SearchArticlesAsync(string term, int page, int size)
+        {
+            int offset = (page - 1) * size;
+            string clean = term.Trim();
+
+            // 1️⃣ consulta sin campos (la que devolvía más resultados antes)
+            var dto = await DoSearchAsync(clean, offset, size);
+            if (dto?.TotalHits > 0) return Map(dto);
+
+            // 2️⃣ consulta combinada (title OR abstract OR fullText)
+            string esc = clean.Contains(' ') ? $"\"{clean}\"" : clean;
+            string combo = $"(title:{esc} OR abstract:{esc} OR fullText:{esc})";
+            dto = await DoSearchAsync(combo, offset, size);
+            if (dto?.TotalHits > 0) return Map(dto);
+
+            // 3️⃣ fallbacks individuales
+            foreach (string fld in new[] { "title", "abstract", "fullText" })
             {
-                int offset = (page - 1) * pageSize;
-                var url = $"https://api.core.ac.uk/v3/search/works?q={Uri.EscapeDataString(query)}&offset={offset}&limit={pageSize}";
-
-                var request = new HttpRequestMessage(HttpMethod.Get, url);
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", GetNextApiKey());
-
-                var response = await _httpClient.SendAsync(request);
-                response.EnsureSuccessStatusCode();
-
-                var json = await response.Content.ReadAsStringAsync();
-                var dtoResponse = JsonConvert.DeserializeObject<CoreApiResponse<ArticleDto>>(json);
-
-                var domainResponse = new CoreApiResponse<Article>
-                {
-                    TotalHits = dtoResponse!.TotalHits,
-                    Results = dtoResponse.Results.Select(ConvertToDomain).ToList()
-                };
-
-                return domainResponse;
+                string expr = $"{fld}:{esc}";
+                dto = await DoSearchAsync(expr, offset, size);
+                if (dto?.TotalHits > 0) return Map(dto);
             }
-            catch (Exception ex)
-            {
-                LogException.LogExceptions(ex);
-                throw;
-            }
+
+            throw new Exception("No results returned by CORE API");
         }
 
-        private Article ConvertToDomain(ArticleDto dto)
-        {
-            return new Article
+        private static CoreApiResponse<Article> Map(CoreApiResponse<ArticleDto> d)
+            => new()
             {
-                Id = dto.id,
-                Title = dto.title,
-                Abstract = dto.@abstract,
-                PublishedDate = dto.publishedDate,
-                DownloadUrl = dto.downloadUrl,
-                FullText = dto.fullText,
-                YearPublished = dto.yearPublished ?? 0,
-                Authors = dto.authors?.Select(a => new Author { Name = a.name }).ToList() ?? new(),
-                Subjects = dto.subjects ?? new(),
-                Links = dto.links ?? new()
+                TotalHits = d.TotalHits,
+                Limit = d.Limit,
+                Offset = d.Offset,
+                Results = d.Results.Select(Convert).ToList()
             };
-        }
-    }
 
-    // DTOs actualizados según la respuesta real de CORE
+        private static Article Convert(ArticleDto d) => new()
+        {
+            Id = d.id,
+            Title = d.title,
+            Abstract = d.@abstract,
+            PublishedDate = d.publishedDate,
+            DownloadUrl = d.downloadUrl,
+            FullText = d.fullText,
+            YearPublished = d.yearPublished ?? 0,
+            Authors = d.authors?.Select(a => new Author { Name = a.name }).ToList() ?? new(),
+            Subjects = d.subjects ?? new(),
+            Links = d.links ?? new()
+        };
+    }
     public class ArticleDto
     {
         public string? id { get; set; }
@@ -124,9 +137,5 @@ namespace ArticlesApi.Infrastructure.Infrastructure
         public List<string>? subjects { get; set; }
         public int? yearPublished { get; set; }
     }
-
-    public class AuthorDto
-    {
-        public string? name { get; set; }
-    }
+    public class AuthorDto { public string? name { get; set; } }
 }
