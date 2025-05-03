@@ -10,64 +10,66 @@ namespace SuggestApi.Application.Services
         private readonly HttpClient _client;
         private readonly ISearchHistory _searchHistoryRepository;
         private readonly IArticles _articlesService;
+        private readonly IHeap _heapService;
 
-        public Suggestion(HttpClient client, ISearchHistory searchHistoryRepository, IArticles articlesService)
+        // Inyectamos IHeap también
+        public Suggestion(HttpClient client, ISearchHistory searchHistoryRepository, IArticles articlesService, IHeap heapService)
         {
             _client = client;
             _searchHistoryRepository = searchHistoryRepository;
             _articlesService = articlesService;
-        }
-
-        public async Task<UserDTO> Getuser(int userId)
-        {
-            var getuser = await _client.GetAsync($"{userId}");
-            if (!getuser.IsSuccessStatusCode)
-                return null!;
-
-            var product = await getuser.Content.ReadFromJsonAsync<UserDTO>();
-            return product!;
+            _heapService = heapService;
         }
 
         public async Task<IEnumerable<ArticleDTO>> GetRecommendations(int userId)
         {
             try
             {
-                //var userExists = await Getuser(userId);
-                //if (userExists is null) return new List<ArticleDTO>();
-
                 var userActivities = await _searchHistoryRepository.GetByCriteriaAsync(x => x.UserId == userId);
                 if (!userActivities.Any()) return new List<ArticleDTO>();
 
-                var favoriteActivities = userActivities.Where(x => x.IsFavorite).ToList();
-                var nonFavoriteActivities = userActivities.Where(x => !x.IsFavorite).ToList();
+                const string clave = "aXv92Lk01Zm48Tyz"; // 🔐 clave AES (debe coincidir con frontend)
 
-                List<ArticleDTO> recommendedArticles = new();
+                // 1. Descifrar títulos desde las IDs cifradas
+                var titulos = new List<string>();
 
-                foreach (var activity in favoriteActivities)
+                foreach (var activity in userActivities)
                 {
-                    var articles = await _articlesService.GetArticleAsync(activity.ArticleId!);
-                    recommendedArticles.AddRange(articles);
-                }
-
-                foreach (var activity in nonFavoriteActivities)
-                {
-                    var articles = await _articlesService.GetArticleAsync(activity.ArticleId!);
-                    if (articles.Any())
+                    try
                     {
-                        try
-                        {
-                            var fieldsToSearch = GetRelevantFields(articles.First());
-                            var similarArticles = await _articlesService.SearchArticlesByFields(fieldsToSearch);
-                            recommendedArticles.AddRange(similarArticles);
-                        }
-                        catch (Exception ex)
-                        {
-                            LogException.LogToConsole($"⚠️ No se pudo buscar similares para artículo {activity.ArticleId}: {ex.Message}");
-                        }
+                        var titulo = _heapService.Decipher(activity.ArticleId!, clave);
+                        if (!string.IsNullOrWhiteSpace(titulo))
+                            titulos.Add(titulo);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogException.LogToConsole($"❌ No se pudo descifrar ArticleId: {activity.ArticleId}. Error: {ex.Message}");
                     }
                 }
 
-                var result = recommendedArticles
+                if (!titulos.Any())
+                {
+                    LogException.LogToConsole($"⚠️ No se pudieron descifrar títulos para el usuario {userId}");
+                    return new List<ArticleDTO>();
+                }
+
+                // 2. Crear heap de palabras más frecuentes
+                var textoUnido = string.Join(" ", titulos);
+                var heap = _heapService.CreateHeap(textoUnido);
+
+                if (!heap.Any())
+                {
+                    LogException.LogToConsole($"⚠️ Heap vacío generado para usuario {userId}");
+                    return new List<ArticleDTO>();
+                }
+
+                // 3. Tomar las palabras clave más frecuentes
+                var keywords = heap.Keys.Take(Math.Min(3, heap.Count)).ToList();
+
+                // 4. Buscar artículos con esas palabras clave
+                var recomendados = await _articlesService.SearchArticlesByFields(keywords);
+
+                var resultado = recomendados
                     .DistinctBy(a => a.Id)
                     .Take(3)
                     .Select(a => new ArticleDTO
@@ -84,13 +86,12 @@ namespace SuggestApi.Application.Services
                     })
                     .ToList();
 
-                if (!result.Any())
+                if (!resultado.Any())
                 {
-                    LogException.LogToConsole($"⚠️ No recommendations found for user {userId}");
-                    return new List<ArticleDTO>();
+                    LogException.LogToConsole($"⚠️ No se encontraron recomendaciones para el usuario {userId}");
                 }
 
-                return result;
+                return resultado;
             }
             catch (Exception ex)
             {
@@ -99,23 +100,15 @@ namespace SuggestApi.Application.Services
             }
         }
 
-        private List<string> GetRelevantFields(ArticleDTO article)
+       
+        public async Task<UserDTO> Getuser(int userId)
         {
-            List<string> fields = new();
+            var getuser = await _client.GetAsync($"{userId}");
+            if (!getuser.IsSuccessStatusCode)
+                return null!;
 
-            if (!string.IsNullOrWhiteSpace(article.Title))
-                fields.Add(article.Title);
-
-            if (article.Authors != null && article.Authors.Any())
-                fields.AddRange(article.Authors.Select(a => a.Name).Where(name => !string.IsNullOrWhiteSpace(name)));
-
-            if (!string.IsNullOrWhiteSpace(article.Abstract))
-                fields.Add(article.Abstract);
-
-            if (article.Subjects != null && article.Subjects.Any())
-                fields.AddRange(article.Subjects.Where(s => !string.IsNullOrWhiteSpace(s)));
-
-            return fields.Take(3).ToList();
+            var product = await getuser.Content.ReadFromJsonAsync<UserDTO>();
+            return product!;
         }
 
         public async Task<string> PingAuthentication()

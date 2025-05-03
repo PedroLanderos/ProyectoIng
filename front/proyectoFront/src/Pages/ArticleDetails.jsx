@@ -4,6 +4,7 @@ import axios from 'axios';
 import './CSS/ArticleDetails.css';
 import { ARTICLES_API, SUGGEST_API } from '../config/apiConfig';
 import { AuthContext } from '../Context/AuthContext';
+import { encryptArticleId } from '../utils/cryptoUtils'; 
 
 const ArticleDetails = () => {
   const { id } = useParams();
@@ -13,11 +14,13 @@ const ArticleDetails = () => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const toggleFavorite = async () => {
-    if (!auth.isAuthenticated) return;
+    if (!auth.isAuthenticated || !article) return;
 
     try {
+      const encryptedId = encryptArticleId(article.id, article.title);
+
       const response = await axios.get(`${SUGGEST_API}/UserData/history/${auth.user.id}`);
-      const existing = response.data.find(a => a.articleId === id);
+      const existing = response.data.find(a => a.articleId === encryptedId);
 
       if (existing) {
         await axios.put(`${SUGGEST_API}/UserData/history/${existing.id}`, {
@@ -27,7 +30,7 @@ const ArticleDetails = () => {
       } else {
         await axios.post(`${SUGGEST_API}/UserData/history`, {
           userId: auth.user.id,
-          articleId: id,
+          articleId: encryptedId,
           isFavorite: true
         });
       }
@@ -39,12 +42,14 @@ const ArticleDetails = () => {
   };
 
   const saveVisitToHistory = async () => {
-    if (!auth.isAuthenticated) return;
+    if (!auth.isAuthenticated || !article) return;
 
     try {
+      const encryptedId = encryptArticleId(article.id, article.title);
+
       const payload = {
         userId: auth.user.id,
-        articleId: id,
+        articleId: encryptedId,
         isFavorite: false,
       };
 
@@ -85,10 +90,11 @@ const ArticleDetails = () => {
 
   useEffect(() => {
     const checkIfFavorite = async () => {
-      if (!auth.isAuthenticated) return;
+      if (!auth.isAuthenticated || !article) return;
 
       try {
-        const res = await axios.get(`${SUGGEST_API}/UserData/favorites/${auth.user.id}/check/${id}`);
+        const encryptedId = encryptArticleId(article.id, article.title);
+        const res = await axios.get(`${SUGGEST_API}/UserData/favorites/${auth.user.id}/check/${encryptedId}`);
         setIsFavorite(res.data === true);
       } catch (error) {
         console.error("❌ Error al verificar favorito:", error);
@@ -96,7 +102,7 @@ const ArticleDetails = () => {
     };
 
     checkIfFavorite();
-  }, [id, auth.isAuthenticated]);
+  }, [id, auth.isAuthenticated, article]);
 
   if (loading) return <p>🔄 Cargando artículo...</p>;
   if (!article) return <p>❌ Artículo no encontrado.</p>;
