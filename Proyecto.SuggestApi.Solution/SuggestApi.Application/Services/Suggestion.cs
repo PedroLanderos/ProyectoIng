@@ -12,7 +12,9 @@ namespace SuggestApi.Application.Services
         private readonly IArticles _articlesService;
         private readonly IHeap _heapService;
 
-        // Inyectamos IHeap también
+        // Control por usuario: última vez que se usaron palabras frecuentes
+        private static readonly Dictionary<int, DateTime> _frequentWordsUsedAt = new();
+
         public Suggestion(HttpClient client, ISearchHistory searchHistoryRepository, IArticles articlesService, IHeap heapService)
         {
             _client = client;
@@ -28,11 +30,9 @@ namespace SuggestApi.Application.Services
                 var userActivities = await _searchHistoryRepository.GetByCriteriaAsync(x => x.UserId == userId);
                 if (!userActivities.Any()) return new List<ArticleDTO>();
 
-                const string clave = "aXv92Lk01Zm48Tyz"; // 🔐 clave AES (debe coincidir con frontend)
+                const string clave = "aXv92Lk01Zm48Tyz";
 
-                // 1. Descifrar títulos desde las IDs cifradas
                 var titulos = new List<string>();
-
                 foreach (var activity in userActivities)
                 {
                     try
@@ -53,7 +53,6 @@ namespace SuggestApi.Application.Services
                     return new List<ArticleDTO>();
                 }
 
-                // 2. Crear heap de palabras más frecuentes
                 var textoUnido = string.Join(" ", titulos);
                 var heap = _heapService.CreateHeap(textoUnido);
 
@@ -63,10 +62,26 @@ namespace SuggestApi.Application.Services
                     return new List<ArticleDTO>();
                 }
 
-                // 3. Tomar las palabras clave más frecuentes
-                var keywords = heap.Keys.Take(Math.Min(3, heap.Count)).ToList();
+                List<string> keywords;
+                var now = DateTime.UtcNow;
 
-                // 4. Buscar artículos con esas palabras clave
+                bool usarFrecuentes = !_frequentWordsUsedAt.ContainsKey(userId) ||
+                                      (now - _frequentWordsUsedAt[userId]) > TimeSpan.FromMinutes(30);
+
+                if (usarFrecuentes || heap.Count <= 3)
+                {
+                    // Usar las más frecuentes
+                    keywords = heap.Keys.Take(Math.Min(3, heap.Count)).ToList();
+                    _frequentWordsUsedAt[userId] = now;
+                }
+                else
+                {
+                    // Usar palabras aleatorias (solo si hay suficientes)
+                    var random = new Random();
+                    var shuffled = heap.Keys.OrderBy(_ => random.Next()).ToList();
+                    keywords = shuffled.Take(3).ToList();
+                }
+
                 var recomendados = await _articlesService.SearchArticlesByFields(keywords);
 
                 var resultado = recomendados
@@ -100,7 +115,6 @@ namespace SuggestApi.Application.Services
             }
         }
 
-       
         public async Task<UserDTO> Getuser(int userId)
         {
             var getuser = await _client.GetAsync($"{userId}");
