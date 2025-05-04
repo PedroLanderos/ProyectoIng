@@ -20,10 +20,16 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: |
+        dotnet restore Proyecto.ArticlesApi.Solution/UnitTest.ArticlesApi/UnitTest.ArticlesApi.csproj
+        dotnet restore Proyecto.AuthenticationApi.Solution/UnitTest.AuthenticationApi/UnitTest.AuthenticationApi.csproj
+        dotnet restore Proyecto.SuggestApi.Solution/UnitTest.SuggestApi/UnitTest.SuggestApi.csproj
 
-    - name: Build all solutions
-      run: dotnet build --no-restore
+    - name: Build test projects
+      run: |
+        dotnet build Proyecto.ArticlesApi.Solution/UnitTest.ArticlesApi/UnitTest.ArticlesApi.csproj --no-restore
+        dotnet build Proyecto.AuthenticationApi.Solution/UnitTest.AuthenticationApi/UnitTest.AuthenticationApi.csproj --no-restore
+        dotnet build Proyecto.SuggestApi.Solution/UnitTest.SuggestApi/UnitTest.SuggestApi.csproj --no-restore
 
     - name: Run unit tests - ArticlesApi
       run: dotnet test Proyecto.ArticlesApi.Solution/UnitTest.ArticlesApi/UnitTest.ArticlesApi.csproj --no-build --verbosity normal
@@ -32,4 +38,4 @@ jobs:
       run: dotnet test Proyecto.AuthenticationApi.Solution/UnitTest.AuthenticationApi/UnitTest.AuthenticationApi.csproj --no-build --verbosity normal
 
     - name: Run unit tests - SuggestApi
-      run: dotnet test Proyecto.SuggestApi.Solution/SuggestApi.Presentation/SuggestApi.Presentation.csproj --no-build --verbosity normal
+      run: dotnet test Proyecto.SuggestApi.Solution/UnitTest.SuggestApi/UnitTest.SuggestApi.csproj --no-build --verbosity normal
