@@ -35,7 +35,7 @@ const SearchBar = () => {
     <div className="search-bar-container">
       <div className="content-wrapper">
         <p className="search-title">
-          BUSCAR ARTICULOS(CAMBIAR TEXTO)
+          Buscar articulos cientificos
         </p>
         <form className="search-form" onSubmit={handleSearch}>
           <div className="search-group">
