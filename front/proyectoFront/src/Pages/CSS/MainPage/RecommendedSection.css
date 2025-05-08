@@ -56,7 +56,12 @@
     border: 1px solid #ddd;
     border-radius: 6px;
     padding: 1rem;
-    transition: box-shadow 0.3s ease;
+    transition: all 0.3s ease;
+  }
+
+  body.dark .recommended-article {
+    background-color: #0f0f0f;
+    border: 1px solid #3f3f3f;
   }
   
   .recommended-article:hover {
