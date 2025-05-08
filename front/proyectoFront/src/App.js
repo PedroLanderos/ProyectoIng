@@ -11,6 +11,7 @@ import ArticleSearchPage from "./Pages/ArticleSearchPage";
 import UserProfile from "./Pages/UserProfile";
 import ArticleDetails from "./Pages/ArticleDetails";
 import UserHistory from "./Pages/UserHistory";
+import AboutUs from "./Pages/AboutUs"
 
 function App() {
   const { auth } = useContext(AuthContext);
@@ -31,6 +32,7 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="*" element={<Navigate to="/" />} />
         <Route path="/UserHistory/:id" element={<UserHistory />} />
+        <Route path="/AboutUs" element={<AboutUs />} />
       </Routes>
       <Footer />
     </BrowserRouter>

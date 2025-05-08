@@ -63,7 +63,7 @@ const ResourceLinks = () => {
           <h3>Acerca de Nosotros</h3>
           <ul>
             <li>
-              <a href="./" target="_blank" rel="noopener noreferrer">
+              <a href="./AboutUs" target="_blank" rel="noopener noreferrer">
                 Nosotros ↗
               </a>
             </li>
