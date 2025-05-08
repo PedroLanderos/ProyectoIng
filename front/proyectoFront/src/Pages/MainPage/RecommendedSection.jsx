@@ -17,7 +17,7 @@ const RecommendedSection = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      const saved = sessionStorage.getItem("recommendedArticles");
+      const saved = localStorage.getItem("recommendedArticles");
       if (saved) {
         const parsed = JSON.parse(saved);
         setRecommendedArticles(parsed);
@@ -29,7 +29,6 @@ const RecommendedSection = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      sessionStorage.removeItem("recommendedArticles");
       setRecommendedArticles([]);
       setHasRecommendations(true);
       setClicked(false);
@@ -44,7 +43,7 @@ const RecommendedSection = () => {
       const articles = response.data || [];
       setRecommendedArticles(articles);
       setHasRecommendations(articles.length > 0);
-      sessionStorage.setItem("recommendedArticles", JSON.stringify(articles));
+      localStorage.setItem("recommendedArticles", JSON.stringify(articles));
     } catch (error) {
       console.warn("⚠️ No se pudieron obtener recomendaciones:", error);
       setHasRecommendations(false);
