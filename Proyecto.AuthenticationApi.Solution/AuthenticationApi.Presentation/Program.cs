@@ -10,16 +10,14 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructureService(builder.Configuration);
 
-// Configuración de CORS: permitir cualquier origen
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        policy
-            .AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-        // IMPORTANTE: No uses AllowCredentials() si usás AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:3000") // Permite peticiones desde React
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // Esto es necesario si usas `withCredentials: true` en axios
     });
 });
 
@@ -38,9 +36,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-
-// Aplicar CORS para todos los orígenes
-app.UseCors("AllowAll");
+app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 

@@ -14,22 +14,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructureService(builder.Configuration);
 builder.Services.AddApplicationService(builder.Configuration);
 
-// Configuración de CORS: permitir cualquier origen
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        policy
-            .AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-        // IMPORTANTE: No usar AllowCredentials() con AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:3000") // Permite peticiones desde React
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // Esto es necesario si usas `withCredentials: true` en axios
     });
 });
 
 var app = builder.Build();
 
-// Aplicar migraciones a la base de datos
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<SuggestionDbContext>();
@@ -45,8 +42,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Usar la política CORS abierta
-app.UseCors("AllowAll");
+app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 
