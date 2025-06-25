@@ -1,0 +1,579 @@
+{
+	"info": {
+		"_postman_id": "a0615b29-bd2f-464c-986d-ecab3bc27872",
+		"name": "Pruebas funcionales de caja negra proyecto ing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37283507"
+	},
+	"item": [
+		{
+			"name": "Register User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 200 o 400\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 400]);",
+							"});",
+							"pm.test(\"Respuesta contiene estructura esperada\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"flag\");",
+							"    pm.expect(jsonData).to.have.property(\"message\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let counter = parseInt(pm.globals.get(\"emailCounter\") || \"1\", 10);\r",
+							"let email = `juan${counter}@example.com`;\r",
+							"\r",
+							"// Guardar como variable global para usar en el body\r",
+							"pm.globals.set(\"dynamicEmail\", email);\r",
+							"\r",
+							"// Incrementar el contador para la próxima vez\r",
+							"pm.globals.set(\"emailCounter\", counter + 1);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"Id\": 0,\n  \"Name\": \"Juan Pérez\",\n  \"TelephoneNumber\": \"123456789\",\n  \"Address\": \"Calle Falsa 123\",\n  \"Email\": \"{{dynamicEmail}}\",\n  \"Password\": \"PasswordSegura123!\",\n  \"Role\": \"User\"\n}\n"
+				},
+				"url": {
+					"raw": "http://localhost:5003/api/authentication/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5003",
+					"path": [
+						"api",
+						"authentication",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Guardar token y userId como variables globales\", function () {",
+							"    let jsonData = pm.response.json();",
+							"",
+							"    if (jsonData && jsonData.message) {",
+							"        const token = jsonData.message;",
+							"        pm.globals.set(\"token\", token);",
+							"",
+							"        // Decodificar el payload del JWT",
+							"        const base64Payload = token.split('.')[1];",
+							"        const payload = JSON.parse(atob(base64Payload));",
+							"",
+							"        // Extraer el ID del usuario (ajusta el nombre si es diferente)",
+							"        const userId = payload[\"UserId\"] || payload[\"userId\"] || payload[\"sub\"];",
+							"        if (userId) {",
+							"            pm.globals.set(\"userId\", userId);",
+							"            console.log(\"userId extraído:\", userId);",
+							"        } else {",
+							"            console.warn(\"No se encontró userId en el token\");",
+							"        }",
+							"    } else {",
+							"        console.warn(\"Token no encontrado en la respuesta\");",
+							"    }",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Email\": \"juan@example.com\",\n    \"Password\": \"PasswordSegura123!\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5003/api/authentication/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5003",
+					"path": [
+						"api",
+						"authentication",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 200 o 404\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5003/api/authentication/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5003",
+					"path": [
+						"api",
+						"authentication",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 200 o 404\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5003/api/authentication",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5003",
+					"path": [
+						"api",
+						"authentication"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 200 o 400\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 400]);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Id\": 1,\n    \"Name\": \"Juan Actualizado\",\n    \"TelephoneNumber\": \"987654321\",\n    \"Address\": \"Calle Nueva 456\",\n    \"Email\": \"juan@example.com\",\n    \"Password\": \"PasswordSegura123!\",\n    \"Role\": \"Admin\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5003/api/authentication",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5003",
+					"path": [
+						"api",
+						"authentication"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get article",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 200, 404 o 429\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404, 429]);",
+							"});",
+							"",
+							"if (pm.response.code === 200) {",
+							"    const jsonData = pm.response.json();",
+							"    pm.test(\"El artículo tiene título\", function () {",
+							"        pm.expect(jsonData).to.have.property(\"title\");",
+							"    });",
+							"    pm.test(\"El artículo tiene año publicado\", function () {",
+							"        pm.expect(jsonData).to.have.property(\"yearPublished\");",
+							"    });",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5003/api/article/42848755",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5003",
+					"path": [
+						"api",
+						"article",
+						"42848755"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save article history",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 201 o 400\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 400]);",
+							"});",
+							"",
+							"if (pm.response.code === 201) {",
+							"    pm.test(\"Se creó correctamente el historial\", function () {",
+							"        let jsonData = pm.response.json();",
+							"        pm.expect(jsonData).to.have.property(\"articleId\");",
+							"        pm.expect(jsonData).to.have.property(\"userId\");",
+							"    });",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 0,\r\n  \"userId\": 5,\r\n  \"articleId\": \"814020\",\r\n  \"isFavorite\": true\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5003/api/userdata/history",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5003",
+					"path": [
+						"api",
+						"userdata",
+						"history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user History",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 200 o 404\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+							"});",
+							"",
+							"if (pm.response.code === 200) {",
+							"    let jsonData = pm.response.json();",
+							"    pm.test(\"La respuesta contiene historial de usuario\", function () {",
+							"        pm.expect(jsonData.length).to.be.above(0);",
+							"        pm.expect(jsonData[0]).to.have.property(\"articleId\");",
+							"        pm.expect(jsonData[0]).to.have.property(\"isFavorite\"); ",
+							"    });",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5003/api/userdata/history/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5003",
+					"path": [
+						"api",
+						"userdata",
+						"history",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get favorites",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 200 o 404\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+							"});",
+							"",
+							"if (pm.response.code === 200) {",
+							"    let jsonData = pm.response.json();",
+							"    pm.test(\"La respuesta contiene favoritos\", function () {",
+							"        pm.expect(jsonData.length).to.be.above(0);",
+							"        pm.expect(jsonData[0]).to.have.property(\"articleId\");",
+							"        pm.expect(jsonData[0].isFavorite).to.be.true;",
+							"    });",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5003/api/userdata/favorites/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5003",
+					"path": [
+						"api",
+						"userdata",
+						"favorites",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check article favorite",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"pm.test(\"La respuesta es booleana\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(typeof jsonData).to.eql(\"boolean\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5003/api/userdata/favorites/5/check/814020",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5003",
+					"path": [
+						"api",
+						"userdata",
+						"favorites",
+						"5",
+						"check",
+						"814020"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get recommendations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 200 o 404\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+							"});",
+							"",
+							"if (pm.response.code === 200) {",
+							"    let jsonData = pm.response.json();",
+							"    pm.test(\"Respuesta contiene lista de artículos\", function () {",
+							"        pm.expect(jsonData.length).to.be.above(0);",
+							"        pm.expect(jsonData[0]).to.have.property(\"title\");",
+							"        pm.expect(jsonData[0]).to.have.property(\"subjects\");",
+							"    });",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5003/api/userdata/recommendations/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5003",
+					"path": [
+						"api",
+						"userdata",
+						"recommendations",
+						"5"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
