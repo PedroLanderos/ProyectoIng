@@ -1,44 +1,45 @@
 # 📦 SciFind
-Este proyecto es un sistema web completo para la busqueda y recomendacion de articulos cientificos que utiliza **Docker** para facilitar su despliegue.
+This project is a full web system for searching and recommending scientific articles, leveraging **Docker** to simplify deployment.
 
-## 🚀 Requisitos
-- Tener instalado [Docker Desktop](https://www.docker.com/products/docker-desktop/) en tu máquina.
+## 🚀 Requirements
+- Have [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed on your machine.
 
-## 🛠️ Instalación y ejecución
-Sigue estos pasos para correr el proyecto localmente:
+## 🛠️ Installation and Execution
+Follow these steps to run the project locally:
 
-1. **Instala Docker Desktop**  
-   - Descarga e instala Docker Desktop desde [aquí](https://www.docker.com/products/docker-desktop/).
-   - Ejecute el instalador y siga el asistente de configuración, seleccionando WSL 2 como backend (para windows).
-   - Abra Docker Desktop y espere a que se inicialice.
-   - Verifique la instalación ejecutando el siguiente comando en la consola del sistema (cmd) o PowerShell:
+1. **Install Docker Desktop**  
+   - Download and install Docker Desktop from [here](https://www.docker.com/products/docker-desktop/).
+   - Run the installer and follow the setup wizard, selecting WSL 2 as the backend (for Windows).
+   - Open Docker Desktop and wait for it to initialize.
+   - Verify the installation by running the following command in your system console (cmd) or PowerShell:
         ```bash
         docker --version
         ```
 
-2. **Clona el repositorio**
+2. **Clone the repository**
    ```bash
    git clone https://github.com/PedroLanderos/ProyectoIng
    ```
 
-3. **Accede al directorio del proyecto**
+3. **Navigate to the project directory**
    ```bash
    cd ProyectoIng
    ```
 
-4. **Construye y ejecuta los contenedores**
+4. **Build and run the containers**
    ```bash
    docker-compose up --build
    ```
 
-5. **Accede a la aplicación**
-   Una vez que los contenedores estén corriendo, puedes acceder al sistema desde:
+5. **Access the application**
+   Once the containers are running, you can access the system at:
    ```
    http://localhost:3000/
    ```
-## 🧹 Apagar los contenedores
-Cuando termines de usar el sistema, puedes detener todos los contenedores presionando `Ctrl + C` en la terminal donde se está ejecutando, y luego:
+
+## 🧹 Shutting Down the Containers
+When you are done using the system, you can stop all containers by pressing `Ctrl + C` in the terminal where they are running, and then:
 ```bash
 docker-compose down
 ```
-Una vez cargados los contenedores, puedes iniciarlos y detenerlos desde la aplicacion Docker Desktop.
+After the containers have been loaded, you can also start and stop them from the Docker Desktop application.
